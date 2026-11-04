@@ -1,0 +1,273 @@
+{
+  "syncedAt": "2026-11-04",
+  "source": "Dropi (MCP)",
+  "products": [
+    {
+      "dropiId": 96,
+      "sku": "AF-333",
+      "name": "Afilador De Cuchillos Tijera Acero Mango",
+      "cost": 7000,
+      "suggestedPrice": 17000,
+      "stock": 412,
+      "supplierId": 75,
+      "categories": [
+        "Cocina",
+        "Hogar"
+      ],
+      "image": "https://d39ru7awumhhs2.cloudfront.net/colombia/products/96/17031033221703103322afiladorcuchillos2.jpg",
+      "variations": [],
+      "source": "dropi"
+    },
+    {
+      "dropiId": 99,
+      "sku": "HM-03",
+      "name": "Mini Licuadora Portátil Batidora Recargable",
+      "cost": 28000,
+      "suggestedPrice": 38000,
+      "stock": 51,
+      "supplierId": 75,
+      "categories": [
+        "Cocina",
+        "Bienestar"
+      ],
+      "image": "https://d39ru7awumhhs2.cloudfront.net/colombia/products/99/1737479313WhatsApp%20Image%202025-01-21%20at%2012.07.43%20PM.jpeg",
+      "variations": [],
+      "source": "dropi"
+    },
+    {
+      "dropiId": 123,
+      "sku": "015588",
+      "name": "Forro Protector Sofá Muebles 2 Puestos",
+      "cost": 40000,
+      "suggestedPrice": 50000,
+      "stock": 102,
+      "supplierId": 75,
+      "categories": [
+        "Hogar"
+      ],
+      "image": "https://d39ru7awumhhs2.cloudfront.net/colombia/products/123/17031033191703103319cubre%20sofa%202.jpg",
+      "variations": [],
+      "source": "dropi"
+    },
+    {
+      "dropiId": 220,
+      "sku": "51117",
+      "name": "Kit 19.98 con Cera Brillante",
+      "cost": 43151,
+      "suggestedPrice": 91000,
+      "stock": 39,
+      "supplierId": 110,
+      "categories": [
+        "Belleza"
+      ],
+      "image": "https://d39ru7awumhhs2.cloudfront.net/colombia/products/220/17031033051703103305WhatsApp%20Image%202020-09-03%20at%202.47.40%20PM%20(10).jpeg",
+      "variations": [],
+      "source": "dropi"
+    },
+    {
+      "dropiId": 222,
+      "sku": "500313",
+      "name": "Blesse Tratamiento Nutrición y Brillo",
+      "cost": 8998,
+      "suggestedPrice": 14700,
+      "stock": 100,
+      "supplierId": 110,
+      "categories": [
+        "Belleza"
+      ],
+      "image": "https://d39ru7awumhhs2.cloudfront.net/colombia/products/222/17031033041703103304BLESSE.jpg",
+      "variations": [],
+      "source": "dropi"
+    },
+    {
+      "dropiId": 223,
+      "sku": "500621",
+      "name": "Loción Hidronutritiva",
+      "cost": 7412,
+      "suggestedPrice": 12000,
+      "stock": 100,
+      "supplierId": 110,
+      "categories": [
+        "Belleza"
+      ],
+      "image": "https://d39ru7awumhhs2.cloudfront.net/colombia/products/223/17031033041703103304LOCION%20HIDRONUTRITIVA.jpg",
+      "variations": [],
+      "source": "dropi"
+    },
+    {
+      "dropiId": 231,
+      "sku": "VENTOSA",
+      "name": "Home Fitness",
+      "cost": 35700,
+      "suggestedPrice": 75900,
+      "stock": 34,
+      "supplierId": 47,
+      "categories": [
+        "Deportes",
+        "Bienestar"
+      ],
+      "image": "https://d39ru7awumhhs2.cloudfront.net/colombia/products/231/17031033031703103303WhatsApp%20Image%202020-09-10%20at%209.49.15%20AM.jpeg",
+      "variations": [],
+      "source": "dropi"
+    },
+    {
+      "dropiId": 232,
+      "sku": "ESTERILIZADOR",
+      "name": "Esterilizador de Lujo",
+      "cost": 20000,
+      "suggestedPrice": 60000,
+      "stock": 32,
+      "supplierId": 47,
+      "categories": [
+        "Hogar"
+      ],
+      "image": "https://d39ru7awumhhs2.cloudfront.net/colombia/products/232/1703103303170310330364d4e3d6-67f6-4d23-a06f-20ccdef5ae82_1.c03d6aa50f14f38d171b33db865eb400.jpeg",
+      "variations": [],
+      "source": "dropi"
+    },
+    {
+      "dropiId": 234,
+      "sku": "collaramat",
+      "name": "Colgante Cuarzo Amatista",
+      "cost": 11000,
+      "suggestedPrice": 35000,
+      "stock": 2372,
+      "supplierId": 115,
+      "categories": [
+        "Bisutería",
+        "Moda"
+      ],
+      "image": "https://d39ru7awumhhs2.cloudfront.net/colombia/products/234/17031033021703103302ESfTRUKelZukKgyOUaGYEuabyffeZpc3nZaaNIiE.jpeg",
+      "variations": [],
+      "source": "dropi"
+    },
+    {
+      "dropiId": 239,
+      "sku": "cuarzoaventurina",
+      "name": "Colgante Piedra Aventurina",
+      "cost": 8000,
+      "suggestedPrice": 35000,
+      "stock": 2465,
+      "supplierId": 115,
+      "categories": [
+        "Bisutería",
+        "Moda"
+      ],
+      "image": "https://d39ru7awumhhs2.cloudfront.net/colombia/products/239/17031033031703103303cuarzojade.jpg",
+      "variations": [],
+      "source": "dropi"
+    },
+    {
+      "dropiId": 241,
+      "sku": "cuarzorosa",
+      "name": "Colgante Cuarzo Rosa",
+      "cost": 8000,
+      "suggestedPrice": 30000,
+      "stock": 2491,
+      "supplierId": 115,
+      "categories": [
+        "Bisutería",
+        "Moda"
+      ],
+      "image": "https://d39ru7awumhhs2.cloudfront.net/colombia/products/241/17031033031703103303cuarzorosa.jpg",
+      "variations": [],
+      "source": "dropi"
+    },
+    {
+      "dropiId": 262,
+      "sku": "51118",
+      "name": "Kit 19.98 con Cera Mate",
+      "cost": 43151,
+      "suggestedPrice": 91000,
+      "stock": 38,
+      "supplierId": 110,
+      "categories": [
+        "Belleza"
+      ],
+      "image": "https://d39ru7awumhhs2.cloudfront.net/colombia/products/262/17031032991703103299UfBEe4AsRGV3hyJlzc5tgsLzjTKLKjtVvNi3wRbj.jpeg",
+      "variations": [],
+      "source": "dropi"
+    },
+    {
+      "dropiId": 271,
+      "sku": "oxi1",
+      "name": "Oxi1 Oxímetro",
+      "cost": 10000,
+      "suggestedPrice": 40000,
+      "stock": 287,
+      "supplierId": 131,
+      "categories": [
+        "Tecnología",
+        "Bienestar"
+      ],
+      "image": "https://d39ru7awumhhs2.cloudfront.net/colombia/products/271/17031032971703103297oxi1dropi.png",
+      "variations": [],
+      "source": "dropi"
+    },
+    {
+      "dropiId": 295,
+      "sku": "TAPETE",
+      "name": "Tapete Masajeador",
+      "cost": 12500,
+      "suggestedPrice": 52900,
+      "stock": 79,
+      "supplierId": 47,
+      "categories": [
+        "Hogar",
+        "Bienestar"
+      ],
+      "image": "https://d39ru7awumhhs2.cloudfront.net/colombia/products/295/17031032951703103295WhatsApp%20Image%202020-10-08%20at%2011.02.33%20AM.jpeg",
+      "variations": [
+        {
+          "id": 112453,
+          "sku": "20910600",
+          "label": "Rosado",
+          "stock": 39,
+          "cost": 12500,
+          "suggestedPrice": 52900
+        },
+        {
+          "id": 112452,
+          "sku": "20910000",
+          "label": "Azul",
+          "stock": 40,
+          "cost": 12500,
+          "suggestedPrice": 52900
+        }
+      ],
+      "source": "dropi"
+    },
+    {
+      "dropiId": 305,
+      "sku": "cuarzotigre",
+      "name": "Colgante Piedra Ojo de Tigre",
+      "cost": 8000,
+      "suggestedPrice": 30000,
+      "stock": 2462,
+      "supplierId": 115,
+      "categories": [
+        "Bisutería",
+        "Moda"
+      ],
+      "image": "https://d39ru7awumhhs2.cloudfront.net/colombia/products/305/17031032951703103295ojotigre.jpg",
+      "variations": [],
+      "source": "dropi"
+    },
+    {
+      "dropiId": 306,
+      "sku": "cuarzolapislazuli",
+      "name": "Colgante Cuarzo Lapislázuli",
+      "cost": 8000,
+      "suggestedPrice": 35000,
+      "stock": 192,
+      "supplierId": 115,
+      "categories": [
+        "Bisutería",
+        "Moda"
+      ],
+      "image": "https://d39ru7awumhhs2.cloudfront.net/colombia/products/306/17031032941703103294lapislazuli.jpg",
+      "variations": [],
+      "source": "dropi"
+    }
+  ]
+}
