@@ -1,10 +1,20 @@
-// Ilustración provisional hasta tener fotos reales del producto.
-export function ImagenProducto({ className = "" }: { className?: string }) {
+type Props = { src?: string; alt?: string; className?: string };
+
+// Muestra la foto del producto; si no hay, una ilustración provisional.
+export function ImagenProducto({ src, alt = "Producto EDMOGA", className = "" }: Props) {
+  if (src) {
+    return (
+      <div className={`overflow-hidden rounded-2xl bg-stone-100 ${className}`}>
+        {/* eslint-disable-next-line @next/next/no-img-element -- imagen externa del proveedor */}
+        <img src={src} alt={alt} className="h-full w-full object-cover" loading="lazy" />
+      </div>
+    );
+  }
   return (
     <div
       className={`flex items-center justify-center rounded-2xl bg-gradient-to-br from-emerald-50 to-stone-100 ${className}`}
     >
-      <svg viewBox="0 0 120 120" className="h-2/3 w-2/3" role="img" aria-label="Picadora manual de presión">
+      <svg viewBox="0 0 120 120" className="h-2/3 w-2/3" role="img" aria-label={alt}>
         <rect x="42" y="14" width="36" height="14" rx="6" fill="#065f46" />
         <rect x="56" y="28" width="8" height="16" fill="#047857" />
         <path

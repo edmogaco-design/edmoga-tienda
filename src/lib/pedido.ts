@@ -1,10 +1,13 @@
 import { z } from "zod";
 import { PRODUCTOS } from "./catalogo";
 import { formatoCOP } from "./config";
+import { DEPARTAMENTOS } from "./departamentos";
 
 const slugs = PRODUCTOS.map((p) => p.slug) as [string, ...string[]];
 
 export const pedidoSchema = z.object({
+  // Identificador único por envío del formulario: evita pedidos duplicados por doble clic o reintento.
+  idSolicitud: z.string().uuid(),
   producto: z.enum(slugs),
   cantidad: z.coerce.number().int().min(1, "Mínimo 1").max(10, "Máximo 10 por pedido"),
   nombre: z.string().trim().min(3, "Escribe tu nombre completo").max(80),
@@ -13,7 +16,7 @@ export const pedidoSchema = z.object({
     .trim()
     .regex(/^3\d{9}$/, "Celular colombiano de 10 dígitos que empiece por 3"),
   ciudad: z.string().trim().min(3, "Escribe tu ciudad").max(60),
-  departamento: z.string().trim().min(3, "Escribe tu departamento").max(60),
+  departamento: z.enum(DEPARTAMENTOS, { errorMap: () => ({ message: "Elige tu departamento" }) }),
   direccion: z.string().trim().min(6, "Escribe tu dirección completa").max(150),
   notas: z.string().trim().max(200).optional(),
   autorizaDatos: z.literal(true, {
@@ -23,9 +26,14 @@ export const pedidoSchema = z.object({
 
 export type Pedido = z.infer<typeof pedidoSchema>;
 
-export function mensajePedido(p: Pedido, total: number, nombreProducto: string): string {
+export function mensajePedido(
+  p: Pedido,
+  total: number,
+  nombreProducto: string,
+  codigoPedido: string,
+): string {
   return [
-    "Hola EDMOGA, quiero hacer este pedido (pago contra entrega):",
+    `Hola EDMOGA, quiero confirmar mi pedido ${codigoPedido} (pago contra entrega):`,
     `• Producto: ${nombreProducto} x${p.cantidad}`,
     `• Total: ${formatoCOP(total)} + envío`,
     `• Nombre: ${p.nombre}`,

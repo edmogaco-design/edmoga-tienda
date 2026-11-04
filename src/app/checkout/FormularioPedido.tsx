@@ -1,9 +1,10 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { pedidoSchema } from "@/lib/pedido";
 import { formatoCOP } from "@/lib/config";
+import { DEPARTAMENTOS } from "@/lib/departamentos";
 
 type Props = { producto: { slug: string; nombre: string; precio: number } };
 type Errores = Partial<Record<string, string[]>>;
@@ -11,7 +12,6 @@ type Errores = Partial<Record<string, string[]>>;
 const campos = [
   { name: "nombre", label: "Nombre completo", type: "text", autoComplete: "name" },
   { name: "telefono", label: "Celular (WhatsApp)", type: "tel", autoComplete: "tel-national", inputMode: "numeric" as const },
-  { name: "departamento", label: "Departamento", type: "text", autoComplete: "address-level1" },
   { name: "ciudad", label: "Ciudad o municipio", type: "text", autoComplete: "address-level2" },
   { name: "direccion", label: "Dirección completa (barrio, casa/apto)", type: "text", autoComplete: "street-address" },
 ];
@@ -21,12 +21,17 @@ export function FormularioPedido({ producto }: Props) {
   const [errores, setErrores] = useState<Errores>({});
   const [mensaje, setMensaje] = useState("");
   const [enviando, setEnviando] = useState(false);
+  // Mismo id mientras los datos no cambien: un doble clic o reintento no duplica el pedido.
+  const idSolicitud = useRef<string | null>(null);
 
   async function enviar(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
+    if (enviando) return;
     setMensaje("");
+    idSolicitud.current ??= crypto.randomUUID();
     const fd = new FormData(e.currentTarget);
     const datos = {
+      idSolicitud: idSolicitud.current,
       producto: producto.slug,
       cantidad,
       nombre: fd.get("nombre"),
@@ -57,7 +62,7 @@ export function FormularioPedido({ producto }: Props) {
         setMensaje(json.error ?? "No pudimos procesar tu pedido.");
         return;
       }
-      setMensaje("¡Listo! Te abrimos WhatsApp para confirmar tu pedido.");
+      setMensaje(`¡Listo! Tu pedido ${json.codigo} quedó registrado. Te abrimos WhatsApp para confirmarlo.`);
       window.location.href = json.whatsapp;
     } catch {
       setMensaje("Error de conexión. Intenta de nuevo.");
@@ -67,7 +72,14 @@ export function FormularioPedido({ producto }: Props) {
   }
 
   return (
-    <form onSubmit={enviar} noValidate className="mt-6 space-y-4">
+    <form
+      onSubmit={enviar}
+      onChange={() => {
+        idSolicitud.current = null;
+      }}
+      noValidate
+      className="mt-6 space-y-4"
+    >
       <div className="rounded-xl border border-stone-200 p-4">
         <p className="font-semibold text-stone-900">{producto.nombre}</p>
         <div className="mt-3 flex items-center justify-between">
@@ -88,6 +100,29 @@ export function FormularioPedido({ producto }: Props) {
           <p className="text-lg font-bold">{formatoCOP(producto.precio * cantidad)}</p>
         </div>
         <p className="mt-1 text-xs text-stone-500">+ envío (te lo confirmamos por WhatsApp)</p>
+      </div>
+
+      <div>
+        <label htmlFor="departamento" className="block text-sm font-medium text-stone-800">
+          Departamento
+        </label>
+        <select
+          id="departamento"
+          name="departamento"
+          defaultValue=""
+          autoComplete="address-level1"
+          className="mt-1 w-full rounded-lg border border-stone-300 bg-white px-3 py-2.5 focus:border-emerald-700 focus:outline-none"
+        >
+          <option value="" disabled>
+            Elige tu departamento
+          </option>
+          {DEPARTAMENTOS.map((d) => (
+            <option key={d} value={d}>
+              {d}
+            </option>
+          ))}
+        </select>
+        {errores.departamento && <p className="mt-1 text-sm text-red-700">{errores.departamento[0]}</p>}
       </div>
 
       {campos.map((c) => (

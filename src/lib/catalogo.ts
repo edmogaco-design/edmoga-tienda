@@ -10,6 +10,7 @@ export type Producto = {
   garantia: string;
   invima?: string;
   categoria: string;
+  imagen?: string;
 };
 
 export const PRODUCTOS: Producto[] = [
@@ -30,6 +31,9 @@ export const PRODUCTOS: Producto[] = [
     incluye: ["1 picadora manual de presión"],
     garantia: "Garantía por defectos de fábrica según la Ley 1480 de 2011.",
     categoria: "Cocina",
+    // Foto del proveedor en Dropi. Reemplazar por fotos propias cuando estén listas.
+    imagen:
+      "https://d39ru7awumhhs2.cloudfront.net/colombia/products/2181739/1781906846PICADOR%20DE%20AJO%201.jpeg",
   },
 ];
 

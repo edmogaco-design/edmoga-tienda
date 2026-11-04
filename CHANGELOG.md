@@ -1,5 +1,12 @@
 # CHANGELOG
 
+## 2026-11-04 — Pedido automático a Dropi [agente: Claude]
+- El checkout registra el pedido en Dropi (contra entrega, `CON RECAUDO`) cuando existe `DROPI_TOKEN`.
+- Código de pedido `EDM-XXXXXXXX` en Dropi y en el mensaje de WhatsApp.
+- Idempotencia: doble clic o reintento no crea pedidos duplicados.
+- Si Dropi falla o no hay token, el cliente igual llega a WhatsApp (la venta nunca se pierde).
+- Departamento como lista (nombres que entiende Dropi). Foto real del producto desde Dropi.
+
 ## 2026-11-04 — Fase 0 / Fase 1 base [agente: Claude]
 - Proyecto Next.js 15 + TypeScript + Tailwind.
 - Archivos de coordinación: AGENTS.md, ROADMAP.md, TAREAS.md, DECISIONES.md, .env.example.

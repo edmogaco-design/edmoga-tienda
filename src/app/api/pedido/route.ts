@@ -2,11 +2,17 @@ import { NextResponse } from "next/server";
 import { pedidoSchema, mensajePedido } from "@/lib/pedido";
 import { obtenerProducto } from "@/lib/catalogo";
 import { enlaceWhatsApp } from "@/lib/config";
+import { crearPedidoDropi, dropiConfigurado } from "@/lib/dropi";
 
 // Límite simple en memoria (por instancia). Se reemplazará por uno persistente en la Fase 2.
 const intentos = new Map<string, { n: number; desde: number }>();
 const VENTANA_MS = 10 * 60 * 1000;
 const MAX_INTENTOS = 5;
+
+// Idempotencia: la misma solicitud (idSolicitud) devuelve la misma respuesta y no crea
+// un segundo pedido en Dropi. En memoria por instancia; pasará a Supabase en la Fase 2.
+const respuestas = new Map<string, { cuerpo: Record<string, unknown>; en: number }>();
+const VIGENCIA_MS = 30 * 60 * 1000;
 
 function limitado(ip: string): boolean {
   const ahora = Date.now();
@@ -19,15 +25,11 @@ function limitado(ip: string): boolean {
   return r.n > MAX_INTENTOS;
 }
 
-export async function POST(req: Request) {
-  const ip = req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ?? "local";
-  if (limitado(ip)) {
-    return NextResponse.json(
-      { error: "Demasiados intentos. Intenta de nuevo en unos minutos." },
-      { status: 429 },
-    );
-  }
+function codigoDesde(idSolicitud: string): string {
+  return `EDM-${idSolicitud.replace(/-/g, "").slice(0, 8).toUpperCase()}`;
+}
 
+export async function POST(req: Request) {
   let datos: unknown;
   try {
     datos = await req.json();
@@ -43,24 +45,48 @@ export async function POST(req: Request) {
     );
   }
 
+  const previa = respuestas.get(r.data.idSolicitud);
+  if (previa && Date.now() - previa.en < VIGENCIA_MS) {
+    return NextResponse.json(previa.cuerpo);
+  }
+
+  const ip = req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ?? "local";
+  if (limitado(ip)) {
+    return NextResponse.json(
+      { error: "Demasiados intentos. Intenta de nuevo en unos minutos." },
+      { status: 429 },
+    );
+  }
+
   const producto = obtenerProducto(r.data.producto);
   if (!producto) {
     return NextResponse.json({ error: "Producto no encontrado" }, { status: 404 });
   }
 
   const total = producto.precio * r.data.cantidad;
+  const codigo = codigoDesde(r.data.idSolicitud);
 
-  // La venta NO se confirma aquí: se deriva al WhatsApp de ventas.
-  // Pendiente Fase 1: crear el pedido en Dropi (DROPI_TOKEN) y registrar la fila en Google Sheets.
-  // Log sin datos personales.
+  // Contra entrega: el pedido se registra en Dropi como pendiente de confirmación.
+  // La venta NO se da por cerrada aquí: un asesor la confirma por WhatsApp.
+  // Si Dropi falla, el cliente igual llega a WhatsApp y el pedido se carga a mano.
+  const dropi = dropiConfigurado() ? await crearPedidoDropi(r.data, producto, codigo) : null;
+
+  // Logs sin datos personales.
   console.info("pedido_iniciado", {
+    codigo,
     dropiId: producto.dropiId,
     cantidad: r.data.cantidad,
-    ciudad: r.data.ciudad,
+    departamento: r.data.departamento,
+    dropi: dropi === null ? "no_configurado" : dropi.ok ? "creado" : `fallo:${dropi.motivo}`,
+    dropiPedido: dropi?.ok ? dropi.dropiId : null,
   });
 
-  return NextResponse.json({
+  const cuerpo = {
     estado: "pendiente_confirmacion_whatsapp",
-    whatsapp: enlaceWhatsApp(mensajePedido(r.data, total, producto.nombre)),
-  });
+    codigo,
+    registradoEnDropi: dropi?.ok === true,
+    whatsapp: enlaceWhatsApp(mensajePedido(r.data, total, producto.nombre, codigo)),
+  };
+  respuestas.set(r.data.idSolicitud, { cuerpo, en: Date.now() });
+  return NextResponse.json(cuerpo);
 }

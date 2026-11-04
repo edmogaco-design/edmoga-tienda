@@ -50,7 +50,7 @@ export default function Inicio() {
               href={`/producto/${p.slug}`}
               className="group rounded-2xl border border-stone-200 p-4 transition hover:shadow-md"
             >
-              <ImagenProducto className="aspect-square" />
+              <ImagenProducto src={p.imagen} alt={p.nombre} className="aspect-square" />
               <p className="mt-4 text-xs uppercase tracking-wider text-emerald-700">{p.categoria}</p>
               <p className="mt-1 font-semibold text-stone-900 group-hover:text-emerald-800">{p.nombre}</p>
               <p className="mt-1 text-sm text-stone-600">{p.resumen}</p>

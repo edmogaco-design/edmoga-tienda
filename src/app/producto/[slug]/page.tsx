@@ -18,7 +18,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return {
     title: p.nombre,
     description: p.resumen,
-    openGraph: { title: `${p.nombre} | EDMOGA`, description: p.resumen },
+    openGraph: {
+      title: `${p.nombre} | EDMOGA`,
+      description: p.resumen,
+      images: p.imagen ? [p.imagen] : undefined,
+    },
   };
 }
 
@@ -29,7 +33,7 @@ export default async function FichaProducto({ params }: Props) {
 
   return (
     <div className="mx-auto grid max-w-5xl gap-8 px-4 py-10 md:grid-cols-2">
-      <ImagenProducto className="aspect-square" />
+      <ImagenProducto src={p.imagen} alt={p.nombre} className="aspect-square" />
       <div>
         <p className="text-xs uppercase tracking-wider text-emerald-700">{p.categoria}</p>
         <h1 className="mt-1 text-3xl font-bold text-stone-900">{p.nombre}</h1>
