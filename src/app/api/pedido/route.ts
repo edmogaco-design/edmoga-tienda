@@ -81,11 +81,17 @@ export async function POST(req: Request) {
     dropiPedido: dropi?.ok ? dropi.dropiId : null,
   });
 
+  if (dropi && !dropi.ok) console.error("dropi_fallo", { codigo, motivo: dropi.motivo });
+
   const cuerpo = {
     estado: "pendiente_confirmacion_whatsapp",
     codigo,
     registradoEnDropi: dropi?.ok === true,
     whatsapp: enlaceWhatsApp(mensajePedido(r.data, total, producto.nombre, codigo)),
+    // Solo en entornos de prueba: motivo del fallo de Dropi para diagnosticar. Nunca en producción.
+    ...(process.env.VERCEL_ENV !== "production" && dropi && !dropi.ok
+      ? { diagnosticoDropi: dropi.motivo }
+      : {}),
   };
   respuestas.set(r.data.idSolicitud, { cuerpo, en: Date.now() });
   return NextResponse.json(cuerpo);

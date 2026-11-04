@@ -72,8 +72,9 @@ export async function crearPedidoDropi(
     }
     const isSuccess = json.isSuccess !== false && res.ok;
     if (!isSuccess) {
-      const mensaje = typeof json.message === "string" ? json.message : `HTTP ${res.status}`;
-      return { ok: false, motivo: mensaje.slice(0, 200) };
+      const mensaje =
+        typeof json.message === "string" ? json.message : texto.replace(/\s+/g, " ").slice(0, 150);
+      return { ok: false, motivo: `HTTP ${res.status}: ${mensaje}`.slice(0, 250) };
     }
     const objeto = (json.objects ?? json.object ?? json.data ?? json) as Record<string, unknown>;
     const id = objeto?.id ?? null;
