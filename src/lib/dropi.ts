@@ -6,8 +6,24 @@ import type { Producto } from "./catalogo";
 import { departamentoDropi, normalizarDropi } from "./departamentos";
 
 const BASE = process.env.DROPI_API_URL || "https://api.dropi.co/integrations";
-const ENCABEZADO = process.env.DROPI_AUTH_HEADER || "dropi-integration-key";
 const TIEMPO_MAX_MS = 12_000;
+
+// Las fuentes no coinciden en cómo enviar la llave. Se prueban en orden y se recuerda
+// la que Dropi acepta. DROPI_AUTH_HEADER fija una sola (usar "Authorization" para Bearer).
+type FormaLlave = { nombre: string; valor: (t: string) => string };
+const FORMAS: FormaLlave[] = process.env.DROPI_AUTH_HEADER
+  ? [
+      {
+        nombre: process.env.DROPI_AUTH_HEADER,
+        valor: (t) => (process.env.DROPI_AUTH_HEADER === "Authorization" ? `Bearer ${t}` : t),
+      },
+    ]
+  : [
+      { nombre: "dropi-integration-key", valor: (t) => t },
+      { nombre: "dropi-integracion-key", valor: (t) => t },
+      { nombre: "Authorization", valor: (t) => `Bearer ${t}` },
+    ];
+let formaQueFunciona: FormaLlave | null = null;
 
 export function dropiConfigurado(): boolean {
   return Boolean(process.env.DROPI_TOKEN);
@@ -55,14 +71,29 @@ export async function crearPedidoDropi(
 
   const control = new AbortController();
   const temporizador = setTimeout(() => control.abort(), TIEMPO_MAX_MS);
+  const cuerpo = JSON.stringify(cuerpoPedidoDropi(p, producto, codigoPedido));
   try {
-    const res = await fetch(`${BASE}/orders/myorders`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json", Accept: "application/json", [ENCABEZADO]: token },
-      body: JSON.stringify(cuerpoPedidoDropi(p, producto, codigoPedido)),
-      signal: control.signal,
-      cache: "no-store",
-    });
+    const formas = formaQueFunciona ? [formaQueFunciona] : FORMAS;
+    let res: Response | null = null;
+    for (const forma of formas) {
+      res = await fetch(`${BASE}/orders/myorders`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+          [forma.nombre]: forma.valor(token),
+        },
+        body: cuerpo,
+        signal: control.signal,
+        cache: "no-store",
+      });
+      // 401/403 = llave rechazada antes de procesar el pedido: se puede probar otra forma sin duplicar.
+      if (res.status !== 401 && res.status !== 403) {
+        formaQueFunciona = forma;
+        break;
+      }
+    }
+    if (!res) return { ok: false, motivo: "sin_respuesta" };
     const texto = await res.text();
     let json: Record<string, unknown> = {};
     try {
