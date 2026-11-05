@@ -16,7 +16,7 @@ export default async function Checkout({ searchParams }: Props) {
   const pagoEnLinea = boldConfigurado();
 
   return (
-    <div className="mx-auto max-w-[1080px] px-4 pb-16 pt-6 sm:px-6">
+    <div className="pagina-checkout mx-auto max-w-[1080px] px-4 pb-16 pt-6 sm:px-6">
       <Link
         href={`/producto/${p.slug}`}
         className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-surface-strong text-ink"

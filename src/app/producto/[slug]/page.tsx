@@ -139,7 +139,7 @@ export default async function FichaProducto({ params }: Props) {
       </div>
 
       {/* Barra inferior fija (móvil) */}
-      <div className="fixed inset-x-0 bottom-0 z-30 border-t border-hairline bg-canvas md:hidden">
+      <div className="barra-compra fixed inset-x-0 bottom-0 z-30 border-t border-hairline bg-canvas md:hidden">
         <div className="mx-auto flex max-w-[1080px] items-center justify-between gap-4 px-4 py-3">
           <div>
             <p className="text-base font-semibold text-ink">{formatoCOP(p.precio)}</p>

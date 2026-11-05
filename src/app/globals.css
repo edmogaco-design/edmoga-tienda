@@ -46,6 +46,17 @@ html {
   -webkit-font-smoothing: antialiased;
 }
 
+/* En móvil, si hay barra de compra fija abajo, el botón de WhatsApp sube para no taparla. */
+@media (max-width: 767px) {
+  body:has(.barra-compra) .boton-whatsapp {
+    bottom: 88px;
+  }
+  /* En el checkout la burbuja tapa el botón de confirmar: se oculta (el pie tiene el enlace). */
+  body:has(.pagina-checkout) .boton-whatsapp {
+    display: none;
+  }
+}
+
 body {
   background: #ffffff;
   color: #222222;
