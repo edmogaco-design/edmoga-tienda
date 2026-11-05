@@ -3,8 +3,11 @@ export const SITE = {
   url: process.env.NEXT_PUBLIC_SITE_URL ?? "https://edmoga.com",
   descripcion:
     "Productos para tu bienestar, hogar y cocina con pago contra entrega en toda Colombia.",
-  whatsappVentas: process.env.NEXT_PUBLIC_WHATSAPP_VENTAS || "573162168177",
-  whatsappMarketing: process.env.NEXT_PUBLIC_WHATSAPP_MARKETING || "573155280178",
+  // WhatsApp de ventas de EDMOGA (formato 57 + 10 dígitos).
+  whatsappVentas: process.env.NEXT_PUBLIC_WHATSAPP_VENTAS || "573185168451",
+  // Sin número de marketing propio todavía: usa el de ventas.
+  whatsappMarketing:
+    process.env.NEXT_PUBLIC_WHATSAPP_MARKETING || process.env.NEXT_PUBLIC_WHATSAPP_VENTAS || "573185168451",
   correo: "edmoga.co@gmail.com",
 };
 

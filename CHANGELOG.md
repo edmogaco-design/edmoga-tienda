@@ -1,5 +1,10 @@
 # CHANGELOG
 
+## 2026-11-05 — Corrección urgente: WhatsApp de EDMOGA [agente: Claude]
+- El número de WhatsApp de ventas estaba mal: era el de otro negocio, copiado por error del documento modelo.
+- Ahora es 573185168451 (EDMOGA). Marketing usa el mismo número hasta definir uno propio.
+- Aprobado por el dueño en chat; publicado directo a `main` por urgencia (excepción al flujo de PR).
+
 ## 2026-11-04 — Fase 0 / Fase 1 base [agente: Claude]
 - Proyecto Next.js 15 + TypeScript + Tailwind.
 - Archivos de coordinación: AGENTS.md, ROADMAP.md, TAREAS.md, DECISIONES.md, .env.example.
