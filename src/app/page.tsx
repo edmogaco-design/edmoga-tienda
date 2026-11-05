@@ -18,7 +18,8 @@ export default function Inicio() {
     <div className="mx-auto max-w-[1280px] px-4 sm:px-6 lg:px-10">
       {/* Encabezado editorial: titular modesto, la foto hace el trabajo */}
       <section className="pb-8 pt-10 sm:pt-14">
-        <h1 className="max-w-2xl text-[28px] font-bold leading-[1.25] text-ink">
+        <p className="text-[13px] font-semibold uppercase tracking-[0.14em] text-oro">Bienestar · Hogar · Cocina</p>
+        <h1 className="mt-2 max-w-2xl text-[28px] font-bold leading-[1.25] text-primary">
           Productos para tu bienestar, hogar y cocina
         </h1>
         <p className="mt-2 max-w-xl text-base text-body">
@@ -55,7 +56,7 @@ export default function Inicio() {
         <div className="mt-6 grid gap-6 sm:grid-cols-3">
           {pasos.map((s) => (
             <div key={s.n} className="flex gap-4">
-              <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-surface-strong text-base font-semibold text-ink">
+              <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-oro bg-oro-suave text-base font-semibold text-primary">
                 {s.n}
               </span>
               <div>

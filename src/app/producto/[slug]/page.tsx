@@ -29,7 +29,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 function Check() {
   return (
-    <svg viewBox="0 0 24 24" className="mt-0.5 h-5 w-5 shrink-0" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
+    <svg viewBox="0 0 24 24" className="mt-0.5 h-5 w-5 shrink-0 text-oro" fill="none" stroke="currentColor" strokeWidth="2.25" aria-hidden="true">
       <path d="M5 12.5l4.5 4.5L19 7.5" strokeLinecap="round" strokeLinejoin="round" />
     </svg>
   );

@@ -8,10 +8,12 @@
 @theme inline {
   --font-sans: var(--font-inter), -apple-system, system-ui, Roboto, "Helvetica Neue", sans-serif;
 
-  /* Marca */
-  --color-primary: #ff385c;
-  --color-primary-active: #e00b41;
-  --color-primary-disabled: #ffd1da;
+  /* Marca (tomados del logo de EDMOGA) */
+  --color-primary: #162944; /* azul marino del logo: acciones principales */
+  --color-primary-active: #0d1a2e;
+  --color-primary-disabled: #c5cdd9;
+  --color-oro: #c0a261; /* dorado del logo: detalles y acentos, nunca texto largo */
+  --color-oro-suave: #f6f0e3;
   --color-error: #c13515;
 
   /* Texto */
@@ -127,8 +129,8 @@ body {
     color: var(--color-muted);
   }
   .campo:focus {
-    border-color: var(--color-ink);
-    box-shadow: inset 0 0 0 1px var(--color-ink);
+    border-color: var(--color-primary);
+    box-shadow: inset 0 0 0 1px var(--color-primary);
   }
   .campo[aria-invalid="true"] {
     border-color: var(--color-error);

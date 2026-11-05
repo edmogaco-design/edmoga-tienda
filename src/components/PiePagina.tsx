@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { SITE, enlaceWhatsApp } from "@/lib/config";
+import { LogoCompleto } from "./Logo";
 
 const columnas = [
   {
@@ -31,7 +32,13 @@ const columnas = [
 export function PiePagina() {
   return (
     <footer className="mt-16 border-t border-hairline bg-surface-soft">
-      <div className="mx-auto grid max-w-[1280px] gap-8 px-4 py-12 sm:grid-cols-3 sm:px-6 lg:px-10">
+      <div className="mx-auto grid max-w-[1280px] gap-8 px-4 py-12 sm:grid-cols-2 sm:px-6 lg:grid-cols-4 lg:px-10">
+        <div>
+          <LogoCompleto ancho={120} />
+          <p className="mt-3 max-w-[220px] text-sm text-muted">
+            Bienestar, hogar y cocina con pago contra entrega en toda Colombia.
+          </p>
+        </div>
         {columnas.map((c) => (
           <div key={c.titulo}>
             <p className="text-base font-medium text-ink">{c.titulo}</p>

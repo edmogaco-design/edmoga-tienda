@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## 2026-11-05 — Logo y colores de marca [agente: Claude]
+- Logo oficial de EDMOGA (emblema + nombre) en el encabezado y logo completo en el pie.
+- Ícono del sitio, ícono para iPhone e imagen para redes sociales con el emblema/logo.
+- Colores del logo: azul marino #162944 para acciones principales y dorado #c0a261 como acento.
+- Rediseño general (lienzo blanco, esquinas suaves, foto primero, tarjeta de compra fija, checkout en dos columnas).
+
 ## 2026-11-05 — Pago en línea con Bold [agente: Claude]
 - Opción "Pagar en línea con Bold · envío gratis" en el checkout (solo aparece si están las llaves de Bold).
 - Botón oficial de Bold con firma de integridad generada en el servidor; el monto lo calcula el servidor.

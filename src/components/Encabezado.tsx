@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { Logo } from "./Logo";
 
 const enlaces = [
   { href: "/#productos", texto: "Productos" },
@@ -10,14 +11,13 @@ export function Encabezado() {
   return (
     <header className="sticky top-0 z-30 border-b border-hairline bg-canvas">
       <div className="mx-auto flex h-16 max-w-[1280px] items-center justify-between px-4 sm:h-20 sm:px-6 lg:px-10">
-        <Link href="/" className="flex items-center gap-2" aria-label="EDMOGA, inicio">
-          <span
-            aria-hidden="true"
-            className="flex h-8 w-8 items-center justify-center rounded-full bg-primary text-sm font-bold text-white"
-          >
-            E
+        <Link href="/" aria-label="EDMOGA, inicio" className="shrink-0">
+          <span className="sm:hidden">
+            <Logo alto={34} />
           </span>
-          <span className="text-xl font-bold tracking-[0.18em] text-primary">EDMOGA</span>
+          <span className="hidden sm:inline">
+            <Logo alto={44} />
+          </span>
         </Link>
         <nav className="hidden items-center gap-1 sm:flex" aria-label="Principal">
           {enlaces.map((e) => (
