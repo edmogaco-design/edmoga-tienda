@@ -1,64 +1,71 @@
-import Link from "next/link";
 import { PRODUCTOS } from "@/lib/catalogo";
-import { formatoCOP } from "@/lib/config";
-import { ImagenProducto } from "@/components/ImagenProducto";
+import { TarjetaProducto } from "@/components/TarjetaProducto";
 
-const confianza = [
-  { titulo: "Pago contra entrega", texto: "Pagas cuando recibes tu pedido en casa." },
-  { titulo: "Envíos a toda Colombia", texto: "Te confirmamos el valor del envío antes de despachar." },
-  { titulo: "Atención por WhatsApp", texto: "Una persona real confirma cada pedido contigo." },
+const ventajas = [
+  { titulo: "Pago contra entrega", texto: "Pagas al recibir en tu casa" },
+  { titulo: "Envío a toda Colombia", texto: "Te confirmamos el valor antes" },
+  { titulo: "Atención por WhatsApp", texto: "Una persona real te responde" },
+];
+
+const pasos = [
+  { n: "1", titulo: "Elige tu producto", texto: "Mira fotos, beneficios y precio final." },
+  { n: "2", titulo: "Pide en un paso", texto: "Solo tus datos de entrega. Sin crear cuenta." },
+  { n: "3", titulo: "Confirma y recibe", texto: "Te escribimos por WhatsApp y despachamos." },
 ];
 
 export default function Inicio() {
   return (
-    <>
-      <section className="bg-gradient-to-b from-emerald-50 to-white">
-        <div className="mx-auto max-w-5xl px-4 py-14 sm:py-20">
-          <p className="text-sm font-semibold uppercase tracking-widest text-emerald-700">
-            Bienestar · Hogar · Cocina
-          </p>
-          <h1 className="mt-3 max-w-2xl text-3xl font-bold leading-tight text-stone-900 sm:text-5xl">
-            Productos que te hacen la vida más fácil, con pago contra entrega
-          </h1>
-          <p className="mt-4 max-w-xl text-stone-600">
-            Elige, pide en un paso y confirma por WhatsApp. Pagas cuando lo recibes.
-          </p>
-          <Link
-            href="#productos"
-            className="mt-8 inline-block rounded-full bg-emerald-800 px-6 py-3 font-semibold text-white hover:bg-emerald-900"
-          >
-            Ver productos
-          </Link>
-        </div>
-      </section>
+    <div className="mx-auto max-w-[1280px] px-4 sm:px-6 lg:px-10">
+      {/* Encabezado editorial: titular modesto, la foto hace el trabajo */}
+      <section className="pb-8 pt-10 sm:pt-14">
+        <h1 className="max-w-2xl text-[28px] font-bold leading-[1.25] text-ink">
+          Productos para tu bienestar, hogar y cocina
+        </h1>
+        <p className="mt-2 max-w-xl text-base text-body">
+          Pide en un minuto y paga cuando lo recibes. Confirmamos cada pedido contigo por WhatsApp.
+        </p>
 
-      <section className="mx-auto grid max-w-5xl gap-4 px-4 py-10 sm:grid-cols-3">
-        {confianza.map((c) => (
-          <div key={c.titulo} className="rounded-xl border border-stone-200 p-5">
-            <p className="font-semibold text-stone-900">{c.titulo}</p>
-            <p className="mt-1 text-sm text-stone-600">{c.texto}</p>
-          </div>
-        ))}
-      </section>
-
-      <section id="productos" className="mx-auto max-w-5xl scroll-mt-20 px-4 py-6">
-        <h2 className="text-2xl font-bold text-stone-900">Productos</h2>
-        <div className="mt-6 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {PRODUCTOS.map((p) => (
-            <Link
-              key={p.slug}
-              href={`/producto/${p.slug}`}
-              className="group rounded-2xl border border-stone-200 p-4 transition hover:shadow-md"
+        {/* Franja en forma de píldora con las 3 garantías de compra */}
+        <div className="mt-6 grid overflow-hidden rounded-xl border border-hairline bg-canvas shadow-card sm:grid-cols-3 sm:rounded-full">
+          {ventajas.map((v, i) => (
+            <div
+              key={v.titulo}
+              className={`px-6 py-3 sm:py-3.5 ${i > 0 ? "border-t border-hairline sm:border-l sm:border-t-0" : ""}`}
             >
-              <ImagenProducto src={p.imagen} alt={p.nombre} className="aspect-square" />
-              <p className="mt-4 text-xs uppercase tracking-wider text-emerald-700">{p.categoria}</p>
-              <p className="mt-1 font-semibold text-stone-900 group-hover:text-emerald-800">{p.nombre}</p>
-              <p className="mt-1 text-sm text-stone-600">{p.resumen}</p>
-              <p className="mt-3 text-lg font-bold text-stone-900">{formatoCOP(p.precio)}</p>
-            </Link>
+              <p className="text-sm font-medium text-ink">{v.titulo}</p>
+              <p className="text-sm text-muted">{v.texto}</p>
+            </div>
           ))}
         </div>
       </section>
-    </>
+
+      {/* Grilla densa de productos */}
+      <section id="productos" className="scroll-mt-24 pb-16">
+        <h2 className="text-[22px] font-medium leading-tight tracking-[-0.44px] text-ink">Productos</h2>
+        <div className="mt-5 grid grid-cols-1 gap-x-4 gap-y-8 min-[480px]:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+          {PRODUCTOS.map((p, i) => (
+            <TarjetaProducto key={p.slug} p={p} prioridad={i === 0} />
+          ))}
+        </div>
+      </section>
+
+      {/* Cómo comprar */}
+      <section className="border-t border-hairline py-16">
+        <h2 className="text-[22px] font-medium leading-tight tracking-[-0.44px] text-ink">Así de fácil compras</h2>
+        <div className="mt-6 grid gap-6 sm:grid-cols-3">
+          {pasos.map((s) => (
+            <div key={s.n} className="flex gap-4">
+              <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-surface-strong text-base font-semibold text-ink">
+                {s.n}
+              </span>
+              <div>
+                <p className="text-base font-semibold text-ink">{s.titulo}</p>
+                <p className="mt-0.5 text-sm text-muted">{s.texto}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+    </div>
   );
 }

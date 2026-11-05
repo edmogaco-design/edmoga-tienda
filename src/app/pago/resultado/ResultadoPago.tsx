@@ -57,29 +57,33 @@ export function ResultadoPago() {
     }
   }, [r, intento]);
 
-  if (!r) return <p className="text-stone-600">Verificando tu pago con Bold…</p>;
+  if (!r) return <p className="text-center text-base text-muted">Verificando tu pago con Bold…</p>;
 
   const ayuda = enlaceWhatsApp(`Hola EDMOGA, necesito ayuda con mi pago en línea. Orden: ${orden || "sin número"}`);
 
   if (r.estado === "APPROVED") {
     return (
-      <div className="space-y-4 text-center">
-        <p className="text-5xl">✅</p>
-        <h1 className="text-2xl font-bold text-stone-900">¡Pago confirmado!</h1>
-        <p className="text-stone-700">
-          Pedido <strong>{r.codigo}</strong>
-          {r.transaccion ? (
-            <>
-              {" "}
-              · Transacción Bold <strong>{r.transaccion}</strong>
-            </>
-          ) : null}
-        </p>
-        <p className="text-stone-600">Envíanos el resumen por WhatsApp para coordinar el despacho.</p>
-        <a
-          href={r.whatsapp}
-          className="inline-block rounded-full bg-emerald-800 px-6 py-4 font-semibold text-white hover:bg-emerald-900"
-        >
+      <div className="rounded-md border border-hairline p-8 text-center shadow-card">
+        <span className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-primary text-white">
+          <svg viewBox="0 0 24 24" className="h-7 w-7" fill="none" stroke="currentColor" strokeWidth="2.5" aria-hidden="true">
+            <path d="M5 12.5l4.5 4.5L19 7.5" strokeLinecap="round" strokeLinejoin="round" />
+          </svg>
+        </span>
+        <h1 className="mt-5 text-[28px] font-bold leading-tight text-ink">¡Pago confirmado!</h1>
+        <dl className="mx-auto mt-5 max-w-xs space-y-2 text-sm">
+          <div className="flex justify-between">
+            <dt className="text-muted">Pedido</dt>
+            <dd className="font-semibold text-ink">{r.codigo}</dd>
+          </div>
+          {r.transaccion && (
+            <div className="flex justify-between">
+              <dt className="text-muted">Transacción Bold</dt>
+              <dd className="font-semibold text-ink">{r.transaccion}</dd>
+            </div>
+          )}
+        </dl>
+        <p className="mt-5 text-base text-body">Envíanos el resumen por WhatsApp para coordinar el despacho.</p>
+        <a href={r.whatsapp} className="btn-primary mt-6 w-full sm:w-auto">
           Enviar resumen por WhatsApp
         </a>
       </div>
@@ -101,17 +105,21 @@ export function ResultadoPago() {
   const agotado = intento >= MAX_REINTENTOS;
 
   return (
-    <div className="space-y-4 text-center">
-      <p className="text-5xl">{icono}</p>
-      <p className="text-lg text-stone-800">{agotado && icono === "⏳" ? "Tu pago aún no está confirmado." : texto}</p>
-      {r.codigo && <p className="text-sm text-stone-600">Pedido {r.codigo}</p>}
-      <div className="flex flex-col items-center gap-2">
+    <div className="rounded-md border border-hairline p-8 text-center shadow-card">
+      <p className="text-4xl" aria-hidden="true">
+        {icono}
+      </p>
+      <p className="mt-4 text-xl font-semibold tracking-[-0.18px] text-ink">
+        {agotado && icono === "⏳" ? "Tu pago aún no está confirmado." : texto}
+      </p>
+      {r.codigo && <p className="mt-2 text-sm text-muted">Pedido {r.codigo}</p>}
+      <div className="mt-6 flex flex-col items-center justify-center gap-3 sm:flex-row">
         {(agotado || icono !== "⏳") && (
-          <Link href="/checkout" className="font-semibold text-emerald-800 underline">
+          <Link href="/checkout" className="btn-primary">
             Volver a intentar
           </Link>
         )}
-        <a href={ayuda} className="text-sm text-stone-700 underline">
+        <a href={ayuda} className="btn-secondary">
           Escríbenos por WhatsApp
         </a>
       </div>

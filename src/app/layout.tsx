@@ -1,12 +1,12 @@
 import type { Metadata, Viewport } from "next";
-import { Geist } from "next/font/google";
+import { Inter } from "next/font/google";
 import "./globals.css";
 import { SITE } from "@/lib/config";
 import { Encabezado } from "@/components/Encabezado";
 import { PiePagina } from "@/components/PiePagina";
 import { BotonWhatsApp } from "@/components/BotonWhatsApp";
 
-const geist = Geist({ variable: "--font-geist-sans", subsets: ["latin"] });
+const inter = Inter({ variable: "--font-inter", subsets: ["latin"], display: "swap" });
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE.url),
@@ -23,12 +23,12 @@ export const metadata: Metadata = {
   robots: { index: true, follow: true },
 };
 
-export const viewport: Viewport = { themeColor: "#065f46" };
+export const viewport: Viewport = { themeColor: "#ffffff" };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="es-CO">
-      <body className={`${geist.variable} flex min-h-screen flex-col antialiased`}>
+      <body className={`${inter.variable} flex min-h-screen flex-col bg-canvas text-ink`}>
         <Encabezado />
         <main className="flex-1">{children}</main>
         <PiePagina />

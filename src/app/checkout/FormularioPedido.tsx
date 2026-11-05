@@ -6,17 +6,26 @@ import { pedidoSchema } from "@/lib/pedido";
 import { formatoCOP } from "@/lib/config";
 import { DEPARTAMENTOS } from "@/lib/departamentos";
 import { BotonBold, type ParametrosBold } from "@/components/BotonBold";
+import { ImagenProducto } from "@/components/ImagenProducto";
 
-type Props = { producto: { slug: string; nombre: string; precio: number }; pagoEnLinea: boolean };
+type Props = {
+  producto: { slug: string; nombre: string; precio: number; imagen?: string };
+  pagoEnLinea: boolean;
+};
 type Metodo = "contraentrega" | "bold";
 type Errores = Partial<Record<string, string[]>>;
 
 const campos = [
-  { name: "nombre", label: "Nombre completo", type: "text", autoComplete: "name" },
-  { name: "telefono", label: "Celular (WhatsApp)", type: "tel", autoComplete: "tel-national", inputMode: "numeric" as const },
-  { name: "ciudad", label: "Ciudad o municipio", type: "text", autoComplete: "address-level2" },
-  { name: "direccion", label: "Dirección completa (barrio, casa/apto)", type: "text", autoComplete: "street-address" },
+  { name: "nombre", label: "Nombre completo", type: "text", autoComplete: "name", ancho: "sm:col-span-2" },
+  { name: "telefono", label: "Celular (WhatsApp)", type: "tel", autoComplete: "tel-national", inputMode: "numeric" as const, ancho: "" },
+  { name: "ciudad", label: "Ciudad o municipio", type: "text", autoComplete: "address-level2", ancho: "" },
+  { name: "direccion", label: "Dirección completa (barrio, casa/apto)", type: "text", autoComplete: "street-address", ancho: "sm:col-span-2" },
 ];
+
+function Error({ texto }: { texto?: string }) {
+  if (!texto) return null;
+  return <p className="mt-1.5 text-sm text-error">{texto}</p>;
+}
 
 export function FormularioPedido({ producto, pagoEnLinea }: Props) {
   const [cantidad, setCantidad] = useState(1);
@@ -105,6 +114,8 @@ export function FormularioPedido({ producto, pagoEnLinea }: Props) {
     }
   }
 
+  const subtotal = producto.precio * cantidad;
+
   return (
     <form
       onSubmit={enviar}
@@ -113,159 +124,205 @@ export function FormularioPedido({ producto, pagoEnLinea }: Props) {
         setBold(null);
       }}
       noValidate
-      className="mt-6 space-y-4"
+      className="mt-8 grid gap-10 md:grid-cols-[minmax(0,1fr)_360px] lg:gap-16"
     >
-      <div className="rounded-xl border border-stone-200 p-4">
-        <p className="font-semibold text-stone-900">{producto.nombre}</p>
-        <div className="mt-3 flex items-center justify-between">
-          <label className="flex items-center gap-2 text-sm text-stone-700">
-            Cantidad
-            <select
-              value={cantidad}
-              onChange={(e) => setCantidad(Number(e.target.value))}
-              className="rounded-lg border border-stone-300 px-2 py-1"
-            >
-              {[1, 2, 3, 4, 5].map((n) => (
-                <option key={n} value={n}>
-                  {n}
-                </option>
+      {/* Columna del formulario */}
+      <div className="space-y-10">
+        {pagoEnLinea && (
+          <section>
+            <h2 className="text-xl font-semibold tracking-[-0.18px] text-ink">Forma de pago</h2>
+            <div className="mt-4 overflow-hidden rounded-sm border border-border-strong">
+              {(
+                [
+                  ["contraentrega", "Pago contra entrega", "Pagas en efectivo al recibir. El envío se confirma por WhatsApp."],
+                  ["bold", "Pagar en línea · envío gratis", "Tarjeta, PSE, Nequi y más. Pago seguro procesado por Bold."],
+                ] as const
+              ).map(([valor, titulo, detalle], i) => (
+                <label
+                  key={valor}
+                  className={`flex cursor-pointer items-start justify-between gap-4 px-4 py-4 ${
+                    i > 0 ? "border-t border-border-strong" : ""
+                  } ${metodo === valor ? "bg-surface-soft" : "bg-canvas"}`}
+                >
+                  <span>
+                    <span className="block text-base font-medium text-ink">{titulo}</span>
+                    <span className="mt-0.5 block text-sm text-muted">{detalle}</span>
+                  </span>
+                  <input
+                    type="radio"
+                    name="metodo"
+                    value={valor}
+                    checked={metodo === valor}
+                    onChange={() => setMetodo(valor)}
+                    className="mt-1 h-5 w-5 accent-ink"
+                  />
+                </label>
               ))}
-            </select>
+            </div>
+          </section>
+        )}
+
+        <section>
+          <h2 className="text-xl font-semibold tracking-[-0.18px] text-ink">Datos de entrega</h2>
+          <div className="mt-4 grid gap-4 sm:grid-cols-2">
+            <div className="sm:col-span-2">
+              <label htmlFor="departamento" className="etiqueta">
+                Departamento
+              </label>
+              <select
+                id="departamento"
+                name="departamento"
+                defaultValue=""
+                autoComplete="address-level1"
+                aria-invalid={Boolean(errores.departamento)}
+                className="campo"
+              >
+                <option value="" disabled>
+                  Elige tu departamento
+                </option>
+                {DEPARTAMENTOS.map((d) => (
+                  <option key={d} value={d}>
+                    {d}
+                  </option>
+                ))}
+              </select>
+              <Error texto={errores.departamento?.[0]} />
+            </div>
+
+            {campos.map((c) => (
+              <div key={c.name} className={c.ancho}>
+                <label htmlFor={c.name} className="etiqueta">
+                  {c.label}
+                </label>
+                <input
+                  id={c.name}
+                  name={c.name}
+                  type={c.type}
+                  autoComplete={c.autoComplete}
+                  inputMode={c.inputMode}
+                  aria-invalid={Boolean(errores[c.name])}
+                  className="campo"
+                />
+                <Error texto={errores[c.name]?.[0]} />
+              </div>
+            ))}
+
+            <div className="sm:col-span-2">
+              <label htmlFor="notas" className="etiqueta">
+                Notas para la entrega <span className="font-normal text-muted">(opcional)</span>
+              </label>
+              <textarea id="notas" name="notas" rows={2} maxLength={200} className="campo" />
+            </div>
+          </div>
+        </section>
+
+        <section className="space-y-4 border-t border-hairline pt-8">
+          <label className="flex items-start gap-3 text-sm text-body">
+            <input type="checkbox" name="autorizaDatos" className="mt-0.5 h-5 w-5 shrink-0 accent-ink" />
+            <span>
+              Autorizo el tratamiento de mis datos personales según la{" "}
+              <Link href="/legal/datos" className="font-medium text-ink underline" target="_blank">
+                política de tratamiento de datos
+              </Link>{" "}
+              (Ley 1581 de 2012).
+            </span>
           </label>
-          <p className="text-lg font-bold">{formatoCOP(producto.precio * cantidad)}</p>
-        </div>
-        <p className="mt-1 text-xs text-stone-500">
-          {metodo === "bold"
-            ? "Envío GRATIS pagando en línea"
-            : "+ envío (te lo confirmamos por WhatsApp)"}
-        </p>
-      </div>
+          <Error texto={errores.autorizaDatos?.[0]} />
 
-      {pagoEnLinea && (
-        <fieldset className="space-y-2">
-          <legend className="text-sm font-medium text-stone-800">Forma de pago</legend>
-          {(
-            [
-              ["contraentrega", "Pago contra entrega", "Pagas en efectivo al recibir. El envío se confirma por WhatsApp."],
-              ["bold", "Pagar en línea con Bold · envío gratis", "Tarjeta, PSE, Nequi y más. Pago seguro procesado por Bold."],
-            ] as const
-          ).map(([valor, titulo, detalle]) => (
-            <label
-              key={valor}
-              className={`flex cursor-pointer gap-3 rounded-xl border p-3 ${
-                metodo === valor ? "border-emerald-700 bg-emerald-50" : "border-stone-200"
-              }`}
-            >
-              <input
-                type="radio"
-                name="metodo"
-                value={valor}
-                checked={metodo === valor}
-                onChange={() => setMetodo(valor)}
-                className="mt-1"
-              />
-              <span>
-                <span className="block font-semibold text-stone-900">{titulo}</span>
-                <span className="block text-xs text-stone-600">{detalle}</span>
-              </span>
-            </label>
-          ))}
-        </fieldset>
-      )}
+          {mensaje && (
+            <p role="status" className="rounded-sm bg-surface-soft p-4 text-sm text-ink">
+              {mensaje}
+            </p>
+          )}
 
-      <div>
-        <label htmlFor="departamento" className="block text-sm font-medium text-stone-800">
-          Departamento
-        </label>
-        <select
-          id="departamento"
-          name="departamento"
-          defaultValue=""
-          autoComplete="address-level1"
-          className="mt-1 w-full rounded-lg border border-stone-300 bg-white px-3 py-2.5 focus:border-emerald-700 focus:outline-none"
-        >
-          <option value="" disabled>
-            Elige tu departamento
-          </option>
-          {DEPARTAMENTOS.map((d) => (
-            <option key={d} value={d}>
-              {d}
-            </option>
-          ))}
-        </select>
-        {errores.departamento && <p className="mt-1 text-sm text-red-700">{errores.departamento[0]}</p>}
-      </div>
-
-      {campos.map((c) => (
-        <div key={c.name}>
-          <label htmlFor={c.name} className="block text-sm font-medium text-stone-800">
-            {c.label}
-          </label>
-          <input
-            id={c.name}
-            name={c.name}
-            type={c.type}
-            autoComplete={c.autoComplete}
-            inputMode={c.inputMode}
-            className="mt-1 w-full rounded-lg border border-stone-300 px-3 py-2.5 focus:border-emerald-700 focus:outline-none"
-          />
-          {errores[c.name] && <p className="mt-1 text-sm text-red-700">{errores[c.name]?.[0]}</p>}
-        </div>
-      ))}
-
-      <div>
-        <label htmlFor="notas" className="block text-sm font-medium text-stone-800">
-          Notas (opcional)
-        </label>
-        <textarea
-          id="notas"
-          name="notas"
-          rows={2}
-          maxLength={200}
-          className="mt-1 w-full rounded-lg border border-stone-300 px-3 py-2.5 focus:border-emerald-700 focus:outline-none"
-        />
-      </div>
-
-      <label className="flex items-start gap-2 text-sm text-stone-700">
-        <input type="checkbox" name="autorizaDatos" className="mt-1" />
-        <span>
-          Autorizo el tratamiento de mis datos personales según la{" "}
-          <Link href="/legal/datos" className="underline" target="_blank">
-            política de tratamiento de datos
-          </Link>{" "}
-          (Ley 1581 de 2012).
-        </span>
-      </label>
-      {errores.autorizaDatos && <p className="text-sm text-red-700">{errores.autorizaDatos[0]}</p>}
-
-      {mensaje && <p className="rounded-lg bg-stone-100 p-3 text-sm text-stone-800">{mensaje}</p>}
-
-      {metodo === "bold" && bold ? (
-        <div className="space-y-2 rounded-xl border border-emerald-700 p-4 text-center">
-          <p className="font-semibold text-stone-900">Total a pagar: {formatoCOP(bold.monto)}</p>
-          <BotonBold p={bold} />
-          <p className="text-xs text-stone-500">
-            Al pagar, Bold te devuelve a EDMOGA y verificamos tu pago antes de despachar.
+          {metodo === "bold" && bold ? (
+            <div className="rounded-md border border-hairline p-5 text-center shadow-card">
+              <p className="text-base font-semibold text-ink">Total a pagar: {formatoCOP(bold.monto)}</p>
+              <div className="mt-3">
+                <BotonBold p={bold} />
+              </div>
+              <p className="mt-3 text-sm text-muted">
+                Al pagar, Bold te devuelve a EDMOGA y verificamos tu pago antes de despachar.
+              </p>
+            </div>
+          ) : (
+            <button type="submit" disabled={enviando} className="btn-primary w-full sm:w-auto">
+              {enviando ? "Enviando…" : metodo === "bold" ? "Continuar al pago" : "Confirmar pedido por WhatsApp"}
+            </button>
+          )}
+          <p className="text-sm text-muted">
+            {metodo === "bold"
+              ? "Solo despachamos cuando Bold confirma que el pago entró."
+              : "Tu pedido queda confirmado cuando un asesor de EDMOGA te responde por WhatsApp."}
           </p>
+        </section>
+      </div>
+
+      {/* Resumen del pedido */}
+      <aside className="order-first md:order-none">
+        <div className="rounded-md border border-hairline bg-canvas p-6 shadow-card md:sticky md:top-28">
+          <div className="flex gap-4">
+            <ImagenProducto src={producto.imagen} alt={producto.nombre} className="h-24 w-24 shrink-0" />
+            <div>
+              <p className="text-base font-semibold leading-tight text-ink">{producto.nombre}</p>
+              <p className="mt-1 text-sm text-muted">{formatoCOP(producto.precio)} por unidad</p>
+            </div>
+          </div>
+
+          <div className="mt-5 border-t border-hairline pt-5">
+            <div className="flex items-center justify-between">
+              <span className="text-base text-ink">Cantidad</span>
+              <div className="flex items-center gap-3">
+                <button
+                  type="button"
+                  onClick={() => {
+                    setCantidad((n) => Math.max(1, n - 1));
+                    setBold(null);
+                  }}
+                  disabled={cantidad <= 1}
+                  aria-label="Quitar uno"
+                  className="flex h-8 w-8 items-center justify-center rounded-full border border-border-strong text-lg text-ink disabled:opacity-30"
+                >
+                  −
+                </button>
+                <span className="w-5 text-center text-base text-ink" aria-live="polite">
+                  {cantidad}
+                </span>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setCantidad((n) => Math.min(5, n + 1));
+                    setBold(null);
+                  }}
+                  disabled={cantidad >= 5}
+                  aria-label="Agregar uno"
+                  className="flex h-8 w-8 items-center justify-center rounded-full border border-border-strong text-lg text-ink disabled:opacity-30"
+                >
+                  +
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <dl className="mt-5 space-y-3 border-t border-hairline pt-5 text-base">
+            <div className="flex justify-between text-body">
+              <dt>Productos</dt>
+              <dd>{formatoCOP(subtotal)}</dd>
+            </div>
+            <div className="flex justify-between text-body">
+              <dt>Envío</dt>
+              <dd>{metodo === "bold" ? "Gratis" : "Se confirma por WhatsApp"}</dd>
+            </div>
+            <div className="flex justify-between border-t border-hairline pt-3 font-semibold text-ink">
+              <dt>Total</dt>
+              <dd>
+                {formatoCOP(subtotal)}
+                {metodo === "bold" ? "" : " + envío"}
+              </dd>
+            </div>
+          </dl>
         </div>
-      ) : (
-        <button
-          type="submit"
-          disabled={enviando}
-          className="w-full rounded-full bg-emerald-800 px-6 py-4 text-lg font-semibold text-white hover:bg-emerald-900 disabled:opacity-60"
-        >
-          {enviando
-            ? "Enviando…"
-            : metodo === "bold"
-              ? "Continuar al pago"
-              : "Confirmar por WhatsApp"}
-        </button>
-      )}
-      <p className="text-center text-xs text-stone-500">
-        {metodo === "bold"
-          ? "Solo despachamos cuando Bold confirma que el pago entró."
-          : "Tu pedido queda confirmado solo cuando un asesor de EDMOGA te responde por WhatsApp."}
-      </p>
+      </aside>
     </form>
   );
 }
