@@ -39,6 +39,10 @@ export async function GET() {
         expira: typeof carga.exp === "number" ? new Date(carga.exp * 1000).toISOString() : null,
         emitido: typeof carga.iat === "number" ? new Date(carga.iat * 1000).toISOString() : null,
         vencido: typeof carga.exp === "number" ? carga.exp * 1000 < Date.now() : null,
+        // Datos de vinculación de la integración (no son secretos): a qué IP/URL quedó atado el token.
+        ip_url: carga.ip_url ?? null,
+        integration_url: carga.integration_url ?? null,
+        integration_type: carga.integration_type ?? null,
       };
     } catch {
       jwt = { error: "carga no legible" };
@@ -56,10 +60,9 @@ export async function GET() {
 
   const producto = `${BASE}/products/2181739`;
   const pruebas = await Promise.all([
-    probar("producto · dropi-integration-key (como el plugin)", producto, "POST", { "dropi-integration-key": token }),
+    probar("producto (GET) · dropi-integration-key", producto, "GET", { "dropi-integration-key": token }),
     probar("pedidos (lectura) · dropi-integration-key", `${BASE}/orders/myorders?result_number=1`, "GET", { "dropi-integration-key": token }),
-    probar("producto · Authorization Bearer", producto, "POST", { Authorization: `Bearer ${token}` }),
-    probar("producto · sin token (control)", producto, "POST", {}),
+    probar("producto (GET) · sin token (control)", producto, "GET", {}),
   ]);
 
   let salida: unknown = null;
