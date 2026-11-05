@@ -26,6 +26,34 @@ export const pedidoSchema = z.object({
 
 export type Pedido = z.infer<typeof pedidoSchema>;
 
+/** Código visible del pedido: EDM-XXXXXXXX (derivado de idSolicitud). */
+export function codigoDesde(idSolicitud: string): string {
+  return `EDM-${idSolicitud.replace(/-/g, "").slice(0, 8).toUpperCase()}`;
+}
+
+export function mensajePedidoPagado(
+  p: Pedido,
+  total: number,
+  nombreProducto: string,
+  codigoPedido: string,
+  transaccion: string | null,
+): string {
+  return [
+    `Hola EDMOGA, ya PAGUÉ en línea mi pedido ${codigoPedido}:`,
+    `• Producto: ${nombreProducto} x${p.cantidad}`,
+    `• Pagado: ${formatoCOP(total)} (envío gratis)`,
+    transaccion ? `• Transacción Bold: ${transaccion}` : "",
+    `• Nombre: ${p.nombre}`,
+    `• Celular: ${p.telefono}`,
+    `• Ciudad: ${p.ciudad}, ${p.departamento}`,
+    `• Dirección: ${p.direccion}`,
+    p.notas ? `• Notas: ${p.notas}` : "",
+    "¿Me confirman el despacho?",
+  ]
+    .filter(Boolean)
+    .join("\n");
+}
+
 export function mensajePedido(
   p: Pedido,
   total: number,

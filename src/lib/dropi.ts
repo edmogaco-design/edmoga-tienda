@@ -40,12 +40,21 @@ function separarNombre(completo: string): { nombre: string; apellido: string } {
   return { nombre: partes.slice(0, mitad).join(" "), apellido: partes.slice(mitad).join(" ") };
 }
 
-export function cuerpoPedidoDropi(p: Pedido, producto: Producto, codigoPedido: string) {
+/** Si viene `pagoBold`, el cliente ya pagó en línea: Dropi NO debe cobrar al entregar. */
+export type OpcionesDropi = { pagoBold?: { transaccion: string | null } };
+
+export function cuerpoPedidoDropi(
+  p: Pedido,
+  producto: Producto,
+  codigoPedido: string,
+  opciones: OpcionesDropi = {},
+) {
   const { nombre, apellido } = separarNombre(p.nombre);
   const total = producto.precio * p.cantidad;
+  const prepagado = Boolean(opciones.pagoBold);
   return {
     type: "FINAL_ORDER",
-    rate_type: "CON RECAUDO", // pago contra entrega
+    rate_type: prepagado ? "SIN RECAUDO" : "CON RECAUDO",
     calculate_costs_and_shiping: true,
     total_order: total,
     name: nombre,
@@ -54,7 +63,13 @@ export function cuerpoPedidoDropi(p: Pedido, producto: Producto, codigoPedido: s
     dir: p.direccion,
     state: departamentoDropi(p.departamento),
     city: normalizarDropi(p.ciudad),
-    notes: [`Pedido web ${codigoPedido}`, p.notas].filter(Boolean).join(" · "),
+    notes: [
+      `Pedido web ${codigoPedido}`,
+      prepagado ? `PAGADO EN LÍNEA (Bold ${opciones.pagoBold?.transaccion ?? ""}) - NO COBRAR` : null,
+      p.notas,
+    ]
+      .filter(Boolean)
+      .join(" · "),
     shop_order_id: codigoPedido,
     shop_order_number: codigoPedido,
     products: [{ id: producto.dropiId, price: producto.precio, quantity: p.cantidad }],
@@ -65,13 +80,14 @@ export async function crearPedidoDropi(
   p: Pedido,
   producto: Producto,
   codigoPedido: string,
+  opciones: OpcionesDropi = {},
 ): Promise<ResultadoDropi> {
   const token = process.env.DROPI_TOKEN;
   if (!token) return { ok: false, motivo: "sin_token" };
 
   const control = new AbortController();
   const temporizador = setTimeout(() => control.abort(), TIEMPO_MAX_MS);
-  const cuerpo = JSON.stringify(cuerpoPedidoDropi(p, producto, codigoPedido));
+  const cuerpo = JSON.stringify(cuerpoPedidoDropi(p, producto, codigoPedido, opciones));
   try {
     const formas = formaQueFunciona ? [formaQueFunciona] : FORMAS;
     let res: Response | null = null;

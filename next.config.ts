@@ -1,15 +1,19 @@
 import type { NextConfig } from "next";
 
+// Bold (botón de pagos) carga su script y su checkout desde dominios *.bold.co.
+const BOLD = "https://*.bold.co";
+
 const csp = [
   "default-src 'self'",
-  "script-src 'self' 'unsafe-inline'" + (process.env.NODE_ENV === "development" ? " 'unsafe-eval'" : ""),
-  "style-src 'self' 'unsafe-inline'",
+  `script-src 'self' 'unsafe-inline' ${BOLD}` + (process.env.NODE_ENV === "development" ? " 'unsafe-eval'" : ""),
+  `style-src 'self' 'unsafe-inline' ${BOLD}`,
   "img-src 'self' data: blob: https:",
-  "font-src 'self' data:",
-  "connect-src 'self'",
+  `font-src 'self' data: ${BOLD}`,
+  `connect-src 'self' ${BOLD}`,
+  `frame-src ${BOLD}`,
   "frame-ancestors 'none'",
   "base-uri 'self'",
-  "form-action 'self'",
+  `form-action 'self' ${BOLD}`,
 ].join("; ");
 
 const nextConfig: NextConfig = {

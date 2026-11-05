@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { pedidoSchema, mensajePedido } from "@/lib/pedido";
+import { pedidoSchema, mensajePedido, codigoDesde } from "@/lib/pedido";
 import { obtenerProducto } from "@/lib/catalogo";
 import { enlaceWhatsApp } from "@/lib/config";
 import { crearPedidoDropi, dropiConfigurado } from "@/lib/dropi";
@@ -23,10 +23,6 @@ function limitado(ip: string): boolean {
   }
   r.n += 1;
   return r.n > MAX_INTENTOS;
-}
-
-function codigoDesde(idSolicitud: string): string {
-  return `EDM-${idSolicitud.replace(/-/g, "").slice(0, 8).toUpperCase()}`;
 }
 
 export async function POST(req: Request) {

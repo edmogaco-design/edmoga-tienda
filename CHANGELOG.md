@@ -1,5 +1,14 @@
 # CHANGELOG
 
+## 2026-11-05 — Pago en línea con Bold [agente: Claude]
+- Opción "Pagar en línea con Bold · envío gratis" en el checkout (solo aparece si están las llaves de Bold).
+- Botón oficial de Bold con firma de integridad generada en el servidor; el monto lo calcula el servidor.
+- Página /pago/resultado: verifica el pago consultando a Bold (no confía en la URL de retorno), compara monto y referencia.
+- Pago aprobado → pedido en Dropi `SIN RECAUDO` con nota "PAGADO EN LÍNEA - NO COBRAR" y resumen por WhatsApp.
+- Monto distinto → revisión manual; rechazado/fallido → no se despacha. Reintentos no duplican pedidos.
+- Webhook /api/bold/webhook con verificación de firma `x-bold-signature` (HMAC-SHA256).
+- CSP permite *.bold.co. Probado con servidores Bold y Dropi falsos (16 pruebas).
+
 ## 2026-11-05 — Corrección urgente: WhatsApp de EDMOGA [agente: Claude]
 - El número de WhatsApp de ventas estaba mal: era el de otro negocio, copiado por error del documento modelo.
 - Ahora es 573185168451 (EDMOGA). Marketing usa el mismo número hasta definir uno propio.

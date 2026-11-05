@@ -14,7 +14,10 @@ export default function Envios() {
         contados desde la confirmación del pedido.
       </p>
       <h2>Costo</h2>
-      <p>El valor del envío depende de la ciudad y se informa por WhatsApp antes de confirmar.</p>
+      <p>
+        Pago contra entrega: el valor del envío depende de la ciudad y se informa por WhatsApp antes
+        de confirmar. Pago en línea (cuando esté disponible): el envío es gratis.
+      </p>
       <h2>Pago contra entrega</h2>
       <p>Pagas en efectivo al recibir el producto. Revisa el paquete antes de pagar.</p>
       <h2>Seguimiento</h2>

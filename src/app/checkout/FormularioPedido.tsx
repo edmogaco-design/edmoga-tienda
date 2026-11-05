@@ -5,8 +5,10 @@ import { useRef, useState } from "react";
 import { pedidoSchema } from "@/lib/pedido";
 import { formatoCOP } from "@/lib/config";
 import { DEPARTAMENTOS } from "@/lib/departamentos";
+import { BotonBold, type ParametrosBold } from "@/components/BotonBold";
 
-type Props = { producto: { slug: string; nombre: string; precio: number } };
+type Props = { producto: { slug: string; nombre: string; precio: number }; pagoEnLinea: boolean };
+type Metodo = "contraentrega" | "bold";
 type Errores = Partial<Record<string, string[]>>;
 
 const campos = [
@@ -16,8 +18,10 @@ const campos = [
   { name: "direccion", label: "Dirección completa (barrio, casa/apto)", type: "text", autoComplete: "street-address" },
 ];
 
-export function FormularioPedido({ producto }: Props) {
+export function FormularioPedido({ producto, pagoEnLinea }: Props) {
   const [cantidad, setCantidad] = useState(1);
+  const [metodo, setMetodo] = useState<Metodo>("contraentrega");
+  const [bold, setBold] = useState<ParametrosBold | null>(null);
   const [errores, setErrores] = useState<Errores>({});
   const [mensaje, setMensaje] = useState("");
   const [enviando, setEnviando] = useState(false);
@@ -50,6 +54,36 @@ export function FormularioPedido({ producto }: Props) {
     }
     setErrores({});
     setEnviando(true);
+
+    if (metodo === "bold") {
+      try {
+        const res = await fetch("/api/pago/iniciar", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(local.data),
+        });
+        const json = await res.json();
+        if (!res.ok) {
+          setErrores(json.campos ?? {});
+          setMensaje(json.error ?? "No pudimos preparar el pago.");
+          return;
+        }
+        // Los datos de entrega se guardan solo en este navegador para confirmar al volver de Bold.
+        try {
+          sessionStorage.setItem(`edmoga-pago-${json.orden}`, JSON.stringify(local.data));
+        } catch {
+          /* sin almacenamiento: el asesor completa por WhatsApp */
+        }
+        setBold(json);
+        setMensaje(`Pedido ${json.codigo} listo. Paga con el botón de Bold para terminar.`);
+      } catch {
+        setMensaje("Error de conexión. Intenta de nuevo.");
+      } finally {
+        setEnviando(false);
+      }
+      return;
+    }
+
     try {
       const res = await fetch("/api/pedido", {
         method: "POST",
@@ -76,6 +110,7 @@ export function FormularioPedido({ producto }: Props) {
       onSubmit={enviar}
       onChange={() => {
         idSolicitud.current = null;
+        setBold(null);
       }}
       noValidate
       className="mt-6 space-y-4"
@@ -99,8 +134,44 @@ export function FormularioPedido({ producto }: Props) {
           </label>
           <p className="text-lg font-bold">{formatoCOP(producto.precio * cantidad)}</p>
         </div>
-        <p className="mt-1 text-xs text-stone-500">+ envío (te lo confirmamos por WhatsApp)</p>
+        <p className="mt-1 text-xs text-stone-500">
+          {metodo === "bold"
+            ? "Envío GRATIS pagando en línea"
+            : "+ envío (te lo confirmamos por WhatsApp)"}
+        </p>
       </div>
+
+      {pagoEnLinea && (
+        <fieldset className="space-y-2">
+          <legend className="text-sm font-medium text-stone-800">Forma de pago</legend>
+          {(
+            [
+              ["contraentrega", "Pago contra entrega", "Pagas en efectivo al recibir. El envío se confirma por WhatsApp."],
+              ["bold", "Pagar en línea con Bold · envío gratis", "Tarjeta, PSE, Nequi y más. Pago seguro procesado por Bold."],
+            ] as const
+          ).map(([valor, titulo, detalle]) => (
+            <label
+              key={valor}
+              className={`flex cursor-pointer gap-3 rounded-xl border p-3 ${
+                metodo === valor ? "border-emerald-700 bg-emerald-50" : "border-stone-200"
+              }`}
+            >
+              <input
+                type="radio"
+                name="metodo"
+                value={valor}
+                checked={metodo === valor}
+                onChange={() => setMetodo(valor)}
+                className="mt-1"
+              />
+              <span>
+                <span className="block font-semibold text-stone-900">{titulo}</span>
+                <span className="block text-xs text-stone-600">{detalle}</span>
+              </span>
+            </label>
+          ))}
+        </fieldset>
+      )}
 
       <div>
         <label htmlFor="departamento" className="block text-sm font-medium text-stone-800">
@@ -169,15 +240,31 @@ export function FormularioPedido({ producto }: Props) {
 
       {mensaje && <p className="rounded-lg bg-stone-100 p-3 text-sm text-stone-800">{mensaje}</p>}
 
-      <button
-        type="submit"
-        disabled={enviando}
-        className="w-full rounded-full bg-emerald-800 px-6 py-4 text-lg font-semibold text-white hover:bg-emerald-900 disabled:opacity-60"
-      >
-        {enviando ? "Enviando…" : "Confirmar por WhatsApp"}
-      </button>
+      {metodo === "bold" && bold ? (
+        <div className="space-y-2 rounded-xl border border-emerald-700 p-4 text-center">
+          <p className="font-semibold text-stone-900">Total a pagar: {formatoCOP(bold.monto)}</p>
+          <BotonBold p={bold} />
+          <p className="text-xs text-stone-500">
+            Al pagar, Bold te devuelve a EDMOGA y verificamos tu pago antes de despachar.
+          </p>
+        </div>
+      ) : (
+        <button
+          type="submit"
+          disabled={enviando}
+          className="w-full rounded-full bg-emerald-800 px-6 py-4 text-lg font-semibold text-white hover:bg-emerald-900 disabled:opacity-60"
+        >
+          {enviando
+            ? "Enviando…"
+            : metodo === "bold"
+              ? "Continuar al pago"
+              : "Confirmar por WhatsApp"}
+        </button>
+      )}
       <p className="text-center text-xs text-stone-500">
-        Tu pedido queda confirmado solo cuando un asesor de EDMOGA te responde por WhatsApp.
+        {metodo === "bold"
+          ? "Solo despachamos cuando Bold confirma que el pago entró."
+          : "Tu pedido queda confirmado solo cuando un asesor de EDMOGA te responde por WhatsApp."}
       </p>
     </form>
   );
