@@ -35,6 +35,11 @@ export async function POST(req: Request) {
 
   console.info("pago_iniciado", { codigo, orden, monto });
 
+  // Volver al mismo sitio desde donde se pagó (edmoga.com o una versión de prueba): los datos
+  // de entrega quedaron guardados en el navegador para ese dominio. En producción, edmoga.com.
+  const origen =
+    process.env.VERCEL_ENV === "production" ? SITE.url : new URL(req.url).origin;
+
   return NextResponse.json({
     codigo,
     orden,
@@ -43,7 +48,7 @@ export async function POST(req: Request) {
     descripcion: `${producto.nombre} x${r.data.cantidad} - EDMOGA`.slice(0, 100),
     llave: llaveIdentidad(),
     firma: firmaIntegridad(orden, monto, moneda),
-    urlRetorno: `${SITE.url}/pago/resultado`,
-    urlOrigen: `${SITE.url}/checkout?producto=${producto.slug}`,
+    urlRetorno: `${origen}/pago/resultado`,
+    urlOrigen: `${origen}/checkout?producto=${producto.slug}`,
   });
 }
