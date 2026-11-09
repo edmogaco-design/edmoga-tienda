@@ -10,16 +10,14 @@ export function TarjetaProducto({ p, prioridad }: { p: Producto; prioridad?: boo
       <ImagenProducto
         src={p.imagen}
         alt={p.nombre}
-        className="aspect-square transition-transform duration-200 group-hover:scale-[1.01]"
+        className="aspect-square"
         insignia="Pago contra entrega"
         prioridad={prioridad}
       />
-      <div className="mt-3 space-y-0.5">
-        <p className="text-base font-semibold leading-tight text-ink">{p.nombre}</p>
-        <p className="text-sm leading-snug text-muted">{p.categoria} · Envío a toda Colombia</p>
-        <p className="pt-1 text-sm text-ink">
-          <span className="font-semibold">{formatoCOP(p.precio)}</span>
-        </p>
+      <div className="mt-3">
+        <p className="text-sm text-muted">{p.categoria}</p>
+        <p className="mt-0.5 text-lg font-bold leading-tight text-ink group-hover:underline">{p.nombre}</p>
+        <p className="mt-1 font-titulos text-xl font-bold text-primary">{formatoCOP(p.precio)}</p>
       </div>
     </Link>
   );

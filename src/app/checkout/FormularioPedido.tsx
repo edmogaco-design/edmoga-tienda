@@ -141,7 +141,7 @@ export function FormularioPedido({ producto, pagoEnLinea }: Props) {
               {(
                 [
                   ["contraentrega", "Pago contra entrega", "Pagas en efectivo al recibir. El envío depende de tu departamento."],
-                  ["bold", "Pagar en línea · envío gratis", "Tarjeta, PSE, Nequi y más. Pago seguro procesado por Bold."],
+                  ["bold", "Pagar en línea con envío gratis", "Tarjeta, PSE, Nequi y más. Pago seguro procesado por Bold."],
                 ] as const
               ).map(([valor, titulo, detalle], i) => (
                 <label

@@ -2,11 +2,13 @@
 
 /*
  * Sistema de diseño EDMOGA
- * Lienzo blanco, un solo color de acento para las acciones principales, esquinas suaves,
- * foto primero y una única sombra. Letra: Inter.
+ * Lienzo blanco y azul marino de la marca. Lo llamativo va en un solo lugar: la franja
+ * azul del inicio. El resto es tranquilo: foto primero, poco adorno, letra fácil de leer.
+ * Letras: Atkinson Hyperlegible (texto) y Bricolage Grotesque (títulos y precios).
  */
 @theme inline {
-  --font-sans: var(--font-inter), -apple-system, system-ui, Roboto, "Helvetica Neue", sans-serif;
+  --font-sans: var(--font-atkinson), -apple-system, system-ui, Roboto, "Helvetica Neue", sans-serif;
+  --font-titulos: var(--font-bricolage), var(--font-atkinson), system-ui, sans-serif;
 
   /* Marca (tomados del logo de EDMOGA) */
   --color-primary: #162944; /* azul marino del logo: acciones principales */
@@ -16,21 +18,21 @@
   --color-oro-suave: #f6f0e3;
   --color-error: #c13515;
 
-  /* Texto */
-  --color-ink: #222222;
-  --color-body: #3f3f3f;
-  --color-muted: #6a6a6a;
-  --color-muted-soft: #929292;
+  /* Texto (grises con un toque del azul de la marca) */
+  --color-ink: #172235;
+  --color-body: #36404f;
+  --color-muted: #5a6577;
+  --color-muted-soft: #8a93a3;
 
   /* Bordes */
-  --color-hairline: #dddddd;
-  --color-hairline-soft: #ebebeb;
-  --color-border-strong: #c1c1c1;
+  --color-hairline: #dce2ea;
+  --color-hairline-soft: #e9edf2;
+  --color-border-strong: #b9c2cf;
 
   /* Superficies */
   --color-canvas: #ffffff;
-  --color-surface-soft: #f7f7f7;
-  --color-surface-strong: #f2f2f2;
+  --color-surface-soft: #f3f6f9;
+  --color-surface-strong: #e9eef4;
 
   /* Esquinas */
   --radius-xs: 4px;
@@ -61,8 +63,30 @@ html {
 
 body {
   background: #ffffff;
-  color: #222222;
+  color: #172235;
   font-family: var(--font-sans);
+}
+
+h1,
+h2,
+h3 {
+  font-family: var(--font-titulos);
+  letter-spacing: -0.01em;
+}
+
+/* Foco visible con teclado en toda la tienda */
+:focus-visible {
+  outline: 3px solid var(--color-oro);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    transition: none !important;
+    animation: none !important;
+  }
 }
 
 @layer components {
@@ -89,6 +113,28 @@ body {
   .btn-primary[aria-disabled="true"] {
     background: var(--color-primary-disabled);
     cursor: not-allowed;
+  }
+
+  /* Botón dorado: solo sobre la franja azul del inicio */
+  .btn-oro {
+    display: inline-flex;
+    min-height: 52px;
+    align-items: center;
+    justify-content: center;
+    border-radius: var(--radius-sm);
+    background: var(--color-oro);
+    padding: 14px 28px;
+    font-size: 17px;
+    font-weight: 700;
+    line-height: 1.25;
+    color: var(--color-primary);
+    transition: background-color 120ms ease;
+  }
+  .btn-oro:hover {
+    background: #cdb277;
+  }
+  .btn-oro:focus-visible {
+    outline-color: #ffffff;
   }
 
   /* Botón secundario: blanco con borde tinta */
