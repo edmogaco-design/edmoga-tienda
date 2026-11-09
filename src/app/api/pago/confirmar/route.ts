@@ -5,15 +5,12 @@ import { obtenerProducto } from "@/lib/catalogo";
 import { enlaceWhatsApp } from "@/lib/config";
 import { consultarPago } from "@/lib/bold";
 import { crearPedidoDropi, dropiConfigurado } from "@/lib/dropi";
+import { guardarResultado, reservar } from "@/lib/unaVez";
 
 const entrada = z.object({
   orden: z.string().regex(/^EDM-[A-Z0-9]{8}-[A-Z0-9]{4,12}$/),
   pedido: pedidoSchema,
 });
-
-// Idempotencia por orden: el primer pago confirmado manda; reintentos devuelven lo mismo
-// y no crean otro pedido en Dropi. En memoria por instancia; pasará a Supabase en la Fase 2.
-const confirmados = new Map<string, Record<string, unknown>>();
 
 export async function POST(req: Request) {
   let datos: unknown;
@@ -32,9 +29,6 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "La orden no corresponde al pedido" }, { status: 400 });
   }
 
-  const previo = confirmados.get(orden);
-  if (previo) return NextResponse.json(previo);
-
   const producto = obtenerProducto(pedido.producto);
   if (!producto) return NextResponse.json({ error: "Producto no encontrado" }, { status: 404 });
   const esperado = producto.precio * pedido.cantidad;
@@ -51,6 +45,21 @@ export async function POST(req: Request) {
     // Monto o referencia no cuadran: no se despacha. Revisión manual.
     console.error("pago_no_cuadra", { orden, esperado, recibido: pago.total });
     return NextResponse.json({ estado: "REVISION_MANUAL", codigo });
+  }
+
+  // Un pago = un pedido en Dropi, aunque la confirmación se repita en otra instancia.
+  // Si el registro compartido no responde, no se arriesga un despacho doble: el cliente reintenta.
+  const clave = `edmoga:pago:${orden}`;
+  let reserva;
+  try {
+    reserva = await reservar<Record<string, unknown>>(clave);
+  } catch (e) {
+    console.error("registro_no_disponible", { orden, error: String(e) });
+    return NextResponse.json({ estado: "sin_verificar", codigo }, { status: 502 });
+  }
+  if (!reserva.nueva) {
+    // Otra petición ya lo creó (se devuelve lo mismo) o lo está creando (el cliente reintenta).
+    return NextResponse.json(reserva.cuerpo ?? { estado: "PROCESSING", codigo });
   }
 
   const dropi = dropiConfigurado()
@@ -75,6 +84,8 @@ export async function POST(req: Request) {
       mensajePedidoPagado(pedido, esperado, producto.nombre, codigo, pago.transaccion),
     ),
   };
-  confirmados.set(orden, cuerpo);
+  await guardarResultado(clave, cuerpo).catch((e) =>
+    console.error("registro_no_guardado", { orden, error: String(e) }),
+  );
   return NextResponse.json(cuerpo);
 }

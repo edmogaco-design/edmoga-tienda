@@ -132,7 +132,11 @@ export async function crearPedidoDropi(
     const estado = typeof objeto?.status === "string" ? objeto.status : null;
     return { ok: true, dropiId: id === null ? null : String(id), estado };
   } catch (e) {
-    const motivo = e instanceof Error && e.name === "AbortError" ? "tiempo_agotado" : "error_red";
+    // Tiempo agotado no significa que no se creó: Dropi pudo registrarlo igual.
+    const motivo =
+      e instanceof Error && e.name === "AbortError"
+        ? `tiempo_agotado: buscar ${codigoPedido} en Dropi antes de cargarlo a mano`
+        : "error_red";
     return { ok: false, motivo };
   } finally {
     clearTimeout(temporizador);

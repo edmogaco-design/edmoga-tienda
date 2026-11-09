@@ -1,5 +1,16 @@
 # CHANGELOG
 
+## 2026-11-09 — 10 productos nuevos de Dropi [agente: Claude]
+- Cocina y hogar: filtro de agua, papel air fryer, sartén panqueques, contenedor, dispensador aceite/vinagre, calentador de taza, afilador, molino de café, caldero 29 cm y cafetera moka.
+- Precios de venta aprobados por el dueño; fotos del proveedor en Dropi.
+
+## 2026-11-09 — Correcciones de la auditoría [agente: Claude]
+- Un pago confirmado o un pedido contra entrega ya no se duplica en Dropi aunque la confirmación se repita en otra instancia de Vercel: registro compartido en Upstash Redis (`src/lib/unaVez.ts`, requiere `KV_REST_API_URL`/`KV_REST_API_TOKEN`).
+- Envío: la tarifa principal ($18.000) aplica solo en Bogotá y las capitales (Medellín, Cali, Barranquilla, Bucaramanga, Pereira, Manizales, Armenia); los demás municipios pagan la tarifa nacional. El checkout pide la ciudad para cotizar.
+- Si Dropi tarda demasiado, el log avisa que hay que buscar el pedido en Dropi antes de cargarlo a mano.
+- El webhook de Bold rechaza la llave vacía en producción.
+- Primeros tests (`npm test`) de lo que mueve plata: recaudo de Dropi, envío, firma del webhook, anti-duplicados. CI los corre.
+
 ## 2026-11-09 — Ajuste de diseño con la guía frontend-design [agente: Claude]
 - Inicio con franja azul de marca: la picadora, su precio y la promesa "Paga cuando te llegue".
 - Letras nuevas: Atkinson Hyperlegible (texto, fácil de leer) y Bricolage Grotesque (títulos y precios).

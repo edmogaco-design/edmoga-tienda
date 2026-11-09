@@ -28,6 +28,8 @@ export function firmaIntegridad(orden: string, monto: number, moneda = "COP"): s
 export function firmaWebhookValida(cuerpoCrudo: string, firma: string | null): boolean {
   if (!firma) return false;
   const llave = process.env.BOLD_WEBHOOK_SECRET ?? process.env.BOLD_SECRET_KEY ?? "";
+  // Llave vacía = cualquiera puede firmar. Solo se acepta fuera de producción (modo pruebas de Bold).
+  if (!llave && process.env.VERCEL_ENV === "production") return false;
   const esperado = createHmac("sha256", llave)
     .update(Buffer.from(cuerpoCrudo, "utf8").toString("base64"))
     .digest("hex");

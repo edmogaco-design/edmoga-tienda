@@ -20,9 +20,12 @@
 | Generar códigos de respaldo nuevos en Squarespace y borrar el archivo viejo | Dueño | pendiente | |
 | Borrar rama temporal `fix/dropi-diagnostico` | Dueño | pendiente | |
 | Cotización de envío por zonas (departamento) en el checkout | Claude | hecho | 2026-11-09 |
+| Correcciones de la auditoría (anti-duplicados, envío por capital, tests) | Claude | hecho | 2026-11-09 |
+| Conectar Upstash Redis al proyecto en Vercel (crea `KV_REST_API_URL`/`TOKEN`) | Dueño | pendiente | |
 | Cotización de envío en vivo con Dropi (cuando habiliten la API) | Claude | pendiente | |
 | Supabase (base de datos con RLS) y guardar pagos/pedidos del webhook | Claude | pendiente | |
 | Registro de ventas en Google Sheets | Claude | pendiente | |
 | www.edmoga.com → redirección a edmoga.com | Dueño + Claude | pendiente | |
-| Fotos propias del producto | Grok / Dueño | pendiente | |
+| 10 productos nuevos de Dropi en el catálogo | Claude | hecho | 2026-11-09 |
+| Fotos propias de los productos | Grok / Dueño | pendiente | |
 | Revisión legal de textos | Dueño | pendiente | |

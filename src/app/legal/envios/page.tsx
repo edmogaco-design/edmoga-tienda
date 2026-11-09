@@ -17,9 +17,9 @@ export default function Envios() {
       </p>
       <h2>Costo</h2>
       <p>
-        Pago contra entrega: el valor del envío depende del departamento y se muestra en el checkout
-        antes de confirmar: {formatoCOP(ZONAS.principal.valor)} en ciudades principales (Antioquia,
-        Bogotá, Cundinamarca, Valle, Atlántico, Santander y Eje Cafetero),{" "}
+        Pago contra entrega: el valor del envío depende de la ciudad y se muestra en el checkout
+        antes de confirmar: {formatoCOP(ZONAS.principal.valor)} en ciudades principales (Bogotá,
+        Medellín, Cali, Barranquilla, Bucaramanga, Pereira, Manizales y Armenia),{" "}
         {formatoCOP(ZONAS.lejana.valor)} en zonas apartadas (Amazonas, San Andrés, Guainía, Guaviare,
         Vaupés y Vichada) y {formatoCOP(ZONAS.nacional.valor)} en el resto del país. Pago en línea: el
         envío es gratis.
