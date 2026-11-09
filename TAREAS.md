@@ -19,7 +19,8 @@
 | Proteger rama `main` en GitHub (PR obligatorio, sin force push ni borrado) | Dueño + Claude | hecho | 2026-11-05 |
 | Generar códigos de respaldo nuevos en Squarespace y borrar el archivo viejo | Dueño | pendiente | |
 | Borrar rama temporal `fix/dropi-diagnostico` | Dueño | pendiente | |
-| Cotización de envío por ciudad en el checkout | Claude | pendiente | |
+| Cotización de envío por zonas (departamento) en el checkout | Claude | hecho | 2026-11-09 |
+| Cotización de envío en vivo con Dropi (cuando habiliten la API) | Claude | pendiente | |
 | Supabase (base de datos con RLS) y guardar pagos/pedidos del webhook | Claude | pendiente | |
 | Registro de ventas en Google Sheets | Claude | pendiente | |
 | www.edmoga.com → redirección a edmoga.com | Dueño + Claude | pendiente | |

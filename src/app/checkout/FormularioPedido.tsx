@@ -4,7 +4,8 @@ import Link from "next/link";
 import { useRef, useState } from "react";
 import { pedidoSchema } from "@/lib/pedido";
 import { formatoCOP } from "@/lib/config";
-import { DEPARTAMENTOS } from "@/lib/departamentos";
+import { DEPARTAMENTOS, type Departamento } from "@/lib/departamentos";
+import { costoEnvio } from "@/lib/envios";
 import { BotonBold, type ParametrosBold } from "@/components/BotonBold";
 import { ImagenProducto } from "@/components/ImagenProducto";
 
@@ -30,6 +31,7 @@ function Error({ texto }: { texto?: string }) {
 export function FormularioPedido({ producto, pagoEnLinea }: Props) {
   const [cantidad, setCantidad] = useState(1);
   const [metodo, setMetodo] = useState<Metodo>("contraentrega");
+  const [departamento, setDepartamento] = useState<Departamento | "">("");
   const [bold, setBold] = useState<ParametrosBold | null>(null);
   const [errores, setErrores] = useState<Errores>({});
   const [mensaje, setMensaje] = useState("");
@@ -115,6 +117,10 @@ export function FormularioPedido({ producto, pagoEnLinea }: Props) {
   }
 
   const subtotal = producto.precio * cantidad;
+  // Contra entrega: envío según el departamento. En línea (Bold): envío gratis.
+  const envio = metodo === "bold" ? 0 : departamento ? costoEnvio(departamento) : null;
+  const textoEnvio =
+    metodo === "bold" ? "Gratis" : envio === null ? "Elige tu departamento" : formatoCOP(envio);
 
   return (
     <form
@@ -134,7 +140,7 @@ export function FormularioPedido({ producto, pagoEnLinea }: Props) {
             <div className="mt-4 overflow-hidden rounded-sm border border-border-strong">
               {(
                 [
-                  ["contraentrega", "Pago contra entrega", "Pagas en efectivo al recibir. El envío se confirma por WhatsApp."],
+                  ["contraentrega", "Pago contra entrega", "Pagas en efectivo al recibir. El envío depende de tu departamento."],
                   ["bold", "Pagar en línea · envío gratis", "Tarjeta, PSE, Nequi y más. Pago seguro procesado por Bold."],
                 ] as const
               ).map(([valor, titulo, detalle], i) => (
@@ -172,7 +178,8 @@ export function FormularioPedido({ producto, pagoEnLinea }: Props) {
               <select
                 id="departamento"
                 name="departamento"
-                defaultValue=""
+                value={departamento}
+                onChange={(e) => setDepartamento(e.target.value as Departamento)}
                 autoComplete="address-level1"
                 aria-invalid={Boolean(errores.departamento)}
                 className="campo"
@@ -311,13 +318,13 @@ export function FormularioPedido({ producto, pagoEnLinea }: Props) {
             </div>
             <div className="flex justify-between text-body">
               <dt>Envío</dt>
-              <dd>{metodo === "bold" ? "Gratis" : "Se confirma por WhatsApp"}</dd>
+              <dd>{textoEnvio}</dd>
             </div>
             <div className="flex justify-between border-t border-hairline pt-3 font-semibold text-ink">
               <dt>Total</dt>
               <dd>
-                {formatoCOP(subtotal)}
-                {metodo === "bold" ? "" : " + envío"}
+                {formatoCOP(subtotal + (envio ?? 0))}
+                {envio === null ? " + envío" : ""}
               </dd>
             </div>
           </dl>
