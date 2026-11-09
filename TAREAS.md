@@ -26,5 +26,6 @@
 | Supabase (base de datos con RLS) y guardar pagos/pedidos del webhook | Claude | pendiente | |
 | Registro de ventas en Google Sheets | Claude | pendiente | |
 | www.edmoga.com → redirección a edmoga.com | Dueño + Claude | pendiente | |
-| Fotos propias del producto | Grok / Dueño | pendiente | |
+| 10 productos nuevos de Dropi en el catálogo | Claude | hecho | 2026-11-09 |
+| Fotos propias de los productos | Grok / Dueño | pendiente | |
 | Revisión legal de textos | Dueño | pendiente | |
