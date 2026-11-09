@@ -1,5 +1,10 @@
 # CHANGELOG
 
+## 2026-11-09 — Pendientes cerrados [agente: Claude]
+- `main` protegida en GitHub (PR obligatorio, sin force push ni borrado).
+- Webhook de Bold en producción y llaves de producción en Vercel: el pago en línea queda activo en edmoga.com.
+- TAREAS y ROADMAP actualizados.
+
 ## 2026-11-05 — Logo y colores de marca [agente: Claude]
 - Logo oficial de EDMOGA (emblema + nombre) en el encabezado y logo completo en el pie.
 - Ícono del sitio, ícono para iPhone e imagen para redes sociales con el emblema/logo.
