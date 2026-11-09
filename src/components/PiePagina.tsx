@@ -60,7 +60,7 @@ export function PiePagina() {
       </div>
       <div className="border-t border-hairline">
         <div className="mx-auto flex max-w-[1280px] flex-col gap-1 px-4 py-6 text-[13px] text-muted sm:flex-row sm:justify-between sm:px-6 lg:px-10">
-          <p>© {new Date().getFullYear()} EDMOGA · Colombia</p>
+          <p>© {new Date().getFullYear()} EDMOGA, Colombia</p>
           <p>{SITE.correo}</p>
         </div>
       </div>

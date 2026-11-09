@@ -25,8 +25,7 @@ export function ImagenProducto({ src, alt = "Producto EDMOGA", className = "", i
         </div>
       )}
       {insignia && (
-        <span className="absolute left-3 top-3 flex items-center gap-1.5 rounded-full bg-canvas px-2.5 py-1 text-[11px] font-semibold leading-none text-primary shadow-card">
-          <span aria-hidden="true" className="h-1.5 w-1.5 rounded-full bg-oro" />
+        <span className="absolute left-3 top-3 rounded-xs bg-primary px-2.5 py-1.5 text-[13px] font-bold leading-none text-white">
           {insignia}
         </span>
       )}

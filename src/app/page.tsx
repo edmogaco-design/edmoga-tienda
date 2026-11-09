@@ -1,72 +1,96 @@
+import Link from "next/link";
 import { PRODUCTOS } from "@/lib/catalogo";
+import { formatoCOP } from "@/lib/config";
 import { TarjetaProducto } from "@/components/TarjetaProducto";
+import { ImagenProducto } from "@/components/ImagenProducto";
 
-const ventajas = [
-  { titulo: "Pago contra entrega", texto: "Pagas al recibir en tu casa" },
-  { titulo: "Envío a toda Colombia", texto: "Te confirmamos el valor antes" },
-  { titulo: "Atención por WhatsApp", texto: "Una persona real te responde" },
+// Lo que más le preocupa a quien compra por internet en Colombia, dicho en una frase cada uno.
+const garantias = [
+  { titulo: "Pagas cuando te llega", texto: "En efectivo, al recibir en tu casa. Revisa el paquete antes de pagar." },
+  { titulo: "Ves el envío antes de pedir", texto: "El valor depende de tu departamento y aparece al finalizar el pedido." },
+  { titulo: "Te responde una persona", texto: "Confirmamos cada pedido por WhatsApp antes de despacharlo." },
 ];
 
+// Es un proceso real en orden, por eso va numerado.
 const pasos = [
-  { n: "1", titulo: "Elige tu producto", texto: "Mira fotos, beneficios y precio final." },
-  { n: "2", titulo: "Pide en un paso", texto: "Solo tus datos de entrega. Sin crear cuenta." },
-  { n: "3", titulo: "Confirma y recibe", texto: "Te escribimos por WhatsApp y despachamos." },
+  { titulo: "Elige tu producto", texto: "Mira fotos, beneficios y precio final." },
+  { titulo: "Deja tus datos de entrega", texto: "Sin crear cuenta ni pagar nada todavía." },
+  { titulo: "Confirma y recibe", texto: "Te escribimos por WhatsApp y despachamos." },
 ];
 
 export default function Inicio() {
+  const destacado = PRODUCTOS[0];
+
   return (
-    <div className="mx-auto max-w-[1280px] px-4 sm:px-6 lg:px-10">
-      {/* Encabezado editorial: titular modesto, la foto hace el trabajo */}
-      <section className="pb-8 pt-10 sm:pt-14">
-        <p className="text-[13px] font-semibold uppercase tracking-[0.14em] text-oro">Bienestar · Hogar · Cocina</p>
-        <h1 className="mt-2 max-w-2xl text-[28px] font-bold leading-[1.25] text-primary">
-          Productos para tu bienestar, hogar y cocina
-        </h1>
-        <p className="mt-2 max-w-xl text-base text-body">
-          Pide en un minuto y paga cuando lo recibes. Confirmamos cada pedido contigo por WhatsApp.
-        </p>
+    <>
+      {/* Franja azul: el producto estrella y la promesa de pago contra entrega */}
+      <section className="bg-primary text-white">
+        <div className="mx-auto grid max-w-[1280px] items-center gap-8 px-4 py-10 sm:px-6 md:grid-cols-[minmax(0,1.1fr)_minmax(0,1fr)] md:py-16 lg:gap-16 lg:px-10">
+          <div className="max-w-xl">
+            <h1 className="text-[40px] font-extrabold leading-[1.02] tracking-[-0.03em] sm:text-[56px] lg:text-[68px]">
+              Pica en segundos. Paga cuando te llegue.
+            </h1>
+            <p className="mt-5 max-w-md text-lg leading-relaxed text-white/85">
+              {destacado.resumen} Te la llevamos a cualquier lugar de Colombia.
+            </p>
+            <div className="mt-8 flex flex-wrap items-center gap-x-6 gap-y-4">
+              <Link href={`/producto/${destacado.slug}`} className="btn-oro">
+                Ver la picadora
+              </Link>
+              <p className="font-titulos text-2xl font-bold">
+                {formatoCOP(destacado.precio)}
+                <span className="ml-2 font-sans text-sm font-normal text-white/70">precio final</span>
+              </p>
+            </div>
+          </div>
+          <Link href={`/producto/${destacado.slug}`} aria-label={destacado.nombre} className="block rounded-lg bg-white p-3">
+            <ImagenProducto src={destacado.imagen} alt={destacado.nombre} className="aspect-square" prioridad />
+          </Link>
+        </div>
+      </section>
 
-        {/* Franja en forma de píldora con las 3 garantías de compra */}
-        <div className="mt-6 grid overflow-hidden rounded-xl border border-hairline bg-canvas shadow-card sm:grid-cols-3 sm:rounded-full">
-          {ventajas.map((v, i) => (
+      <div className="mx-auto max-w-[1280px] px-4 sm:px-6 lg:px-10">
+        {/* Garantías de compra */}
+        <section aria-label="Cómo te protegemos al comprar" className="grid border-b border-hairline sm:grid-cols-3">
+          {garantias.map((g, i) => (
             <div
-              key={v.titulo}
-              className={`px-6 py-3 sm:py-3.5 ${i > 0 ? "border-t border-hairline sm:border-l sm:border-t-0" : ""}`}
+              key={g.titulo}
+              className={`py-6 sm:px-6 sm:py-8 ${i > 0 ? "border-t border-hairline sm:border-l sm:border-t-0" : "sm:pl-0"}`}
             >
-              <p className="text-sm font-medium text-ink">{v.titulo}</p>
-              <p className="text-sm text-muted">{v.texto}</p>
+              <h2 className="text-lg font-bold text-primary">{g.titulo}</h2>
+              <p className="mt-1 text-base text-body">{g.texto}</p>
             </div>
           ))}
-        </div>
-      </section>
+        </section>
 
-      {/* Grilla densa de productos */}
-      <section id="productos" className="scroll-mt-24 pb-16">
-        <h2 className="text-[22px] font-medium leading-tight tracking-[-0.44px] text-ink">Productos</h2>
-        <div className="mt-5 grid grid-cols-1 gap-x-4 gap-y-8 min-[480px]:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-          {PRODUCTOS.map((p, i) => (
-            <TarjetaProducto key={p.slug} p={p} prioridad={i === 0} />
-          ))}
-        </div>
-      </section>
+        {/* Productos */}
+        <section id="productos" className="scroll-mt-24 py-14">
+          <h2 className="text-[28px] font-bold leading-tight text-ink">Productos</h2>
+          <div className="mt-6 grid grid-cols-1 gap-x-5 gap-y-10 min-[480px]:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+            {PRODUCTOS.map((p) => (
+              <TarjetaProducto key={p.slug} p={p} />
+            ))}
+          </div>
+        </section>
 
-      {/* Cómo comprar */}
-      <section className="border-t border-hairline py-16">
-        <h2 className="text-[22px] font-medium leading-tight tracking-[-0.44px] text-ink">Así de fácil compras</h2>
-        <div className="mt-6 grid gap-6 sm:grid-cols-3">
-          {pasos.map((s) => (
-            <div key={s.n} className="flex gap-4">
-              <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-oro bg-oro-suave text-base font-semibold text-primary">
-                {s.n}
-              </span>
-              <div>
-                <p className="text-base font-semibold text-ink">{s.titulo}</p>
-                <p className="mt-0.5 text-sm text-muted">{s.texto}</p>
-              </div>
-            </div>
-          ))}
-        </div>
-      </section>
-    </div>
+        {/* Cómo comprar */}
+        <section className="border-t border-hairline py-14">
+          <h2 className="text-[28px] font-bold leading-tight text-ink">Así compras</h2>
+          <ol className="mt-8 grid gap-8 sm:grid-cols-3">
+            {pasos.map((s, i) => (
+              <li key={s.titulo} className="flex gap-4">
+                <span aria-hidden="true" className="font-titulos text-[44px] font-extrabold leading-none text-oro">
+                  {i + 1}
+                </span>
+                <div>
+                  <h3 className="text-lg font-bold text-ink">{s.titulo}</h3>
+                  <p className="mt-1 text-base text-muted">{s.texto}</p>
+                </div>
+              </li>
+            ))}
+          </ol>
+        </section>
+      </div>
+    </>
   );
 }

@@ -54,12 +54,9 @@ export default async function FichaProducto({ params }: Props) {
         </svg>
       </Link>
 
-      <h1 className="mt-4 text-[22px] font-medium leading-tight tracking-[-0.44px] text-ink sm:text-[26px]">
-        {p.nombre}
-      </h1>
-      <p className="mt-1 text-sm text-muted">
-        {p.categoria} · Pago contra entrega · Envío a toda Colombia
-      </p>
+      <p className="mt-4 text-sm text-muted">{p.categoria}</p>
+      <h1 className="mt-1 text-[30px] font-extrabold leading-[1.1] text-ink sm:text-[38px]">{p.nombre}</h1>
+      <p className="mt-2 max-w-xl text-base text-body">{p.resumen}</p>
 
       <div className="mt-6 grid gap-10 md:grid-cols-[minmax(0,1fr)_340px] lg:gap-16">
         {/* Columna principal */}
@@ -114,18 +111,18 @@ export default async function FichaProducto({ params }: Props) {
         {/* Tarjeta de compra fija (escritorio) */}
         <aside className="hidden md:block">
           <div className="sticky top-28 rounded-md border border-hairline bg-canvas p-6 shadow-card">
-            <p className="text-[22px] font-bold text-ink">{formatoCOP(p.precio)}</p>
-            <p className="mt-0.5 text-sm text-muted">Precio final por unidad</p>
+            <p className="font-titulos text-[32px] font-extrabold leading-none text-primary">{formatoCOP(p.precio)}</p>
+            <p className="mt-1.5 text-sm text-muted">Precio final por unidad</p>
 
             <ul className="mt-5 divide-y divide-hairline rounded-sm border border-border-strong text-sm">
               <li className="px-3 py-2.5">
-                <span className="block text-[11px] font-semibold uppercase tracking-wide text-ink">Contra entrega</span>
-                <span className="text-body">Pagas al recibir · envío según ciudad</span>
+                <span className="block font-bold text-ink">Contra entrega</span>
+                <span className="text-body">Pagas al recibir. El envío depende de tu departamento.</span>
               </li>
               {enLinea && (
                 <li className="px-3 py-2.5">
-                  <span className="block text-[11px] font-semibold uppercase tracking-wide text-ink">Pago en línea</span>
-                  <span className="text-body">Tarjeta, PSE y más · envío gratis</span>
+                  <span className="block font-bold text-ink">Pago en línea</span>
+                  <span className="text-body">Tarjeta, PSE y más, con envío gratis.</span>
                 </li>
               )}
             </ul>

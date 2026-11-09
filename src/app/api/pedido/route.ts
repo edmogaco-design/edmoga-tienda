@@ -3,6 +3,7 @@ import { pedidoSchema, mensajePedido, codigoDesde } from "@/lib/pedido";
 import { obtenerProducto } from "@/lib/catalogo";
 import { enlaceWhatsApp } from "@/lib/config";
 import { crearPedidoDropi, dropiConfigurado } from "@/lib/dropi";
+import { costoEnvio } from "@/lib/envios";
 
 // Límite simple en memoria (por instancia). Se reemplazará por uno persistente en la Fase 2.
 const intentos = new Map<string, { n: number; desde: number }>();
@@ -59,13 +60,14 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "Producto no encontrado" }, { status: 404 });
   }
 
-  const total = producto.precio * r.data.cantidad;
+  const subtotal = producto.precio * r.data.cantidad;
+  const envio = costoEnvio(r.data.departamento);
   const codigo = codigoDesde(r.data.idSolicitud);
 
   // Contra entrega: el pedido se registra en Dropi como pendiente de confirmación.
   // La venta NO se da por cerrada aquí: un asesor la confirma por WhatsApp.
   // Si Dropi falla, el cliente igual llega a WhatsApp y el pedido se carga a mano.
-  const dropi = dropiConfigurado() ? await crearPedidoDropi(r.data, producto, codigo) : null;
+  const dropi = dropiConfigurado() ? await crearPedidoDropi(r.data, producto, codigo, { envio }) : null;
 
   // Logs sin datos personales.
   console.info("pedido_iniciado", {
@@ -83,7 +85,7 @@ export async function POST(req: Request) {
     estado: "pendiente_confirmacion_whatsapp",
     codigo,
     registradoEnDropi: dropi?.ok === true,
-    whatsapp: enlaceWhatsApp(mensajePedido(r.data, total, producto.nombre, codigo)),
+    whatsapp: enlaceWhatsApp(mensajePedido(r.data, subtotal, envio, producto.nombre, codigo)),
     // Solo en entornos de prueba: motivo del fallo de Dropi para diagnosticar. Nunca en producción.
     ...(process.env.VERCEL_ENV !== "production" && dropi && !dropi.ok
       ? { diagnosticoDropi: dropi.motivo }
