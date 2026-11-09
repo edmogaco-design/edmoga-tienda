@@ -40,8 +40,11 @@ function separarNombre(completo: string): { nombre: string; apellido: string } {
   return { nombre: partes.slice(0, mitad).join(" "), apellido: partes.slice(mitad).join(" ") };
 }
 
-/** Si viene `pagoBold`, el cliente ya pagó en línea: Dropi NO debe cobrar al entregar. */
-export type OpcionesDropi = { pagoBold?: { transaccion: string | null } };
+/**
+ * Si viene `pagoBold`, el cliente ya pagó en línea: Dropi NO debe cobrar al entregar.
+ * `envio`: valor del envío que paga el cliente contra entrega; se suma a lo que Dropi recauda.
+ */
+export type OpcionesDropi = { pagoBold?: { transaccion: string | null }; envio?: number };
 
 export function cuerpoPedidoDropi(
   p: Pedido,
@@ -50,8 +53,9 @@ export function cuerpoPedidoDropi(
   opciones: OpcionesDropi = {},
 ) {
   const { nombre, apellido } = separarNombre(p.nombre);
-  const total = producto.precio * p.cantidad;
   const prepagado = Boolean(opciones.pagoBold);
+  // total_order = lo que la transportadora cobra al entregar (productos + envío del cliente).
+  const total = producto.precio * p.cantidad + (prepagado ? 0 : (opciones.envio ?? 0));
   return {
     type: "FINAL_ORDER",
     rate_type: prepagado ? "SIN RECAUDO" : "CON RECAUDO",

@@ -3,7 +3,7 @@
 | Fase | Descripción | Estado |
 |---|---|---|
 | 0 — Cimientos | Repo, ramas, archivos de coordinación, CI, Vercel + GitHub, dominio edmoga.com, `main` protegida, marca y diseño | hecho (falta Supabase) |
-| 1 — Un producto | Tienda mínima con la picadora (Dropi 2181739), checkout contra entrega → Dropi + WhatsApp, páginas legales | en curso (Dropi rechaza el token con 401: esperando acceso API de Dropi; faltan cotización de envío y registro en Sheets) |
+| 1 — Un producto | Tienda mínima con la picadora (Dropi 2181739), checkout contra entrega → Dropi + WhatsApp, páginas legales | en curso (Dropi rechaza el token con 401: esperando acceso API de Dropi; envío cotizado por zonas; falta registro en Sheets) |
 | 2 — Pagos | Bold con webhook firmado, transferencias con comprobante, conciliación | en curso (Bold en producción con webhook; faltan Supabase para conciliar y transferencias) |
 | 3 — Catálogo | Sincronización con Dropi, categorías, buscador, +100 productos | pendiente |
 | 4 — Admin | Panel con roles, revisión antes de publicar, tablero de ventas | pendiente |

@@ -1,5 +1,17 @@
 # CHANGELOG
 
+## 2026-11-09 — Ajuste de diseño con la guía frontend-design [agente: Claude]
+- Inicio con franja azul de marca: la picadora, su precio y la promesa "Paga cuando te llegue".
+- Letras nuevas: Atkinson Hyperlegible (texto, fácil de leer) y Bricolage Grotesque (títulos y precios).
+- Grises con tono azul de la marca; foco visible con teclado y respeto a "reducir movimiento".
+- Menos adornos genéricos: sin etiquetas en mayúsculas, sin separadores "·", garantías en frases claras.
+
+## 2026-11-09 — Cotización de envío por zonas [agente: Claude]
+- Envío contra entrega según el departamento: $18.000 ciudades principales, $24.000 resto del país, $42.000 zonas apartadas (tabla en `src/lib/envios.ts`, basada en tarifas reales de Dropi).
+- El checkout muestra el envío y el total apenas el cliente elige su departamento; el mensaje de WhatsApp incluye envío y total a pagar.
+- El pedido a Dropi suma el envío al valor a recaudar (contra entrega). Pago en línea con Bold sigue con envío gratis.
+- Política de envíos actualizada con los valores.
+
 ## 2026-11-09 — Pendientes cerrados [agente: Claude]
 - `main` protegida en GitHub (PR obligatorio, sin force push ni borrado).
 - Webhook de Bold en producción y llaves de producción en Vercel: el pago en línea queda activo en edmoga.com.

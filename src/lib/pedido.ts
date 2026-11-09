@@ -56,20 +56,22 @@ export function mensajePedidoPagado(
 
 export function mensajePedido(
   p: Pedido,
-  total: number,
+  subtotal: number,
+  envio: number,
   nombreProducto: string,
   codigoPedido: string,
 ): string {
   return [
     `Hola EDMOGA, quiero confirmar mi pedido ${codigoPedido} (pago contra entrega):`,
-    `• Producto: ${nombreProducto} x${p.cantidad}`,
-    `• Total: ${formatoCOP(total)} + envío`,
+    `• Producto: ${nombreProducto} x${p.cantidad} — ${formatoCOP(subtotal)}`,
+    `• Envío: ${formatoCOP(envio)}`,
+    `• Total a pagar al recibir: ${formatoCOP(subtotal + envio)}`,
     `• Nombre: ${p.nombre}`,
     `• Celular: ${p.telefono}`,
     `• Ciudad: ${p.ciudad}, ${p.departamento}`,
     `• Dirección: ${p.direccion}`,
     p.notas ? `• Notas: ${p.notas}` : "",
-    "¿Me confirman el pedido y el valor del envío?",
+    "¿Me confirman el pedido?",
   ]
     .filter(Boolean)
     .join("\n");
