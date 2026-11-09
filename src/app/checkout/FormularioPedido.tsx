@@ -32,6 +32,7 @@ export function FormularioPedido({ producto, pagoEnLinea }: Props) {
   const [cantidad, setCantidad] = useState(1);
   const [metodo, setMetodo] = useState<Metodo>("contraentrega");
   const [departamento, setDepartamento] = useState<Departamento | "">("");
+  const [ciudad, setCiudad] = useState("");
   const [bold, setBold] = useState<ParametrosBold | null>(null);
   const [errores, setErrores] = useState<Errores>({});
   const [mensaje, setMensaje] = useState("");
@@ -117,15 +118,18 @@ export function FormularioPedido({ producto, pagoEnLinea }: Props) {
   }
 
   const subtotal = producto.precio * cantidad;
-  // Contra entrega: envío según el departamento. En línea (Bold): envío gratis.
-  const envio = metodo === "bold" ? 0 : departamento ? costoEnvio(departamento) : null;
+  // Contra entrega: envío según departamento y ciudad. En línea (Bold): envío gratis.
+  const envio =
+    metodo === "bold" ? 0 : departamento && ciudad.trim() ? costoEnvio(departamento, ciudad) : null;
   const textoEnvio =
-    metodo === "bold" ? "Gratis" : envio === null ? "Elige tu departamento" : formatoCOP(envio);
+    metodo === "bold" ? "Gratis" : envio === null ? "Elige departamento y ciudad" : formatoCOP(envio);
 
   return (
     <form
       onSubmit={enviar}
-      onChange={() => {
+      onChange={(e) => {
+        const campo = e.target;
+        if (campo instanceof HTMLInputElement && campo.name === "ciudad") setCiudad(campo.value);
         idSolicitud.current = null;
         setBold(null);
       }}
@@ -140,7 +144,7 @@ export function FormularioPedido({ producto, pagoEnLinea }: Props) {
             <div className="mt-4 overflow-hidden rounded-sm border border-border-strong">
               {(
                 [
-                  ["contraentrega", "Pago contra entrega", "Pagas en efectivo al recibir. El envío depende de tu departamento."],
+                  ["contraentrega", "Pago contra entrega", "Pagas en efectivo al recibir. El envío depende de tu ciudad."],
                   ["bold", "Pagar en línea con envío gratis", "Tarjeta, PSE, Nequi y más. Pago seguro procesado por Bold."],
                 ] as const
               ).map(([valor, titulo, detalle], i) => (
