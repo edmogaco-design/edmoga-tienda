@@ -34,6 +34,6 @@
 | Sección Cafeteros con la cafetera tipo Chemex 600 ml | Claude | hecho | 2026-11-10 |
 | Aprobar precio de la cafetera Chemex ($69.900) | Dueño | hecho | 2026-11-10 |
 | Filtros Chemex x40 y productos de café movidos a Cafeteros | Claude | hecho | 2026-11-10 |
-| Aprobar precio de los filtros Chemex x40 ($54.900) | Dueño | pendiente | |
+| Aprobar precio de los filtros Chemex x40 ($54.900) | Dueño | hecho | 2026-11-10 |
 | Fotos propias de los productos | Grok / Dueño | pendiente | |
 | Revisión legal de textos | Dueño | pendiente | |
