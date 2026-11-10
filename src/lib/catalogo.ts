@@ -181,7 +181,7 @@ export const PRODUCTOS: Producto[] = [
     ],
     incluye: ["1 calentador de taza eléctrico"],
     garantia: "Garantía por defectos de fábrica según la Ley 1480 de 2011.",
-    categoria: "Cocina",
+    categoria: "Cafeteros",
     imagenes: [
       "https://d39ru7awumhhs2.cloudfront.net/colombia/products/1965208/1760652372D_NQ_NP_2X_781302-CBT91895371316_092025-F.webp",
       "https://d39ru7awumhhs2.cloudfront.net/colombia/products/1965208/1760652372D_NQ_NP_2X_952065-CBT92298136735_092025-F.webp",
@@ -231,7 +231,7 @@ export const PRODUCTOS: Producto[] = [
     ],
     incluye: ["1 molino de café manual"],
     garantia: "Garantía por defectos de fábrica según la Ley 1480 de 2011.",
-    categoria: "Cocina",
+    categoria: "Cafeteros",
     imagenes: [
       "https://d39ru7awumhhs2.cloudfront.net/colombia/products/2188720/17827701961978524c403-electrohogarcyc-p3k7grqehx-1rhmo3da979.jpg",
       "https://d39ru7awumhhs2.cloudfront.net/colombia/products/2188720/17827701991978524a4f0-electrohogarcyc-p3k7grqehx-3y0t4g76l6g.jpg",
@@ -281,7 +281,7 @@ export const PRODUCTOS: Producto[] = [
     ],
     incluye: ["1 cafetera moka de 12 tazas"],
     garantia: "Garantía por defectos de fábrica según la Ley 1480 de 2011.",
-    categoria: "Cocina",
+    categoria: "Cafeteros",
     imagenes: [
       "https://d39ru7awumhhs2.cloudfront.net/colombia/products/2314884/6d8c4de3-3b68-46c7-9c8d-e4171cadbffe.webp",
       "https://d39ru7awumhhs2.cloudfront.net/colombia/products/2314884/91ed2ac8-6836-4e99-b4c1-f2696e496ace.webp",
@@ -800,6 +800,30 @@ export const PRODUCTOS: Producto[] = [
     // Foto del proveedor en Dropi. Reemplazar por fotos propias cuando estén listas.
     imagenes: [
       "https://d39ru7awumhhs2.cloudfront.net/colombia/products/2286133/6a37f277-5e47-4c35-9ce5-1e707c288349.png",
+    ],
+  },
+  {
+    // Dropi: $37.000 (precio sugerido $45.000). Agregado el 2026-11-10.
+    slug: "filtros-chemex-x40",
+    dropiId: 218298,
+    nombre: "Filtros para Chemex x40",
+    resumen: "40 filtros de papel para preparar café en tu cafetera tipo Chemex.",
+    descripcion:
+      "Filtros de papel con la forma de la cafetera tipo Chemex: retienen la borra y los aceites para que tu café quede limpio y sin sedimentos. Trae 40 unidades, para más de un mes de café filtrado.",
+    precio: 54900,
+    beneficios: [
+      "Café limpio, sin borra",
+      "Forma ideal para la cafetera tipo Chemex",
+      "40 unidades",
+      "Desechables: lavas menos",
+    ],
+    incluye: ["40 filtros de papel para Chemex"],
+    garantia: "Garantía por defectos de fábrica según la Ley 1480 de 2011.",
+    categoria: "Cafeteros",
+    imagenes: [
+      "https://d39ru7awumhhs2.cloudfront.net/colombia/products/218298/170230072617023007265A6C8DA2-3F40-4E25-A739-48AAA89BEA6C.jpeg",
+      "https://d39ru7awumhhs2.cloudfront.net/colombia/products/218298/170230072617023007267BC8DB71-272D-434D-925C-87A5EFB63C5D.jpeg",
+      "https://d39ru7awumhhs2.cloudfront.net/colombia/products/218298/170230072617023007260492D578-2B9E-4090-A5C5-C153FA942C9C.jpeg",
     ],
   },
 ];

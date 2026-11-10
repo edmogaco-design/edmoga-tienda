@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## 2026-11-10 — Cafeteros: filtros Chemex y productos de café [agente: Claude]
+- Nuevo producto en Cafeteros: Filtros para Chemex x40 (Dropi 218298), a $54.900 (costo Dropi $37.000). El proveedor tiene poco stock.
+- El molino de café manual, la cafetera moka de 12 tazas y el calentador de taza pasan de Cocina a Cafeteros.
+
 ## 2026-11-10 — Sección Cafeteros [agente: Claude]
 - Nueva sección "Cafeteros" en el inicio con la cafetera método tipo Chemex 600 ml (Dropi 2286133), a $69.900 (costo Dropi $40.000), precio aprobado por el dueño.
 
