@@ -1,10 +1,11 @@
-import { NextResponse } from "next/server";
+import { NextResponse, after } from "next/server";
 import { pedidoSchema, mensajePedido, codigoDesde } from "@/lib/pedido";
 import { obtenerProducto } from "@/lib/catalogo";
 import { enlaceWhatsApp } from "@/lib/config";
 import { crearPedidoDropi, dropiConfigurado } from "@/lib/dropi";
 import { costoEnvio } from "@/lib/envios";
 import { guardarResultado, reservar } from "@/lib/unaVez";
+import { filaPedido, registrarPedido } from "@/lib/registro";
 
 // shortcut: límite en memoria por instancia (se salta cambiando de instancia); pasarlo al
 // registro compartido (unaVez) si llegan pedidos basura.
@@ -63,10 +64,14 @@ export async function POST(req: Request) {
   // instancia. Si el registro compartido falla, se sigue: el cliente igual llega a WhatsApp.
   const clave = `edmoga:pedido:${r.data.idSolicitud}`;
   let crearEnDropi = dropiConfigurado();
+  let esNueva = true;
   try {
     const reserva = await reservar<Record<string, unknown>>(clave);
     if (!reserva.nueva && reserva.cuerpo) return NextResponse.json(reserva.cuerpo);
-    if (!reserva.nueva) crearEnDropi = false; // otra petición lo está creando ahora mismo
+    if (!reserva.nueva) {
+      crearEnDropi = false; // otra petición lo está creando ahora mismo
+      esNueva = false;
+    }
   } catch (e) {
     console.error("registro_no_disponible", { codigo, error: String(e) });
   }
@@ -87,6 +92,24 @@ export async function POST(req: Request) {
   });
 
   if (dropi && !dropi.ok) console.error("dropi_fallo", { codigo, motivo: dropi.motivo });
+
+  const estadoDropi = dropi === null ? "no_configurado" : dropi.ok ? "creado" : `fallo:${dropi.motivo}`.slice(0, 200);
+  if (esNueva) {
+    const fila = filaPedido(r.data, {
+      codigo,
+      metodo: "contra_entrega",
+      estado: "pendiente_confirmacion_whatsapp",
+      producto: producto.nombre,
+      subtotal,
+      envio,
+      total: subtotal + envio,
+      orden_bold: null,
+      transaccion_bold: null,
+      dropi: estadoDropi,
+      dropi_pedido: dropi?.ok ? dropi.dropiId : null,
+    });
+    after(registrarPedido(fila)); // se guarda después de responder, sin demorar al cliente
+  }
 
   const cuerpo = {
     estado: "pendiente_confirmacion_whatsapp",

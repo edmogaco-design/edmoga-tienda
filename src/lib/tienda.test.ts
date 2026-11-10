@@ -67,3 +67,23 @@ test("webhook: firma correcta pasa, incorrecta no, llave vacía no en producció
   process.env.VERCEL_ENV = "production";
   assert.equal(firmaWebhookValida(cuerpo, firmar("")), false);
 });
+
+test("registro: la fila lleva los datos del pedido y sin destinos configurados no falla", async () => {
+  const { filaPedido, registrarPedido } = await import("./registro");
+  const fila = filaPedido(pedido, {
+    codigo: "EDM-1",
+    metodo: "contra_entrega",
+    estado: "pendiente_confirmacion_whatsapp",
+    producto: producto.nombre,
+    subtotal: 100,
+    envio: 18000,
+    total: 18100,
+    orden_bold: null,
+    transaccion_bold: null,
+    dropi: "no_configurado",
+    dropi_pedido: null,
+  });
+  assert.equal(fila.telefono, pedido.telefono);
+  assert.equal(fila.notas, null);
+  await registrarPedido(fila); // sin SUPABASE_* ni SHEETS_*: no hace nada y no lanza
+});
