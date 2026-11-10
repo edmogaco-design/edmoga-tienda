@@ -778,10 +778,34 @@ export const PRODUCTOS: Producto[] = [
       "https://d39ru7awumhhs2.cloudfront.net/colombia/products/2240928/3b0b6cec-7295-4a44-88c8-5fbc6adee785.png",
     ],
   },
+  // Cafeteros: agregado el 2026-11-10.
+  {
+    // Dropi: $40.000 (precio sugerido $54.900)
+    slug: "cafetera-metodo-chemex-600ml",
+    dropiId: 2286133,
+    nombre: "Cafetera método tipo Chemex 600 ml",
+    resumen: "Prepara café filtrado a mano, con cuerpo de vidrio y cuello de madera.",
+    descripcion:
+      "Pon el filtro, agrega el café molido y vierte el agua caliente despacio: en pocos minutos tienes café limpio y aromático. El vidrio deja ver la preparación y el cuello de madera con cordón permite servir sin quemarte. Alcanza para varias tazas de una sola vez.",
+    precio: 69900,
+    beneficios: [
+      "Café filtrado de sabor limpio",
+      "Capacidad de 600 ml, para varias tazas",
+      "Cuello de madera para servir sin quemarte",
+      "Ideal para el método pour over",
+    ],
+    incluye: ["1 cafetera tipo Chemex de 600 ml"],
+    garantia: "Garantía por defectos de fábrica según la Ley 1480 de 2011.",
+    categoria: "Cafeteros",
+    // Foto del proveedor en Dropi. Reemplazar por fotos propias cuando estén listas.
+    imagenes: [
+      "https://d39ru7awumhhs2.cloudfront.net/colombia/products/2286133/6a37f277-5e47-4c35-9ce5-1e707c288349.png",
+    ],
+  },
 ];
 
 /** Secciones de la tienda, en el orden en que aparecen en el inicio. */
-export const SECCIONES = ["Cocina", "Belleza femenina"] as const;
+export const SECCIONES = ["Cocina", "Belleza femenina", "Cafeteros"] as const;
 
 export function obtenerProducto(slug: string): Producto | undefined {
   return PRODUCTOS.find((p) => p.slug === slug);
