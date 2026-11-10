@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## 2026-11-10 — Skincare y maquillaje Trendy [agente: Claude]
+- La sección "Belleza femenina" pasa a llamarse "Skincare y belleza" (ancla #skincare-y-belleza).
+- 16 productos nuevos de la marca colombiana Trendy: 7 de skincare (crema efecto gel, bruma con niacinamida, aceite y espuma desmaquillantes, tónico de rosas, exfoliante corporal, primer) y 9 de maquillaje (polvos, contorno con rubor, iluminador, bronzer, 2 paletas de sombras, delineador, lápiz de cejas, kit de pestañina).
+- Precios propuestos por Claude, pendientes de aprobación del dueño. El número INVIMA no aparece en Dropi: confirmarlo con el proveedor antes de publicar.
+- Fotos: galería completa en 3 productos; el resto con la foto principal porque las fichas de Dropi no cargaron.
+
 ## 2026-11-10 — Sección Cafeteros [agente: Claude]
 - Nueva sección "Cafeteros" en el inicio con la cafetera método tipo Chemex 600 ml (Dropi 2286133), a $69.900 (costo Dropi $40.000), precio aprobado por el dueño.
 
