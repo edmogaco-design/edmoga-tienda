@@ -4,28 +4,8 @@ import { obtenerProducto } from "@/lib/catalogo";
 import { enlaceWhatsApp } from "@/lib/config";
 import { crearPedidoDropi, dropiConfigurado } from "@/lib/dropi";
 import { costoEnvio } from "@/lib/envios";
-import { guardarResultado, reservar } from "@/lib/unaVez";
+import { guardarResultado, ipCliente, limitado, reservar } from "@/lib/unaVez";
 import { filaPedido, registrarPedido } from "@/lib/registro";
-
-// shortcut: límite en memoria por instancia (se salta cambiando de instancia); pasarlo al
-// registro compartido (unaVez) si llegan pedidos basura.
-const intentos = new Map<string, { n: number; desde: number }>();
-const VENTANA_MS = 10 * 60 * 1000;
-const MAX_INTENTOS = 5;
-
-function limitado(ip: string): boolean {
-  const ahora = Date.now();
-  if (intentos.size > 1000) {
-    for (const [k, v] of intentos) if (ahora - v.desde > VENTANA_MS) intentos.delete(k);
-  }
-  const r = intentos.get(ip);
-  if (!r || ahora - r.desde > VENTANA_MS) {
-    intentos.set(ip, { n: 1, desde: ahora });
-    return false;
-  }
-  r.n += 1;
-  return r.n > MAX_INTENTOS;
-}
 
 export async function POST(req: Request) {
   let datos: unknown;
@@ -43,8 +23,8 @@ export async function POST(req: Request) {
     );
   }
 
-  const ip = req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ?? "local";
-  if (limitado(ip)) {
+  // 5 pedidos cada 10 minutos por IP, compartido entre instancias (Redis).
+  if (await limitado(`pedido:${ipCliente(req)}`, 5, 600)) {
     return NextResponse.json(
       { error: "Demasiados intentos. Intenta de nuevo en unos minutos." },
       { status: 429 },

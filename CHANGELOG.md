@@ -1,5 +1,10 @@
 # CHANGELOG
 
+## 2026-11-10 — Límite de intentos compartido en Redis [agente: Claude]
+- `/api/pedido` (5 cada 10 min por IP), `/api/pago/iniciar` (10) y `/api/pago/confirmar` (20) limitan intentos con Upstash Redis, compartido entre instancias de Vercel. Antes el límite de pedidos era en memoria y se saltaba cambiando de instancia.
+- Si Redis no responde, se deja pasar (no se bloquean ventas). Sin `KV_REST_API_*` usa memoria (solo local).
+- El webhook de Bold no se limita: ya exige firma HMAC y Bold reintenta si recibe error.
+
 ## 2026-11-09 — Belleza femenina, secciones y galería de fotos [agente: Claude]
 - 20 productos nuevos de Dropi en la sección Belleza femenina (cabello, depilación, maquillaje, uñas y cuidado facial). Sin perfumes imitación, suplementos ni cosméticos que requieran INVIMA. Precios de venta propuestos por Claude y aprobados por el dueño el 2026-11-10.
 - El inicio se divide en secciones (Cocina y Belleza femenina) con botones para saltar a cada una. El calentador de taza pasa de Hogar a Cocina.

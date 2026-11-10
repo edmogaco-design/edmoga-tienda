@@ -3,11 +3,15 @@ import { pedidoSchema, codigoDesde } from "@/lib/pedido";
 import { obtenerProducto } from "@/lib/catalogo";
 import { SITE } from "@/lib/config";
 import { boldConfigurado, firmaIntegridad, llaveIdentidad } from "@/lib/bold";
+import { ipCliente, limitado } from "@/lib/unaVez";
 
 // Prepara el botón de Bold. El monto SIEMPRE se calcula aquí, nunca se toma del navegador.
 export async function POST(req: Request) {
   if (!boldConfigurado()) {
     return NextResponse.json({ error: "El pago en línea aún no está disponible." }, { status: 503 });
+  }
+  if (await limitado(`pago-iniciar:${ipCliente(req)}`, 10, 600)) {
+    return NextResponse.json({ error: "Demasiados intentos. Intenta de nuevo en unos minutos." }, { status: 429 });
   }
 
   let datos: unknown;

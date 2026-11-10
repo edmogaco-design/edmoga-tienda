@@ -56,6 +56,36 @@ export async function reservar<T>(clave: string): Promise<Reserva<T>> {
   return { nueva: false, cuerpo: v && v !== PROCESANDO ? (JSON.parse(v) as T) : null };
 }
 
+/**
+ * Límite de intentos compartido entre instancias (ventana fija). true = superó el límite.
+ * Si Redis no responde deja pasar: un fallo del almacén no debe tumbar las ventas.
+ */
+export async function limitado(clave: string, max: number, segundos: number): Promise<boolean> {
+  const k = `edmoga:limite:${clave}`;
+  try {
+    if (URL_KV && TOKEN_KV) {
+      const n = Number(await redis(["INCR", k]));
+      if (n === 1) await redis(["EXPIRE", k, segundos]);
+      return n > max;
+    }
+    const r = memoria.get(k);
+    if (!r || r.hasta < Date.now()) {
+      memoria.set(k, { valor: "1", hasta: Date.now() + segundos * 1000 });
+      return false;
+    }
+    r.valor = String(Number(r.valor) + 1);
+    return Number(r.valor) > max;
+  } catch (e) {
+    console.error("limite_no_disponible", { error: String(e) });
+    return false;
+  }
+}
+
+/** IP del cliente según Vercel (x-forwarded-for la fija el borde de Vercel). */
+export function ipCliente(req: Request): string {
+  return req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() || "local";
+}
+
 /** Guarda la respuesta final por 30 días: las repeticiones reciben lo mismo. */
 export async function guardarResultado(clave: string, cuerpo: unknown): Promise<void> {
   const valor = JSON.stringify(cuerpo);
