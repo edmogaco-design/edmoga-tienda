@@ -94,3 +94,11 @@ test("registro: la fila lleva los datos del pedido y sin destinos configurados n
   assert.equal(fila.notas, null);
   await registrarPedido(fila); // sin SUPABASE_* ni SHEETS_*: no hace nada y no lanza
 });
+
+test("un producto oculto no está a la venta ni se puede pedir", async () => {
+  const { pedidoSchema } = await import("./pedido");
+  const { obtenerProducto } = await import("./catalogo");
+  assert.equal(obtenerProducto("tonico-de-rosas-trendy"), undefined);
+  assert.equal(pedidoSchema.safeParse({ ...pedido, producto: "tonico-de-rosas-trendy" }).success, false);
+  assert.equal(pedidoSchema.safeParse(pedido).success, true);
+});
