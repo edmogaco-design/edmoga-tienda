@@ -51,6 +51,13 @@ test("registro: la segunda llamada no repite el trabajo y recibe la misma respue
   assert.deepEqual(await reservar("t:1"), { nueva: false, cuerpo: { codigo: "EDM-1" } });
 });
 
+test("límite de intentos: deja pasar hasta el máximo y luego bloquea", async () => {
+  const { limitado } = await import("./unaVez");
+  for (let i = 0; i < 3; i++) assert.equal(await limitado("t:ip", 3, 60), false);
+  assert.equal(await limitado("t:ip", 3, 60), true);
+  assert.equal(await limitado("t:otra-ip", 3, 60), false);
+});
+
 test("webhook: firma correcta pasa, incorrecta no, llave vacía no en producción", () => {
   const cuerpo = '{"id":"e1"}';
   const firmar = (llave: string) =>

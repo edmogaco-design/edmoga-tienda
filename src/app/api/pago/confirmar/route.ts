@@ -5,7 +5,7 @@ import { obtenerProducto } from "@/lib/catalogo";
 import { enlaceWhatsApp } from "@/lib/config";
 import { consultarPago } from "@/lib/bold";
 import { crearPedidoDropi, dropiConfigurado } from "@/lib/dropi";
-import { guardarResultado, reservar } from "@/lib/unaVez";
+import { guardarResultado, ipCliente, limitado, reservar } from "@/lib/unaVez";
 import { filaPedido, registrarPedido } from "@/lib/registro";
 
 const entrada = z.object({
@@ -14,6 +14,10 @@ const entrada = z.object({
 });
 
 export async function POST(req: Request) {
+  // Cada llamada consulta a Bold: límite holgado para no bloquear recargas legítimas.
+  if (await limitado(`pago-confirmar:${ipCliente(req)}`, 20, 600)) {
+    return NextResponse.json({ error: "Demasiados intentos. Intenta de nuevo en unos minutos." }, { status: 429 });
+  }
   let datos: unknown;
   try {
     datos = await req.json();
