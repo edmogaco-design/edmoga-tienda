@@ -3,6 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { PRODUCTOS, obtenerProducto } from "@/lib/catalogo";
 import { boldConfigurado } from "@/lib/bold";
+import { datosTransferencia } from "@/lib/config";
 import { FormularioPedido } from "./FormularioPedido";
 
 export const metadata: Metadata = { title: "Finalizar pedido", robots: { index: false } };
@@ -14,6 +15,8 @@ export default async function Checkout({ searchParams }: Props) {
   const p = obtenerProducto(producto ?? PRODUCTOS[0].slug);
   if (!p) notFound();
   const pagoEnLinea = boldConfigurado();
+  const transferencia = datosTransferencia() !== null;
+  const pagoAnticipado = pagoEnLinea || transferencia;
 
   return (
     <div className="pagina-checkout mx-auto max-w-[1080px] px-4 pb-16 pt-6 sm:px-6">
@@ -28,13 +31,14 @@ export default async function Checkout({ searchParams }: Props) {
       </Link>
       <h1 className="mt-4 text-[28px] font-bold leading-tight text-ink">Finalizar pedido</h1>
       <p className="mt-1 max-w-2xl text-base text-muted">
-        {pagoEnLinea
-          ? "Paga contra entrega o en línea (envío gratis). Una persona de EDMOGA confirma tu pedido por WhatsApp."
+        {pagoAnticipado
+          ? "Paga contra entrega o por adelantado (envío gratis). Una persona de EDMOGA confirma tu pedido por WhatsApp."
           : "Llena tus datos y te abrimos WhatsApp con el pedido listo. Te confirmamos el envío y pagas al recibir."}
       </p>
       <FormularioPedido
         producto={{ slug: p.slug, nombre: p.nombre, precio: p.precio, imagen: p.imagenes[0] }}
         pagoEnLinea={pagoEnLinea}
+        transferencia={transferencia}
       />
     </div>
   );

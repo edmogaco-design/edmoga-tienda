@@ -31,5 +31,7 @@
 | 10 productos nuevos de Dropi en el catálogo | Claude | hecho | 2026-11-09 |
 | 20 productos de belleza femenina, secciones y galería de fotos | Claude | hecho | 2026-11-09 |
 | Aprobar precios de venta de los productos de belleza | Dueño | hecho | 2026-11-10 |
+| Pago por transferencia con llave Bre-B (código) | Claude | hecho | 2026-11-10 |
+| Poner `TRANSFERENCIA_LLAVE_BREB` y `TRANSFERENCIA_TITULAR` en Vercel y volver a correr `supabase/esquema.sql` | Dueño | pendiente | |
 | Fotos propias de los productos | Grok / Dueño | pendiente | |
 | Revisión legal de textos | Dueño | pendiente | |

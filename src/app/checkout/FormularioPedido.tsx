@@ -12,8 +12,16 @@ import { ImagenProducto } from "@/components/ImagenProducto";
 type Props = {
   producto: { slug: string; nombre: string; precio: number; imagen?: string };
   pagoEnLinea: boolean;
+  transferencia: boolean;
 };
-type Metodo = "contraentrega" | "bold";
+type Metodo = "contraentrega" | "bold" | "transferencia";
+type PagoTransferencia = { codigo: string; llave: string; titular: string | null; total: number; whatsapp: string };
+
+const OPCIONES_PAGO = [
+  ["contraentrega", "Pago contra entrega", "Pagas en efectivo al recibir. El envío depende de tu ciudad."],
+  ["bold", "Pagar en línea con envío gratis", "Tarjeta, PSE, Nequi y más. Pago seguro procesado por Bold."],
+  ["transferencia", "Transferencia con llave Bre-B, envío gratis", "Transfieres desde tu banco o billetera y nos mandas el comprobante por WhatsApp."],
+] as const;
 type Errores = Partial<Record<string, string[]>>;
 
 const campos = [
@@ -28,12 +36,14 @@ function Error({ texto }: { texto?: string }) {
   return <p className="mt-1.5 text-sm text-error">{texto}</p>;
 }
 
-export function FormularioPedido({ producto, pagoEnLinea }: Props) {
+export function FormularioPedido({ producto, pagoEnLinea, transferencia }: Props) {
   const [cantidad, setCantidad] = useState(1);
   const [metodo, setMetodo] = useState<Metodo>("contraentrega");
   const [departamento, setDepartamento] = useState<Departamento | "">("");
   const [ciudad, setCiudad] = useState("");
   const [bold, setBold] = useState<ParametrosBold | null>(null);
+  const [pagoTransf, setPagoTransf] = useState<PagoTransferencia | null>(null);
+  const [copiado, setCopiado] = useState(false);
   const [errores, setErrores] = useState<Errores>({});
   const [mensaje, setMensaje] = useState("");
   const [enviando, setEnviando] = useState(false);
@@ -56,6 +66,7 @@ export function FormularioPedido({ producto, pagoEnLinea }: Props) {
       ciudad: fd.get("ciudad"),
       direccion: fd.get("direccion"),
       notas: fd.get("notas") || undefined,
+      metodo: metodo === "transferencia" ? "transferencia" : "contraentrega",
       autorizaDatos: fd.get("autorizaDatos") === "on",
     };
 
@@ -108,6 +119,11 @@ export function FormularioPedido({ producto, pagoEnLinea }: Props) {
         setMensaje(json.error ?? "No pudimos procesar tu pedido.");
         return;
       }
+      if (json.transferencia) {
+        setPagoTransf({ codigo: json.codigo, whatsapp: json.whatsapp, ...json.transferencia });
+        setMensaje(`Pedido ${json.codigo} registrado. Transfiere y envíanos el comprobante para despacharlo.`);
+        return;
+      }
       setMensaje(`¡Listo! Tu pedido ${json.codigo} quedó registrado. Te abrimos WhatsApp para confirmarlo.`);
       window.location.href = json.whatsapp;
     } catch {
@@ -118,11 +134,22 @@ export function FormularioPedido({ producto, pagoEnLinea }: Props) {
   }
 
   const subtotal = producto.precio * cantidad;
-  // Contra entrega: envío según departamento y ciudad. En línea (Bold): envío gratis.
-  const envio =
-    metodo === "bold" ? 0 : departamento && ciudad.trim() ? costoEnvio(departamento, ciudad) : null;
-  const textoEnvio =
-    metodo === "bold" ? "Gratis" : envio === null ? "Elige departamento y ciudad" : formatoCOP(envio);
+  // Contra entrega: envío según departamento y ciudad. Pago anticipado (Bold o transferencia): gratis.
+  const anticipado = metodo !== "contraentrega";
+  const envio = anticipado ? 0 : departamento && ciudad.trim() ? costoEnvio(departamento, ciudad) : null;
+  const textoEnvio = anticipado ? "Gratis" : envio === null ? "Elige departamento y ciudad" : formatoCOP(envio);
+  const opciones = OPCIONES_PAGO.filter(
+    ([valor]) => valor === "contraentrega" || (valor === "bold" ? pagoEnLinea : transferencia),
+  );
+
+  async function copiarLlave(llave: string) {
+    try {
+      await navigator.clipboard.writeText(llave);
+      setCopiado(true);
+    } catch {
+      /* sin portapapeles: el cliente la copia a mano */
+    }
+  }
 
   return (
     <form
@@ -132,22 +159,18 @@ export function FormularioPedido({ producto, pagoEnLinea }: Props) {
         if (campo instanceof HTMLInputElement && campo.name === "ciudad") setCiudad(campo.value);
         idSolicitud.current = null;
         setBold(null);
+        setPagoTransf(null);
       }}
       noValidate
       className="mt-8 grid gap-10 md:grid-cols-[minmax(0,1fr)_360px] lg:gap-16"
     >
       {/* Columna del formulario */}
       <div className="space-y-10">
-        {pagoEnLinea && (
+        {opciones.length > 1 && (
           <section>
             <h2 className="text-xl font-semibold tracking-[-0.18px] text-ink">Forma de pago</h2>
             <div className="mt-4 overflow-hidden rounded-sm border border-border-strong">
-              {(
-                [
-                  ["contraentrega", "Pago contra entrega", "Pagas en efectivo al recibir. El envío depende de tu ciudad."],
-                  ["bold", "Pagar en línea con envío gratis", "Tarjeta, PSE, Nequi y más. Pago seguro procesado por Bold."],
-                ] as const
-              ).map(([valor, titulo, detalle], i) => (
+              {opciones.map(([valor, titulo, detalle], i) => (
                 <label
                   key={valor}
                   className={`flex cursor-pointer items-start justify-between gap-4 px-4 py-4 ${
@@ -163,7 +186,10 @@ export function FormularioPedido({ producto, pagoEnLinea }: Props) {
                     name="metodo"
                     value={valor}
                     checked={metodo === valor}
-                    onChange={() => setMetodo(valor)}
+                    onChange={() => {
+                      setMetodo(valor);
+                      setPagoTransf(null);
+                    }}
                     className="mt-1 h-5 w-5 accent-ink"
                   />
                 </label>
@@ -256,15 +282,45 @@ export function FormularioPedido({ producto, pagoEnLinea }: Props) {
                 Al pagar, Bold te devuelve a EDMOGA y verificamos tu pago antes de despachar.
               </p>
             </div>
+          ) : metodo === "transferencia" && pagoTransf ? (
+            <div className="rounded-md border border-hairline p-5 shadow-card">
+              <p className="text-base font-semibold text-ink">Transfiere {formatoCOP(pagoTransf.total)}</p>
+              <p className="mt-3 text-sm text-muted">Llave Bre-B</p>
+              <div className="mt-1 flex flex-wrap items-center gap-3">
+                <span className="break-all text-lg font-semibold text-ink">{pagoTransf.llave}</span>
+                <button
+                  type="button"
+                  onClick={() => copiarLlave(pagoTransf.llave)}
+                  className="rounded-full border border-border-strong px-3 py-1 text-sm text-ink"
+                >
+                  {copiado ? "Copiada" : "Copiar"}
+                </button>
+              </div>
+              {pagoTransf.titular && <p className="mt-2 text-sm text-body">A nombre de: {pagoTransf.titular}</p>}
+              <p className="mt-2 text-sm text-body">
+                En la descripción escribe tu código: <strong className="text-ink">{pagoTransf.codigo}</strong>
+              </p>
+              <a href={pagoTransf.whatsapp} className="btn-primary mt-5 w-full text-center sm:w-auto">
+                Ya transferí: enviar comprobante por WhatsApp
+              </a>
+            </div>
           ) : (
             <button type="submit" disabled={enviando} className="btn-primary w-full sm:w-auto">
-              {enviando ? "Enviando…" : metodo === "bold" ? "Continuar al pago" : "Confirmar pedido por WhatsApp"}
+              {enviando
+                ? "Enviando…"
+                : metodo === "bold"
+                  ? "Continuar al pago"
+                  : metodo === "transferencia"
+                    ? "Ver datos para transferir"
+                    : "Confirmar pedido por WhatsApp"}
             </button>
           )}
           <p className="text-sm text-muted">
             {metodo === "bold"
               ? "Solo despachamos cuando Bold confirma que el pago entró."
-              : "Tu pedido queda confirmado cuando un asesor de EDMOGA te responde por WhatsApp."}
+              : metodo === "transferencia"
+                ? "Despachamos cuando verificamos que la transferencia entró a nuestra cuenta."
+                : "Tu pedido queda confirmado cuando un asesor de EDMOGA te responde por WhatsApp."}
           </p>
         </section>
       </div>

@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## 2026-11-10 — Pago por transferencia con llave Bre-B [agente: Claude]
+- Nueva forma de pago en el checkout: transferencia con llave Bre-B, con envío gratis igual que Bold. Al hacer el pedido el cliente ve la llave, el titular y su código, y manda el comprobante por WhatsApp.
+- El pedido queda como `pendiente_comprobante_transferencia` en Supabase y en Sheets. No se crea en Dropi hasta que el dueño verifica que el dinero entró.
+- Solo aparece si existe `TRANSFERENCIA_LLAVE_BREB` en Vercel (opcional `TRANSFERENCIA_TITULAR`).
+- `supabase/esquema.sql` acepta el método `transferencia` (hay que volver a correrlo).
+
 ## 2026-11-10 — Límite de intentos compartido en Redis [agente: Claude]
 - `/api/pedido` (5 cada 10 min por IP), `/api/pago/iniciar` (10) y `/api/pago/confirmar` (20) limitan intentos con Upstash Redis, compartido entre instancias de Vercel. Antes el límite de pedidos era en memoria y se saltaba cambiando de instancia.
 - Si Redis no responde, se deja pasar (no se bloquean ventas). Sin `KV_REST_API_*` usa memoria (solo local).

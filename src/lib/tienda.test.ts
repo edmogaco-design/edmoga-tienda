@@ -8,7 +8,8 @@ import { costoEnvio, ZONAS } from "./envios";
 import { firmaWebhookValida } from "./bold";
 import { PRODUCTOS } from "./catalogo";
 import { guardarResultado, reservar } from "./unaVez";
-import type { Pedido } from "./pedido";
+import { pedidoSchema, mensajePedidoTransferencia, type Pedido } from "./pedido";
+import { formatoCOP } from "./config";
 
 const producto = PRODUCTOS[0];
 const pedido: Pedido = {
@@ -20,8 +21,24 @@ const pedido: Pedido = {
   ciudad: "Medellín",
   departamento: "Antioquia",
   direccion: "Calle 10 # 20-30",
+  metodo: "contraentrega",
   autorizaDatos: true,
 };
+
+test("pedido sin método queda como contra entrega; transferencia se acepta", () => {
+  const { metodo: _m, ...sinMetodo } = pedido;
+  void _m;
+  assert.equal(pedidoSchema.parse(sinMetodo).metodo, "contraentrega");
+  assert.equal(pedidoSchema.parse({ ...pedido, metodo: "transferencia" }).metodo, "transferencia");
+  assert.equal(pedidoSchema.safeParse({ ...pedido, metodo: "bold" }).success, false);
+});
+
+test("transferencia: mensaje con total sin envío y código", () => {
+  const m = mensajePedidoTransferencia(pedido, producto.precio * 2, producto.nombre, "EDM-1");
+  assert.match(m, /EDM-1/);
+  assert.match(m, /envío gratis/);
+  assert.ok(m.includes(formatoCOP(producto.precio * 2)));
+});
 
 test("contra entrega: Dropi cobra productos + envío", () => {
   const c = cuerpoPedidoDropi(pedido, producto, "EDM-1", { envio: 18000 });
