@@ -33,7 +33,7 @@ export default async function Checkout({ searchParams }: Props) {
           : "Llena tus datos y te abrimos WhatsApp con el pedido listo. Te confirmamos el envío y pagas al recibir."}
       </p>
       <FormularioPedido
-        producto={{ slug: p.slug, nombre: p.nombre, precio: p.precio, imagen: p.imagen }}
+        producto={{ slug: p.slug, nombre: p.nombre, precio: p.precio, imagen: p.imagenes[0] }}
         pagoEnLinea={pagoEnLinea}
       />
     </div>

@@ -4,7 +4,7 @@ import { notFound } from "next/navigation";
 import { PRODUCTOS, obtenerProducto } from "@/lib/catalogo";
 import { formatoCOP } from "@/lib/config";
 import { boldConfigurado } from "@/lib/bold";
-import { ImagenProducto } from "@/components/ImagenProducto";
+import { GaleriaProducto } from "@/components/GaleriaProducto";
 
 type Props = { params: Promise<{ slug: string }> };
 
@@ -22,7 +22,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     openGraph: {
       title: `${p.nombre} | EDMOGA`,
       description: p.resumen,
-      images: p.imagen ? [p.imagen] : undefined,
+      images: p.imagenes.length ? [p.imagenes[0]] : undefined,
     },
   };
 }
@@ -61,7 +61,7 @@ export default async function FichaProducto({ params }: Props) {
       <div className="mt-6 grid gap-10 md:grid-cols-[minmax(0,1fr)_340px] lg:gap-16">
         {/* Columna principal */}
         <div>
-          <ImagenProducto src={p.imagen} alt={p.nombre} className="aspect-square md:aspect-[4/3]" prioridad />
+          <GaleriaProducto imagenes={p.imagenes} alt={p.nombre} />
 
           <section className="border-b border-hairline py-8">
             <p className="text-base leading-relaxed text-body">{p.descripcion}</p>
