@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## 2026-11-09 — Registro de ventas en Supabase y Google Sheets [agente: Claude]
+- Cada pedido (contra entrega o pagado con Bold) se guarda en Supabase (tabla `pedidos`) y en una hoja de Google Sheets, después de responder al cliente (no lo demora).
+- El webhook de Bold guarda cada evento en Supabase (tabla `pagos_bold`) para conciliar pagos.
+- Esquema en `supabase/esquema.sql` (RLS activo, solo el servidor accede). Script de la hoja en `docs/google-sheets.gs`.
+- Si un destino no está configurado o falla, la venta sigue igual por WhatsApp y el fallo queda en los logs.
+
 ## 2026-11-09 — 10 productos nuevos de Dropi [agente: Claude]
 - Cocina y hogar: filtro de agua, papel air fryer, sartén panqueques, contenedor, dispensador aceite/vinagre, calentador de taza, afilador, molino de café, caldero 29 cm y cafetera moka.
 - Precios de venta aprobados por el dueño; fotos del proveedor en Dropi.

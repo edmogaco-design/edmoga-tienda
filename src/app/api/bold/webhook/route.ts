@@ -1,10 +1,11 @@
-import { NextResponse } from "next/server";
+import { NextResponse, after } from "next/server";
 import { firmaWebhookValida } from "@/lib/bold";
+import { registrarEventoBold } from "@/lib/registro";
 
 // Webhook de Bold. Verifica la firma x-bold-signature y responde 200 de inmediato
 // (Bold exige respuesta en menos de 2 s y reintenta si no la recibe).
-// Por ahora registra el evento (sin datos personales); en la Fase 2 se guardará en Supabase
-// para conciliar pagos aunque el cliente cierre el navegador antes de volver a la tienda.
+// Guarda el evento en Supabase (tabla pagos_bold) para conciliar pagos aunque el cliente
+// cierre el navegador antes de volver a la tienda. Los logs van sin datos personales.
 export async function POST(req: Request) {
   const cuerpoCrudo = await req.text();
   if (!firmaWebhookValida(cuerpoCrudo, req.headers.get("x-bold-signature"))) {
@@ -25,6 +26,17 @@ export async function POST(req: Request) {
       orden: evento.data?.metadata?.reference ?? null,
       total: evento.data?.amount?.total,
     });
+    if (evento.id) {
+      const registro = {
+        evento: evento.id,
+        tipo: evento.type ?? null,
+        transaccion: evento.data?.payment_id ?? null,
+        orden: evento.data?.metadata?.reference ?? null,
+        total: evento.data?.amount?.total ?? null,
+        crudo: evento,
+      };
+      after(registrarEventoBold(registro)); // se guarda después de responder (Bold exige < 2 s)
+    }
   } catch {
     console.warn("bold_webhook_json_invalido");
   }
