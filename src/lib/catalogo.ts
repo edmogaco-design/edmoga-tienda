@@ -891,6 +891,7 @@ export const PRODUCTOS: Producto[] = [
     categoria: "Skincare y belleza",
     imagenes: [
       "https://d39ru7awumhhs2.cloudfront.net/colombia/products/2013649/1764710473Espuma-Desmaquillante-Trendy-1.webp",
+      "https://d39ru7awumhhs2.cloudfront.net/colombia/products/2013649/1764710473Espuma-Desmaquillante-Trendy_jpg.webp",
     ],
   },
   {
@@ -1002,6 +1003,7 @@ export const PRODUCTOS: Producto[] = [
     categoria: "Skincare y belleza",
     imagenes: [
       "https://d39ru7awumhhs2.cloudfront.net/colombia/products/1982126/1762011120ContornoEnBarraDobleConRuborTrendyCS041_1024x1024_2x_c5116f7a-9dd9-4a8d-a336-69e97f18a1b6.webp",
+      "https://d39ru7awumhhs2.cloudfront.net/colombia/products/1982126/1762011120ContornoEnBarraDobleConRuborTrendyCS042_1024x1024_2x_496e59e6-bf98-408e-b7fd-9ba48c61c8ad.webp",
     ],
   },
   {
@@ -1024,6 +1026,8 @@ export const PRODUCTOS: Producto[] = [
     categoria: "Skincare y belleza",
     imagenes: [
       "https://d39ru7awumhhs2.cloudfront.net/colombia/products/2158094/1779558297Iluminador-Lovely-Glowy-Trendy%20(2).webp",
+      "https://d39ru7awumhhs2.cloudfront.net/colombia/products/2158094/1779558297Iluminador-trendy-lovely-glow-tn%20(2).webp",
+      "https://d39ru7awumhhs2.cloudfront.net/colombia/products/2158094/1779558297Iluminador-trendy-lovely-glow-tn-1-1%20(2).webp",
     ],
   },
   {
@@ -1046,6 +1050,7 @@ export const PRODUCTOS: Producto[] = [
     categoria: "Skincare y belleza",
     imagenes: [
       "https://d39ru7awumhhs2.cloudfront.net/colombia/products/2157998/1779554116Bronzer-En-Polvo-Dash-Trendy%20(2).webp",
+      "https://d39ru7awumhhs2.cloudfront.net/colombia/products/2157998/1779554116Bronzer-En-Polvo-Dash-Trendy-1_jpg%20(2).webp",
     ],
   },
   {
@@ -1068,6 +1073,7 @@ export const PRODUCTOS: Producto[] = [
     categoria: "Skincare y belleza",
     imagenes: [
       "https://d39ru7awumhhs2.cloudfront.net/colombia/products/2013800/1764715973Paleta-de-Sombras-Dreams-Pro-Trendy.webp",
+      "https://d39ru7awumhhs2.cloudfront.net/colombia/products/2013800/1764715972Paleta-de-Sombras-Dreams-Pro-Trendy-1.webp",
     ],
   },
   {
@@ -1112,6 +1118,7 @@ export const PRODUCTOS: Producto[] = [
     categoria: "Skincare y belleza",
     imagenes: [
       "https://d39ru7awumhhs2.cloudfront.net/colombia/products/1980364/1761859814Delineador-Trendy-en-gel-a-prueba-de-agua.webp",
+      "https://d39ru7awumhhs2.cloudfront.net/colombia/products/1980364/1761859814Delineador-Trendy-en-gel-a-prueba-de-agua-Cbr.webp",
     ],
   },
   {
@@ -1156,6 +1163,8 @@ export const PRODUCTOS: Producto[] = [
     categoria: "Skincare y belleza",
     imagenes: [
       "https://d39ru7awumhhs2.cloudfront.net/colombia/products/1980805/1761917010gold-eyes-1.webp",
+      "https://d39ru7awumhhs2.cloudfront.net/colombia/products/1980805/1761917010165971-1200-auto.webp",
+      "https://d39ru7awumhhs2.cloudfront.net/colombia/products/1980805/1761917010165972-1200-auto.webp",
     ],
   },
 ];
