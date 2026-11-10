@@ -32,6 +32,10 @@
 | 20 productos de belleza femenina, secciones y galería de fotos | Claude | hecho | 2026-11-09 |
 | Aprobar precios de venta de los productos de belleza | Dueño | hecho | 2026-11-10 |
 | Sección Cafeteros con la cafetera tipo Chemex 600 ml | Claude | hecho | 2026-11-10 |
+| 16 productos de skincare y maquillaje Trendy; sección renombrada a Skincare y belleza | Claude | hecho | 2026-11-10 |
+| Aprobar precios de los productos Trendy | Dueño | hecho | 2026-11-10 |
+| Confirmar con el proveedor el INVIMA de los productos Trendy | Dueño | pendiente | |
+| Fotos adicionales de 13 productos Trendy (las fichas de Dropi no cargaron) | Claude | pendiente | |
 | Aprobar precio de la cafetera Chemex ($69.900) | Dueño | hecho | 2026-11-10 |
 | Fotos propias de los productos | Grok / Dueño | pendiente | |
 | Revisión legal de textos | Dueño | pendiente | |
