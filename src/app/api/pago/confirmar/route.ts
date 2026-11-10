@@ -1,4 +1,4 @@
-import { NextResponse } from "next/server";
+import { NextResponse, after } from "next/server";
 import { z } from "zod";
 import { pedidoSchema, codigoDesde, mensajePedidoPagado } from "@/lib/pedido";
 import { obtenerProducto } from "@/lib/catalogo";
@@ -6,6 +6,7 @@ import { enlaceWhatsApp } from "@/lib/config";
 import { consultarPago } from "@/lib/bold";
 import { crearPedidoDropi, dropiConfigurado } from "@/lib/dropi";
 import { guardarResultado, reservar } from "@/lib/unaVez";
+import { filaPedido, registrarPedido } from "@/lib/registro";
 
 const entrada = z.object({
   orden: z.string().regex(/^EDM-[A-Z0-9]{8}-[A-Z0-9]{4,12}$/),
@@ -73,6 +74,21 @@ export async function POST(req: Request) {
     transaccion: pago.transaccion,
     dropi: dropi === null ? "no_configurado" : dropi.ok ? "creado" : `fallo:${dropi.motivo}`,
   });
+
+  const fila = filaPedido(pedido, {
+    codigo,
+    metodo: "bold",
+    estado: "pagado",
+    producto: producto.nombre,
+    subtotal: esperado,
+    envio: 0,
+    total: esperado,
+    orden_bold: orden,
+    transaccion_bold: pago.transaccion,
+    dropi: dropi === null ? "no_configurado" : dropi.ok ? "creado" : `fallo:${dropi.motivo}`.slice(0, 200),
+    dropi_pedido: dropi?.ok ? dropi.dropiId : null,
+  });
+  after(registrarPedido(fila)); // se guarda después de responder, sin demorar al cliente
 
   const cuerpo = {
     estado: "APPROVED",

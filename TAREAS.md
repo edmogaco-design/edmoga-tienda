@@ -21,10 +21,12 @@
 | Borrar rama temporal `fix/dropi-diagnostico` | Dueño | pendiente | |
 | Cotización de envío por zonas (departamento) en el checkout | Claude | hecho | 2026-11-09 |
 | Correcciones de la auditoría (anti-duplicados, envío por capital, tests) | Claude | hecho | 2026-11-09 |
-| Conectar Upstash Redis al proyecto en Vercel (crea `KV_REST_API_URL`/`TOKEN`) | Dueño | pendiente | |
+| Conectar Upstash Redis al proyecto en Vercel (crea `KV_REST_API_URL`/`TOKEN`) | Dueño + Claude | hecho | 2026-11-09 |
 | Cotización de envío en vivo con Dropi (cuando habiliten la API) | Claude | pendiente | |
-| Supabase (base de datos con RLS) y guardar pagos/pedidos del webhook | Claude | pendiente | |
-| Registro de ventas en Google Sheets | Claude | pendiente | |
+| Supabase (base de datos con RLS) y guardar pagos/pedidos del webhook (código) | Claude | hecho | 2026-11-09 |
+| Conectar Supabase en Vercel y correr `supabase/esquema.sql` | Dueño + Claude | hecho | 2026-11-09 |
+| Registro de ventas en Google Sheets (código) | Claude | hecho | 2026-11-09 |
+| Instalar `docs/google-sheets.gs` y poner `SHEETS_WEBHOOK_URL`/`SECRET` en Vercel | Dueño | hecho | 2026-11-09 |
 | www.edmoga.com → redirección a edmoga.com | Dueño + Claude | pendiente | |
 | 10 productos nuevos de Dropi en el catálogo | Claude | hecho | 2026-11-09 |
 | Fotos propias de los productos | Grok / Dueño | pendiente | |
