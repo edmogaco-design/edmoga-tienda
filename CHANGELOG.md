@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## 2026-11-10 — Más fotos de productos Trendy [agente: Claude]
+- Galería de Dropi en 7 productos Trendy más: espuma desmaquillante, contorno con rubor, iluminador, bronzer, paleta Dreams Pro, delineador en gel y kit de pestañina. Se descartaron fotos que mostraban otro producto.
+- La bruma con niacinamida queda con 1 foto (la otra de Dropi era de otra bruma). Tónico, exfoliante, primer, paleta Kitty y lápiz de cejas solo tienen 1 foto en Dropi.
+
 ## 2026-11-10 — Skincare y maquillaje Trendy [agente: Claude]
 - La sección "Belleza femenina" pasa a llamarse "Skincare y belleza" (ancla #skincare-y-belleza).
 - 16 productos nuevos de la marca colombiana Trendy: 7 de skincare (crema efecto gel, bruma con niacinamida, aceite y espuma desmaquillantes, tónico de rosas, exfoliante corporal, primer) y 9 de maquillaje (polvos, contorno con rubor, iluminador, bronzer, 2 paletas de sombras, delineador, lápiz de cejas, kit de pestañina).
