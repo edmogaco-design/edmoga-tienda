@@ -1,7 +1,7 @@
 # CHANGELOG
 
 ## 2026-11-10 — Sección Cafeteros [agente: Claude]
-- Nueva sección "Cafeteros" en el inicio con la cafetera método tipo Chemex 600 ml (Dropi 2286133), a $69.900 (costo Dropi $40.000).
+- Nueva sección "Cafeteros" en el inicio con la cafetera método tipo Chemex 600 ml (Dropi 2286133), a $69.900 (costo Dropi $40.000), precio aprobado por el dueño.
 
 ## 2026-11-10 — Límite de intentos compartido en Redis [agente: Claude]
 - `/api/pedido` (5 cada 10 min por IP), `/api/pago/iniciar` (10) y `/api/pago/confirmar` (20) limitan intentos con Upstash Redis, compartido entre instancias de Vercel. Antes el límite de pedidos era en memoria y se saltaba cambiando de instancia.
