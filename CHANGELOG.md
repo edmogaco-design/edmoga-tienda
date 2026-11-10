@@ -1,7 +1,7 @@
 # CHANGELOG
 
 ## 2026-11-09 — Belleza femenina, secciones y galería de fotos [agente: Claude]
-- 20 productos nuevos de Dropi en la sección Belleza femenina (cabello, depilación, maquillaje, uñas y cuidado facial). Sin perfumes imitación, suplementos ni cosméticos que requieran INVIMA. Precios de venta propuestos por Claude, pendientes de aprobación del dueño.
+- 20 productos nuevos de Dropi en la sección Belleza femenina (cabello, depilación, maquillaje, uñas y cuidado facial). Sin perfumes imitación, suplementos ni cosméticos que requieran INVIMA. Precios de venta propuestos por Claude y aprobados por el dueño el 2026-11-10.
 - El inicio se divide en secciones (Cocina y Belleza femenina) con botones para saltar a cada una. El calentador de taza pasa de Hogar a Cocina.
 - Cada producto tiene varias fotos (hasta 5, tomadas de la galería de Dropi) y la ficha muestra una galería con miniaturas. El contenedor de alimentos solo tiene 1 foto en Dropi.
 
