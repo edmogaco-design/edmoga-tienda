@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## 2026-11-10 — Productos sin INVIMA fuera de la tienda [agente: Claude]
+- Nuevo campo `oculto` en el catálogo: el producto no aparece en el inicio ni en el sitemap, su ficha da 404 y no se puede pedir ni pagar.
+- Se ocultan 7 productos Trendy sin registro de su tipo en InvimÁgil: tónico de rosas, exfoliante corporal, bruma con niacinamida, polvos compactos, contorno en barra con rubor, espuma desmaquillante y bronzer. Aprobado por el dueño.
+- Registro INVIMA en la ficha de aceite desmaquillante (NSOC53030-26CO), crema facial efecto gel (NSOC53042-26CO) y lápiz de cejas (NSOC53307-26CO).
+- Test: un producto oculto no se puede pedir.
+
 ## 2026-11-10 — Más fotos de productos Trendy [agente: Claude]
 - Galería de Dropi en 7 productos Trendy más: espuma desmaquillante, contorno con rubor, iluminador, bronzer, paleta Dreams Pro, delineador en gel y kit de pestañina. Se descartaron fotos que mostraban otro producto.
 - La bruma con niacinamida queda con 1 foto (la otra de Dropi era de otra bruma). Tónico, exfoliante, primer, paleta Kitty y lápiz de cejas solo tienen 1 foto en Dropi.

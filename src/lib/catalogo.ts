@@ -12,9 +12,11 @@ export type Producto = {
   categoria: (typeof SECCIONES)[number];
   /** Fotos del producto; la primera es la principal. */
   imagenes: string[];
+  /** Fuera de la tienda (no se muestra ni se puede pedir), p. ej. mientras se confirma su registro INVIMA. */
+  oculto?: boolean;
 };
 
-export const PRODUCTOS: Producto[] = [
+const CATALOGO: Producto[] = [
   {
     slug: "picadora-manual-de-presion",
     dropiId: 2181739,
@@ -821,6 +823,7 @@ export const PRODUCTOS: Producto[] = [
     incluye: ["1 crema facial efecto gel"],
     garantia: "Garantía por defectos de fábrica según la Ley 1480 de 2011.",
     categoria: "Skincare y belleza",
+    invima: "NSOC53042-26CO",
     imagenes: [
       "https://d39ru7awumhhs2.cloudfront.net/colombia/products/2158797/1779719603trendy-p%20(2).webp",
       "https://d39ru7awumhhs2.cloudfront.net/colombia/products/2158797/1779719603trendy-crema-facial-gel-2-600x600%20(1).webp",
@@ -844,6 +847,8 @@ export const PRODUCTOS: Producto[] = [
     incluye: ["1 bruma facial"],
     garantia: "Garantía por defectos de fábrica según la Ley 1480 de 2011.",
     categoria: "Skincare y belleza",
+    // Sin registro INVIMA de este tipo en InvimÁgil (consulta del 2026-11-10).
+    oculto: true,
     imagenes: [
       "https://d39ru7awumhhs2.cloudfront.net/colombia/products/2158766/1779718231Bruma-Facial-Niacinamida-Trendy-1_jpg%20(1).webp",
     ],
@@ -866,6 +871,7 @@ export const PRODUCTOS: Producto[] = [
     incluye: ["1 aceite desmaquillante"],
     garantia: "Garantía por defectos de fábrica según la Ley 1480 de 2011.",
     categoria: "Skincare y belleza",
+    invima: "NSOC53030-26CO",
     imagenes: [
       "https://d39ru7awumhhs2.cloudfront.net/colombia/products/1982810/1762029055157726-1200-auto.webp",
       "https://d39ru7awumhhs2.cloudfront.net/colombia/products/1982810/1762029055158806-1200-auto.webp",
@@ -889,6 +895,8 @@ export const PRODUCTOS: Producto[] = [
     incluye: ["1 espuma desmaquillante"],
     garantia: "Garantía por defectos de fábrica según la Ley 1480 de 2011.",
     categoria: "Skincare y belleza",
+    // Sin registro INVIMA de este tipo en InvimÁgil (consulta del 2026-11-10).
+    oculto: true,
     imagenes: [
       "https://d39ru7awumhhs2.cloudfront.net/colombia/products/2013649/1764710473Espuma-Desmaquillante-Trendy-1.webp",
       "https://d39ru7awumhhs2.cloudfront.net/colombia/products/2013649/1764710473Espuma-Desmaquillante-Trendy_jpg.webp",
@@ -912,6 +920,8 @@ export const PRODUCTOS: Producto[] = [
     incluye: ["1 tónico de rosas de 360 ml"],
     garantia: "Garantía por defectos de fábrica según la Ley 1480 de 2011.",
     categoria: "Skincare y belleza",
+    // Sin registro INVIMA de este tipo en InvimÁgil (consulta del 2026-11-10).
+    oculto: true,
     imagenes: [
       "https://d39ru7awumhhs2.cloudfront.net/colombia/products/1981373/1761931935Capturadepantalla_20221209_123336_440x_fba1b131-7ea3-4850-86f0-57817a829142.webp",
     ],
@@ -934,6 +944,8 @@ export const PRODUCTOS: Producto[] = [
     incluye: ["1 exfoliante corporal"],
     garantia: "Garantía por defectos de fábrica según la Ley 1480 de 2011.",
     categoria: "Skincare y belleza",
+    // Sin registro INVIMA de este tipo en InvimÁgil (consulta del 2026-11-10).
+    oculto: true,
     imagenes: [
       "https://d39ru7awumhhs2.cloudfront.net/colombia/products/1982420/1762019226COLECCION-SEPTIEMBRE-8-1-416x416.webp",
     ],
@@ -978,6 +990,8 @@ export const PRODUCTOS: Producto[] = [
     incluye: ["1 polvo compacto"],
     garantia: "Garantía por defectos de fábrica según la Ley 1480 de 2011.",
     categoria: "Skincare y belleza",
+    // Sin registro INVIMA de este tipo en InvimÁgil (consulta del 2026-11-10).
+    oculto: true,
     imagenes: [
       "https://d39ru7awumhhs2.cloudfront.net/colombia/products/1982499/1762022640PolvosCompactosTrendyRefPCO5781_1024x1024_2x_0eeae817-d020-49d8-ba7f-4525b7090ce5.webp",
       "https://d39ru7awumhhs2.cloudfront.net/colombia/products/1982499/1762022640PolvosCompactosTrendyRefPCO5782_1024x1024_2x_ce1ec09b-da1f-49af-b298-aec0efdcf1a5.webp",
@@ -1001,6 +1015,8 @@ export const PRODUCTOS: Producto[] = [
     incluye: ["1 barra doble de contorno y rubor"],
     garantia: "Garantía por defectos de fábrica según la Ley 1480 de 2011.",
     categoria: "Skincare y belleza",
+    // Sin registro INVIMA de este tipo en InvimÁgil (consulta del 2026-11-10).
+    oculto: true,
     imagenes: [
       "https://d39ru7awumhhs2.cloudfront.net/colombia/products/1982126/1762011120ContornoEnBarraDobleConRuborTrendyCS041_1024x1024_2x_c5116f7a-9dd9-4a8d-a336-69e97f18a1b6.webp",
       "https://d39ru7awumhhs2.cloudfront.net/colombia/products/1982126/1762011120ContornoEnBarraDobleConRuborTrendyCS042_1024x1024_2x_496e59e6-bf98-408e-b7fd-9ba48c61c8ad.webp",
@@ -1048,6 +1064,8 @@ export const PRODUCTOS: Producto[] = [
     incluye: ["1 bronzer en polvo"],
     garantia: "Garantía por defectos de fábrica según la Ley 1480 de 2011.",
     categoria: "Skincare y belleza",
+    // Sin registro INVIMA de este tipo en InvimÁgil (consulta del 2026-11-10).
+    oculto: true,
     imagenes: [
       "https://d39ru7awumhhs2.cloudfront.net/colombia/products/2157998/1779554116Bronzer-En-Polvo-Dash-Trendy%20(2).webp",
       "https://d39ru7awumhhs2.cloudfront.net/colombia/products/2157998/1779554116Bronzer-En-Polvo-Dash-Trendy-1_jpg%20(2).webp",
@@ -1139,6 +1157,7 @@ export const PRODUCTOS: Producto[] = [
     incluye: ["1 lápiz para cejas"],
     garantia: "Garantía por defectos de fábrica según la Ley 1480 de 2011.",
     categoria: "Skincare y belleza",
+    invima: "NSOC53307-26CO",
     imagenes: [
       "https://d39ru7awumhhs2.cloudfront.net/colombia/products/1986934/1762461322173327660978.jpeg",
     ],
@@ -1168,6 +1187,9 @@ export const PRODUCTOS: Producto[] = [
     ],
   },
 ];
+
+/** Productos a la venta: todo el catálogo menos los ocultos. */
+export const PRODUCTOS: Producto[] = CATALOGO.filter((p) => !p.oculto);
 
 /** Secciones de la tienda, en el orden en que aparecen en el inicio. */
 export const SECCIONES = ["Cocina", "Skincare y belleza", "Cafeteros"] as const;
