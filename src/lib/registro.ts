@@ -7,6 +7,8 @@
 import type { Pedido } from "./pedido";
 
 const TIEMPO_MAX_MS = 4000;
+// Apps Script tarda varios segundos al despertar; corre en after(), no demora al cliente.
+const TIEMPO_MAX_SHEETS_MS = 15_000;
 
 export type FilaPedido = {
   codigo: string;
@@ -81,7 +83,7 @@ async function enviarASheets(fila: FilaPedido): Promise<void> {
     body: JSON.stringify({ clave: process.env.SHEETS_WEBHOOK_SECRET ?? "", fecha: new Date().toISOString(), ...fila }),
     cache: "no-store",
     redirect: "follow",
-    signal: AbortSignal.timeout(TIEMPO_MAX_MS),
+    signal: AbortSignal.timeout(TIEMPO_MAX_SHEETS_MS),
   });
   if (!res.ok) throw new Error(`sheets HTTP ${res.status}`);
   const txt = await res.text();
