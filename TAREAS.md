@@ -31,5 +31,7 @@
 | 10 productos nuevos de Dropi en el catálogo | Claude | hecho | 2026-11-09 |
 | 20 productos de belleza femenina, secciones y galería de fotos | Claude | hecho | 2026-11-09 |
 | Aprobar precios de venta de los productos de belleza | Dueño | hecho | 2026-11-10 |
+| Sección Cafeteros con la cafetera tipo Chemex 600 ml | Claude | hecho | 2026-11-10 |
+| Aprobar precio de la cafetera Chemex ($69.900) | Dueño | pendiente | |
 | Fotos propias de los productos | Grok / Dueño | pendiente | |
 | Revisión legal de textos | Dueño | pendiente | |
