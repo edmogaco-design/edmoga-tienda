@@ -9,8 +9,9 @@ export type Producto = {
   incluye: string[];
   garantia: string;
   invima?: string;
-  categoria: string;
-  imagen?: string;
+  categoria: (typeof SECCIONES)[number];
+  /** Fotos del producto; la primera es la principal. */
+  imagenes: string[];
 };
 
 export const PRODUCTOS: Producto[] = [
@@ -32,8 +33,11 @@ export const PRODUCTOS: Producto[] = [
     garantia: "Garantía por defectos de fábrica según la Ley 1480 de 2011.",
     categoria: "Cocina",
     // Foto del proveedor en Dropi. Reemplazar por fotos propias cuando estén listas.
-    imagen:
+    imagenes: [
       "https://d39ru7awumhhs2.cloudfront.net/colombia/products/2181739/1781906846PICADOR%20DE%20AJO%201.jpeg",
+      "https://d39ru7awumhhs2.cloudfront.net/colombia/products/2181739/1781906846PICADOR%20DE%20AJO%203.jpeg",
+      "https://d39ru7awumhhs2.cloudfront.net/colombia/products/2181739/1781906846PICADOR%20DE%20AJO%202.jpeg",
+    ],
   },
   // Productos agregados el 2026-11-09. Costo en Dropi en el comentario de cada uno.
   // Fotos del proveedor en Dropi; reemplazar por fotos propias cuando estén listas.
@@ -55,8 +59,13 @@ export const PRODUCTOS: Producto[] = [
     incluye: ["1 filtro purificador para grifo"],
     garantia: "Garantía por defectos de fábrica según la Ley 1480 de 2011.",
     categoria: "Cocina",
-    imagen:
+    imagenes: [
       "https://d39ru7awumhhs2.cloudfront.net/colombia/products/2293682/7ddba57c-d8aa-4d86-9092-edf97ed88ee1.webp",
+      "https://d39ru7awumhhs2.cloudfront.net/colombia/products/2293682/04990cb3-1b70-41d1-bd04-8a94bd8aface.webp",
+      "https://d39ru7awumhhs2.cloudfront.net/colombia/products/2293682/ccf62421-5c86-4419-a12c-1366115a1d40.webp",
+      "https://d39ru7awumhhs2.cloudfront.net/colombia/products/2293682/f1b741ad-f870-4b6c-ac44-014b5cabb849.jpeg",
+      "https://d39ru7awumhhs2.cloudfront.net/colombia/products/2293682/e158dbbe-52d5-4f51-9079-8062bf63586b.jpeg",
+    ],
   },
   {
     // Dropi: $20.900
@@ -76,8 +85,13 @@ export const PRODUCTOS: Producto[] = [
     incluye: ["Paquete de 200 hojas cuadradas"],
     garantia: "Garantía por defectos de fábrica según la Ley 1480 de 2011.",
     categoria: "Cocina",
-    imagen:
+    imagenes: [
       "https://d39ru7awumhhs2.cloudfront.net/colombia/products/309788/17018906501701890650Papel%20freidora%20200%20cuadrado%201.jpg",
+      "https://d39ru7awumhhs2.cloudfront.net/colombia/products/309788/17018906491701890649Papel%20freidora%20100%20cuadrado%205%20(1).jpg",
+      "https://d39ru7awumhhs2.cloudfront.net/colombia/products/309788/17018906491701890649Papel%20freidora%20100%20cuadrado%204.jpg",
+      "https://d39ru7awumhhs2.cloudfront.net/colombia/products/309788/17018906501701890650Papel%20freidora%20100%20cuadrado%203%20(1).jpg",
+      "https://d39ru7awumhhs2.cloudfront.net/colombia/products/309788/17018906501701890650Papel%20freidora%20100%20cuadrado%202%20(1).jpg",
+    ],
   },
   {
     // Dropi: $33.000
@@ -97,8 +111,12 @@ export const PRODUCTOS: Producto[] = [
     incluye: ["1 sartén de 3 puestos"],
     garantia: "Garantía por defectos de fábrica según la Ley 1480 de 2011.",
     categoria: "Cocina",
-    imagen:
+    imagenes: [
       "https://d39ru7awumhhs2.cloudfront.net/colombia/products/1414251/1730247974D_NQ_NP_2X_866075-MCO79872119430_102024-F.webp",
+      "https://d39ru7awumhhs2.cloudfront.net/colombia/products/1414251/1730247975D_NQ_NP_2X_817160-MCO79872119428_102024-F.webp",
+      "https://d39ru7awumhhs2.cloudfront.net/colombia/products/1414251/1730247975D_NQ_NP_2X_873557-MCO79872119424_102024-F.webp",
+      "https://d39ru7awumhhs2.cloudfront.net/colombia/products/1414251/1730247974D_NQ_NP_2X_931928-MCO79872119426_102024-F.webp",
+    ],
   },
   {
     // Dropi: $45.000
@@ -118,8 +136,9 @@ export const PRODUCTOS: Producto[] = [
     incluye: ["1 contenedor de alimentos (referencia TM1020-2)"],
     garantia: "Garantía por defectos de fábrica según la Ley 1480 de 2011.",
     categoria: "Cocina",
-    imagen:
+    imagenes: [
       "https://d39ru7awumhhs2.cloudfront.net/colombia/products/1846655/1749679457f05ef9f9-fdb7-4e11-b064-cbaac54d0016.jpg",
+    ],
   },
   {
     // Dropi: $30.000
@@ -139,8 +158,11 @@ export const PRODUCTOS: Producto[] = [
     incluye: ["2 dispensadores"],
     garantia: "Garantía por defectos de fábrica según la Ley 1480 de 2011.",
     categoria: "Cocina",
-    imagen:
+    imagenes: [
       "https://d39ru7awumhhs2.cloudfront.net/colombia/products/743117/1712034994imagen_2024-04-02_001505903.png",
+      "https://d39ru7awumhhs2.cloudfront.net/colombia/products/743117/1712034994imagen_2024-04-02_001536209.png",
+      "https://d39ru7awumhhs2.cloudfront.net/colombia/products/743117/1712034994imagen_2024-04-02_001519256.png",
+    ],
   },
   {
     // Dropi: $34.900
@@ -159,9 +181,12 @@ export const PRODUCTOS: Producto[] = [
     ],
     incluye: ["1 calentador de taza eléctrico"],
     garantia: "Garantía por defectos de fábrica según la Ley 1480 de 2011.",
-    categoria: "Hogar",
-    imagen:
+    categoria: "Cocina",
+    imagenes: [
       "https://d39ru7awumhhs2.cloudfront.net/colombia/products/1965208/1760652372D_NQ_NP_2X_781302-CBT91895371316_092025-F.webp",
+      "https://d39ru7awumhhs2.cloudfront.net/colombia/products/1965208/1760652372D_NQ_NP_2X_952065-CBT92298136735_092025-F.webp",
+      "https://d39ru7awumhhs2.cloudfront.net/colombia/products/1965208/1760652372D_NQ_NP_2X_819639-CBT92298106841_092025-F.webp",
+    ],
   },
   {
     // Dropi: $20.000
@@ -181,8 +206,13 @@ export const PRODUCTOS: Producto[] = [
     incluye: ["1 afilador de cuchillos eléctrico"],
     garantia: "Garantía por defectos de fábrica según la Ley 1480 de 2011.",
     categoria: "Cocina",
-    imagen:
+    imagenes: [
       "https://d39ru7awumhhs2.cloudfront.net/colombia/products/2135318/1776877367WhatsApp%20Image%202026-04-22%20at%2011.45.59%20AM%20(1).jpeg",
+      "https://d39ru7awumhhs2.cloudfront.net/colombia/products/2135318/1776877367WhatsApp%20Image%202026-04-22%20at%2011.45.59%20AM%20(3).jpeg",
+      "https://d39ru7awumhhs2.cloudfront.net/colombia/products/2135318/1776877367WhatsApp%20Image%202026-04-22%20at%2011.45.59%20AM%20(2).jpeg",
+      "https://d39ru7awumhhs2.cloudfront.net/colombia/products/2135318/1776877367WhatsApp%20Image%202026-04-22%20at%2011.45.59%20AM.jpeg",
+      "https://d39ru7awumhhs2.cloudfront.net/colombia/products/2135318/1776877367WhatsApp%20Image%202026-04-22%20at%2011.46.00%20AM.jpeg",
+    ],
   },
   {
     // Dropi: $24.000
@@ -202,8 +232,13 @@ export const PRODUCTOS: Producto[] = [
     incluye: ["1 molino de café manual"],
     garantia: "Garantía por defectos de fábrica según la Ley 1480 de 2011.",
     categoria: "Cocina",
-    imagen:
+    imagenes: [
       "https://d39ru7awumhhs2.cloudfront.net/colombia/products/2188720/17827701961978524c403-electrohogarcyc-p3k7grqehx-1rhmo3da979.jpg",
+      "https://d39ru7awumhhs2.cloudfront.net/colombia/products/2188720/17827701991978524a4f0-electrohogarcyc-p3k7grqehx-3y0t4g76l6g.jpg",
+      "https://d39ru7awumhhs2.cloudfront.net/colombia/products/2188720/17827701961978524a0ec-electrohogarcyc-p3k7grqehx-31yb8okfoa1.jpg",
+      "https://d39ru7awumhhs2.cloudfront.net/colombia/products/2188720/1782770196D_NQ_NP_2X_931311-MCO112997818627_062026-F.webp",
+      "https://d39ru7awumhhs2.cloudfront.net/colombia/products/2188720/1782770196D_NQ_NP_2X_603819-MCO112997434917_062026-F.webp",
+    ],
   },
   {
     // Dropi: $43.000
@@ -223,8 +258,11 @@ export const PRODUCTOS: Producto[] = [
     incluye: ["1 caldero de 29 cm"],
     garantia: "Garantía por defectos de fábrica según la Ley 1480 de 2011.",
     categoria: "Cocina",
-    imagen:
+    imagenes: [
       "https://d39ru7awumhhs2.cloudfront.net/colombia/products/2315632/ff9b7980-9d43-4554-897a-c865586e4798.png",
+      "https://d39ru7awumhhs2.cloudfront.net/colombia/products/2315632/59433665-25a4-477c-8122-9c9c9098ec0f.png",
+      "https://d39ru7awumhhs2.cloudfront.net/colombia/products/2315632/97c1b81b-3790-4807-b0f7-50da7a77aab6.png",
+    ],
   },
   {
     // Dropi: $44.000
@@ -244,10 +282,506 @@ export const PRODUCTOS: Producto[] = [
     incluye: ["1 cafetera moka de 12 tazas"],
     garantia: "Garantía por defectos de fábrica según la Ley 1480 de 2011.",
     categoria: "Cocina",
-    imagen:
+    imagenes: [
       "https://d39ru7awumhhs2.cloudfront.net/colombia/products/2314884/6d8c4de3-3b68-46c7-9c8d-e4171cadbffe.webp",
+      "https://d39ru7awumhhs2.cloudfront.net/colombia/products/2314884/91ed2ac8-6836-4e99-b4c1-f2696e496ace.webp",
+      "https://d39ru7awumhhs2.cloudfront.net/colombia/products/2314884/96d8372d-cd7d-4829-81f5-de7b3c983921.jpg",
+    ],
+  },
+  // Belleza femenina, agregados el 2026-11-09. Costo en Dropi en el comentario de cada uno.
+  {
+    // Dropi: $30.000
+    slug: "cepillo-secador-5-en-1",
+    dropiId: 2220207,
+    nombre: "Cepillo secador 5 en 1",
+    resumen: "Seca, alisa y da volumen a tu cabello en un solo paso.",
+    descripcion:
+      "Un cepillo que sopla aire caliente mientras peinas: secas y alisas al mismo tiempo, con menos frizz y en menos tiempo que con secador y plancha por separado.",
+    precio: 59900,
+    beneficios: [
+      "Seca y alisa a la vez",
+      "Menos frizz",
+      "Ahorra tiempo en las mañanas",
+      "Fácil de usar en casa",
+    ],
+    incluye: ["1 cepillo secador 5 en 1"],
+    garantia: "Garantía por defectos de fábrica según la Ley 1480 de 2011.",
+    categoria: "Belleza femenina",
+    imagenes: [
+      "https://d39ru7awumhhs2.cloudfront.net/colombia/products/2220207/ac166bba-1500-4786-92e3-b539a0e10357.png",
+      "https://d39ru7awumhhs2.cloudfront.net/colombia/products/2220207/d4865b7a-7d55-4e88-bca2-e14793a0ddbb.png",
+      "https://d39ru7awumhhs2.cloudfront.net/colombia/products/2220207/30bd2491-3070-4e16-810a-29801ebbf668.webp",
+    ],
+  },
+  {
+    // Dropi: $18.400
+    slug: "cepillo-secador-voluminizador",
+    dropiId: 91887,
+    nombre: "Cepillo secador voluminizador",
+    resumen: "Seca tu cabello con volumen y movimiento, como recién salida de la peluquería.",
+    descripcion:
+      "Cepillo redondo con aire caliente para secar desde la raíz y dar volumen. Ideal para cabello liso o con ondas suaves.",
+    precio: 39900,
+    beneficios: [
+      "Volumen desde la raíz",
+      "Seca y peina al mismo tiempo",
+      "Liviano y cómodo",
+      "Precio accesible",
+    ],
+    incluye: ["1 cepillo secador voluminizador"],
+    garantia: "Garantía por defectos de fábrica según la Ley 1480 de 2011.",
+    categoria: "Belleza femenina",
+    imagenes: [
+      "https://d39ru7awumhhs2.cloudfront.net/colombia/products/91887/170239458417023945841.jpg",
+      "https://d39ru7awumhhs2.cloudfront.net/colombia/products/91887/170239458417023945843.jpg",
+      "https://d39ru7awumhhs2.cloudfront.net/colombia/products/91887/170239458417023945842.jpg",
+    ],
+  },
+  {
+    // Dropi: $35.000
+    slug: "plancha-de-cabello-placa-delgada",
+    dropiId: 780762,
+    nombre: "Plancha de cabello de placa delgada",
+    resumen: "Placas delgadas para alisar, hacer ondas y llegar a los mechones cortos.",
+    descripcion:
+      "Su placa delgada te permite alisar cerca de la raíz, arreglar el flequillo y también hacer ondas. Se calienta rápido y es fácil de guardar.",
+    precio: 64900,
+    beneficios: [
+      "Alisa y hace ondas",
+      "Llega a mechones cortos y flequillo",
+      "Se calienta rápido",
+      "Compacta para viajar",
+    ],
+    incluye: ["1 plancha de cabello"],
+    garantia: "Garantía por defectos de fábrica según la Ley 1480 de 2011.",
+    categoria: "Belleza femenina",
+    imagenes: [
+      "https://d39ru7awumhhs2.cloudfront.net/colombia/products/780762/1713287477nano%202.webp",
+      "https://d39ru7awumhhs2.cloudfront.net/colombia/products/780762/1713287478nano%203.png",
+    ],
+  },
+  {
+    // Dropi: $12.000
+    slug: "depiladora-femenina-mini-recargable",
+    dropiId: 2312703,
+    nombre: "Depiladora femenina mini recargable",
+    resumen: "Retira el vello de cara, axilas y piernas sin dolor, donde estés.",
+    descripcion:
+      "Pequeña, recargable y discreta para llevar en el bolso. Retira el vello suavemente, sin cremas ni cera.",
+    precio: 34900,
+    beneficios: [
+      "Sin dolor",
+      "Recargable",
+      "Cabe en el bolso",
+      "Para cara y cuerpo",
+    ],
+    incluye: ["1 depiladora mini recargable"],
+    garantia: "Garantía por defectos de fábrica según la Ley 1480 de 2011.",
+    categoria: "Belleza femenina",
+    imagenes: [
+      "https://d39ru7awumhhs2.cloudfront.net/colombia/products/2312703/img_6adc734e891f59.21859759_0.jpg",
+      "https://d39ru7awumhhs2.cloudfront.net/colombia/products/2312703/img_6adc734f896e15.03993513_2.jpg",
+      "https://d39ru7awumhhs2.cloudfront.net/colombia/products/2312703/img_6adc734f0f0aa9.07783244_1.jpg",
+    ],
+  },
+  {
+    // Dropi: $11.000
+    slug: "depiladora-de-cejas-recargable",
+    dropiId: 2114856,
+    nombre: "Depiladora de cejas recargable",
+    resumen: "Da forma a tus cejas y retira vellos finos con precisión.",
+    descripcion:
+      "Punta delgada para perfilar las cejas y retirar vellos de la cara sin pinzas. Recargable y fácil de llevar.",
+    precio: 29900,
+    beneficios: [
+      "Precisión en las cejas",
+      "Sin pinzas ni dolor",
+      "Recargable",
+      "Tamaño de bolsillo",
+    ],
+    incluye: ["1 depiladora de cejas recargable"],
+    garantia: "Garantía por defectos de fábrica según la Ley 1480 de 2011.",
+    categoria: "Belleza femenina",
+    imagenes: [
+      "https://d39ru7awumhhs2.cloudfront.net/colombia/products/2114856/1774374259D_Q_NP_2X_819940-MLA100569161074_122025-R.webp",
+      "https://d39ru7awumhhs2.cloudfront.net/colombia/products/2114856/1774374259D_Q_NP_2X_931847-MLA100569131428_122025-R.webp",
+      "https://d39ru7awumhhs2.cloudfront.net/colombia/products/2114856/1774374259D_Q_NP_2X_684215-MLA101064077215_122025-R.webp",
+    ],
+  },
+  {
+    // Dropi: $9.500
+    slug: "depiladora-de-cristal",
+    dropiId: 535204,
+    nombre: "Depiladora de cristal",
+    resumen: "Retira el vello frotando suavemente, sin cuchillas ni electricidad.",
+    descripcion:
+      "Frota el cristal en círculos sobre la piel y el vello se desprende. Se lava con agua y se reutiliza muchas veces.",
+    precio: 29900,
+    beneficios: [
+      "Sin cuchillas",
+      "No necesita electricidad",
+      "Reutilizable",
+      "Deja la piel suave",
+    ],
+    incluye: ["1 depiladora de cristal"],
+    garantia: "Garantía por defectos de fábrica según la Ley 1480 de 2011.",
+    categoria: "Belleza femenina",
+    imagenes: [
+      "https://d39ru7awumhhs2.cloudfront.net/colombia/products/535204/1701361092Depilador%20Cristal%2013.jpg",
+      "https://d39ru7awumhhs2.cloudfront.net/colombia/products/535204/1701361092Depilador%20Cristal%2011.jpg",
+      "https://d39ru7awumhhs2.cloudfront.net/colombia/products/535204/1701361092Depilador%20Cristal%2010.jpg",
+      "https://d39ru7awumhhs2.cloudfront.net/colombia/products/535204/1701361092Depilador%20Cristal%203.jpg",
+      "https://d39ru7awumhhs2.cloudfront.net/colombia/products/535204/1701361092Depilador%20Cristal%208.jpg",
+    ],
+  },
+  {
+    // Dropi: $70.500
+    slug: "pulidor-de-unas-recargable",
+    dropiId: 1666411,
+    nombre: "Pulidor de uñas recargable",
+    resumen: "Lima, pule y da forma a tus uñas en casa, sin cables.",
+    descripcion:
+      "Pulidor eléctrico recargable con varias puntas para limar, pulir y dar forma a uñas naturales o acrílicas. Manicure y pedicure en casa, cuando quieras.",
+    precio: 119900,
+    beneficios: [
+      "Varias puntas intercambiables",
+      "Recargable, sin cables",
+      "Para manos y pies",
+      "Ahorras en manicure",
+    ],
+    incluye: ["1 pulidor de uñas con puntas"],
+    garantia: "Garantía por defectos de fábrica según la Ley 1480 de 2011.",
+    categoria: "Belleza femenina",
+    imagenes: [
+      "https://d39ru7awumhhs2.cloudfront.net/colombia/products/1666411/1754519004Frente%20-%202025-08-06T172044.153.png",
+      "https://d39ru7awumhhs2.cloudfront.net/colombia/products/1666411/9e6ddd93-d4bc-44d9-af1f-292ba282ecd0.png",
+      "https://d39ru7awumhhs2.cloudfront.net/colombia/products/1666411/815ea68c-637d-48f1-bdd7-2bb732ea7765.png",
+      "https://d39ru7awumhhs2.cloudfront.net/colombia/products/1666411/30593031-b67d-4bb0-b42d-d798396286dc.png",
+    ],
+  },
+  {
+    // Dropi: $38.900
+    slug: "espejo-de-maquillaje-led-con-ventilador",
+    dropiId: 242259,
+    nombre: "Espejo de maquillaje LED con ventilador",
+    resumen: "Espejo con luz LED y ventilador para maquillarte con buena luz y sin calor.",
+    descripcion:
+      "La luz LED te muestra cada detalle para un maquillaje parejo, y el ventilador ayuda a que se seque y a que no sudes mientras te arreglas.",
+    precio: 74900,
+    beneficios: [
+      "Luz LED para ver cada detalle",
+      "Ventilador incorporado",
+      "Ideal para el tocador",
+      "Portátil",
+    ],
+    incluye: ["1 espejo LED con ventilador"],
+    garantia: "Garantía por defectos de fábrica según la Ley 1480 de 2011.",
+    categoria: "Belleza femenina",
+    imagenes: [
+      "https://d39ru7awumhhs2.cloudfront.net/colombia/products/242259/1701975512170197551210000963_10340647_1101610.png",
+      "https://d39ru7awumhhs2.cloudfront.net/colombia/products/242259/1701975512170197551210000963_10340647_1101612.png",
+      "https://d39ru7awumhhs2.cloudfront.net/colombia/products/242259/1701975512170197551210000963_10340647_1101611.png",
+    ],
+  },
+  {
+    // Dropi: $42.000
+    slug: "cosmetiquera-con-espejo-y-divisiones",
+    dropiId: 2307136,
+    nombre: "Cosmetiquera con espejo y divisiones",
+    resumen: "Lleva tu maquillaje ordenado, con espejo y divisiones ajustables.",
+    descripcion:
+      "Organiza bases, brochas y paletas en divisiones que puedes mover a tu gusto. Trae espejo para retocarte donde estés.",
+    precio: 74900,
+    beneficios: [
+      "Todo ordenado y a la mano",
+      "Divisiones ajustables",
+      "Espejo incorporado",
+      "Ideal para viajes",
+    ],
+    incluye: ["1 cosmetiquera con espejo"],
+    garantia: "Garantía por defectos de fábrica según la Ley 1480 de 2011.",
+    categoria: "Belleza femenina",
+    imagenes: [
+      "https://d39ru7awumhhs2.cloudfront.net/colombia/products/2307136/img_6ad7c468dff986.29682301_0.jpg",
+      "https://d39ru7awumhhs2.cloudfront.net/colombia/products/2307136/img_6ad7c469592314.80436471_2.jpg",
+      "https://d39ru7awumhhs2.cloudfront.net/colombia/products/2307136/img_6ad7c46938d538.38031111_1.jpg",
+    ],
+  },
+  {
+    // Dropi: $49.900
+    slug: "kit-de-brochas-trendy-x9-con-cosmetiquera",
+    dropiId: 2013820,
+    nombre: "Kit de 9 brochas Trendy con cosmetiquera",
+    resumen: "Nueve brochas para base, polvo, rubor y sombras, con su cosmetiquera.",
+    descripcion:
+      "Todo lo que necesitas para maquillarte: brochas suaves para rostro y ojos, y una cosmetiquera para guardarlas limpias y ordenadas.",
+    precio: 89900,
+    beneficios: [
+      "9 brochas para rostro y ojos",
+      "Cerdas suaves",
+      "Incluye cosmetiquera",
+      "Buena opción para regalar",
+    ],
+    incluye: ["9 brochas", "1 cosmetiquera"],
+    garantia: "Garantía por defectos de fábrica según la Ley 1480 de 2011.",
+    categoria: "Belleza femenina",
+    imagenes: [
+      "https://d39ru7awumhhs2.cloudfront.net/colombia/products/2013820/1764717055BR-768x768.webp",
+      "https://d39ru7awumhhs2.cloudfront.net/colombia/products/2013820/1764717055BRO2.webp",
+      "https://d39ru7awumhhs2.cloudfront.net/colombia/products/2013820/1764717055BROC4.webp",
+    ],
+  },
+  {
+    // Dropi: $23.000
+    slug: "limpiador-de-brochas-electrico",
+    dropiId: 1751212,
+    nombre: "Limpiador de brochas eléctrico",
+    resumen: "Lava y seca tus brochas de maquillaje en segundos.",
+    descripcion:
+      "Pon la brocha, enciende y el limpiador la gira dentro del agua con jabón y luego la seca. Brochas limpias, maquillaje más parejo y piel más sana.",
+    precio: 44900,
+    beneficios: [
+      "Lava y seca en segundos",
+      "Brochas más limpias",
+      "Cuida tu piel",
+      "Fácil de usar",
+    ],
+    incluye: ["1 limpiador de brochas eléctrico"],
+    garantia: "Garantía por defectos de fábrica según la Ley 1480 de 2011.",
+    categoria: "Belleza femenina",
+    imagenes: [
+      "https://d39ru7awumhhs2.cloudfront.net/colombia/products/1751212/17443103521000438595.jpg",
+      "https://d39ru7awumhhs2.cloudfront.net/colombia/products/1751212/17443103521000438599.jpg",
+      "https://d39ru7awumhhs2.cloudfront.net/colombia/products/1751212/17443103521000438596.jpg",
+    ],
+  },
+  {
+    // Dropi: $37.000
+    slug: "organizador-de-brochas",
+    dropiId: 505073,
+    nombre: "Organizador de brochas y maquillaje",
+    resumen: "Ten brochas, labiales y cosméticos ordenados en tu tocador.",
+    descripcion:
+      "Organizador con compartimentos para brochas, labiales y productos de maquillaje. Ves todo de un vistazo y tu tocador se mantiene ordenado.",
+    precio: 64900,
+    beneficios: [
+      "Tocador ordenado",
+      "Ves todo de un vistazo",
+      "Varios compartimentos",
+      "Fácil de limpiar",
+    ],
+    incluye: ["1 organizador"],
+    garantia: "Garantía por defectos de fábrica según la Ley 1480 de 2011.",
+    categoria: "Belleza femenina",
+    imagenes: [
+      "https://d39ru7awumhhs2.cloudfront.net/colombia/products/505073/1700179169WhatsApp%20Image%202023-11-16%20at%206.53.56%20PM.jpeg",
+      "https://d39ru7awumhhs2.cloudfront.net/colombia/products/505073/1700179169WhatsApp%20Image%202023-11-16%20at%206.53.57%20PM%20(1).jpeg",
+      "https://d39ru7awumhhs2.cloudfront.net/colombia/products/505073/1700179169WhatsApp%20Image%202023-11-16%20at%206.53.58%20PM.jpeg",
+      "https://d39ru7awumhhs2.cloudfront.net/colombia/products/505073/1700179169WhatsApp%20Image%202023-11-16%20at%206.53.57%20PM%20(2).jpeg",
+      "https://d39ru7awumhhs2.cloudfront.net/colombia/products/505073/1700179169WhatsApp%20Image%202023-11-16%20at%206.53.57%20PM.jpeg",
+    ],
+  },
+  {
+    // Dropi: $32.000
+    slug: "lampara-de-unas-48w",
+    dropiId: 443054,
+    nombre: "Lámpara de uñas UV/LED 48 W",
+    resumen: "Seca el esmalte semipermanente en casa, como en el salón.",
+    descripcion:
+      "Lámpara de 48 W para secar esmalte en gel o semipermanente en pocos segundos. Tus uñas listas en casa, sin pagar cada visita al salón.",
+    precio: 59900,
+    beneficios: [
+      "Secado rápido",
+      "Para esmalte en gel y semipermanente",
+      "Uñas de salón en casa",
+      "Ahorras en manicure",
+    ],
+    incluye: ["1 lámpara de uñas 48 W"],
+    garantia: "Garantía por defectos de fábrica según la Ley 1480 de 2011.",
+    categoria: "Belleza femenina",
+    imagenes: [
+      "https://d39ru7awumhhs2.cloudfront.net/colombia/products/443054/1697501680Screenshot_2023-10-16-19-09-37-00_40deb401b9ffe8e1df2f1cc5ba480b12.jpg",
+      "https://d39ru7awumhhs2.cloudfront.net/colombia/products/443054/1697501680Screenshot_2023-10-16-19-09-56-92_40deb401b9ffe8e1df2f1cc5ba480b12.jpg",
+    ],
+  },
+  {
+    // Dropi: $20.000
+    slug: "lampara-de-unas-mini-usb",
+    dropiId: 2331382,
+    nombre: "Lámpara de uñas mini USB",
+    resumen: "Lámpara pequeña para secar esmalte en gel, se conecta por USB.",
+    descripcion:
+      "Ideal para retoques y para llevar de viaje: se conecta a un cargador o al computador por USB y seca el esmalte en gel uña por uña.",
+    precio: 39900,
+    beneficios: [
+      "Tamaño mini",
+      "Se conecta por USB",
+      "Perfecta para retoques",
+      "Fácil de llevar",
+    ],
+    incluye: ["1 lámpara de uñas mini USB"],
+    garantia: "Garantía por defectos de fábrica según la Ley 1480 de 2011.",
+    categoria: "Belleza femenina",
+    imagenes: [
+      "https://d39ru7awumhhs2.cloudfront.net/colombia/products/2331382/b452626f-3a26-45a7-b723-6eebe0b32a26.jpeg",
+      "https://d39ru7awumhhs2.cloudfront.net/colombia/products/2331382/3dcd5a74-da16-441b-9c1f-ddabb067cd35.jpeg",
+      "https://d39ru7awumhhs2.cloudfront.net/colombia/products/2331382/d43ce97d-550d-46ce-afc5-faef4f5d7666.jpeg",
+    ],
+  },
+  {
+    // Dropi: $21.500
+    slug: "masajeador-facial",
+    dropiId: 1739192,
+    nombre: "Masajeador facial",
+    resumen: "Masajea tu rostro en casa para una piel que se siente más firme y descansada.",
+    descripcion:
+      "Úsalo unos minutos al día con tu crema o sérum: el masaje relaja el rostro y ayuda a que la piel se vea más descansada.",
+    precio: 44900,
+    beneficios: [
+      "Masaje facial en casa",
+      "Relaja el rostro",
+      "Úsalo con tu crema favorita",
+      "Rutina de cuidado fácil",
+    ],
+    incluye: ["1 masajeador facial"],
+    garantia: "Garantía por defectos de fábrica según la Ley 1480 de 2011.",
+    categoria: "Belleza femenina",
+    imagenes: [
+      "https://d39ru7awumhhs2.cloudfront.net/colombia/products/1739192/1743537582Captura%20de%20pantalla%202025-04-01%20144834.png",
+      "https://d39ru7awumhhs2.cloudfront.net/colombia/products/1739192/1743537582Captura%20de%20pantalla%202025-04-01%20145027.png",
+    ],
+  },
+  {
+    // Dropi: $21.000
+    slug: "masajeador-facial-en-v",
+    dropiId: 1672654,
+    nombre: "Masajeador facial en V",
+    resumen: "Masaje para el contorno del rostro, mandíbula y cuello.",
+    descripcion:
+      "Su forma en V recorre la línea de la mandíbula y el cuello para relajar la zona. Un momento de cuidado en tu rutina diaria.",
+    precio: 42900,
+    beneficios: [
+      "Masaje de mandíbula y cuello",
+      "Relajante",
+      "Fácil de usar",
+      "Compacto",
+    ],
+    incluye: ["1 masajeador facial en V"],
+    garantia: "Garantía por defectos de fábrica según la Ley 1480 de 2011.",
+    categoria: "Belleza femenina",
+    imagenes: [
+      "https://d39ru7awumhhs2.cloudfront.net/colombia/products/1672654/1768579187masajeador%20papada%20ay-1688%2012.jpg",
+      "https://d39ru7awumhhs2.cloudfront.net/colombia/products/1672654/1763134168masajeador%20papada%20ay-1688%207.jpg",
+      "https://d39ru7awumhhs2.cloudfront.net/colombia/products/1672654/1763134168masajeador%20papada%20ay-1688%2011.jpg",
+      "https://d39ru7awumhhs2.cloudfront.net/colombia/products/1672654/1763134168masajeador%20papada%20ay-1688%2016.JPG",
+      "https://d39ru7awumhhs2.cloudfront.net/colombia/products/1672654/1763134168masajeador%20papada%20ay-1688%2015.JPG",
+    ],
+  },
+  {
+    // Dropi: $18.000
+    slug: "rodillo-de-jade-facial",
+    dropiId: 1903612,
+    nombre: "Rodillo de jade facial",
+    resumen: "Rodillo de piedra para masajear el rostro y relajar la piel.",
+    descripcion:
+      "Pásalo por el rostro con tu sérum o crema: la piedra fresca se siente bien en la piel y hace de tu rutina un momento de relajación.",
+    precio: 36900,
+    beneficios: [
+      "Piedra fresca al tacto",
+      "Relaja el rostro",
+      "Ayuda a esparcir tu crema",
+      "Bonito para regalar",
+    ],
+    incluye: ["1 rodillo de jade"],
+    garantia: "Garantía por defectos de fábrica según la Ley 1480 de 2011.",
+    categoria: "Belleza femenina",
+    imagenes: [
+      "https://d39ru7awumhhs2.cloudfront.net/colombia/products/1903612/17557073661.jpg",
+      "https://d39ru7awumhhs2.cloudfront.net/colombia/products/1903612/17557073664.jpg",
+      "https://d39ru7awumhhs2.cloudfront.net/colombia/products/1903612/17557073666.jpg",
+      "https://d39ru7awumhhs2.cloudfront.net/colombia/products/1903612/17557073662.jpg",
+      "https://d39ru7awumhhs2.cloudfront.net/colombia/products/1903612/17557073663.jpg",
+    ],
+  },
+  {
+    // Dropi: $15.000
+    slug: "rodillo-de-hielo-facial",
+    dropiId: 1235157,
+    nombre: "Rodillo de hielo facial",
+    resumen: "Rodillo frío para despertar la piel y desinflamar en las mañanas.",
+    descripcion:
+      "Guárdalo en el congelador y pásalo por el rostro al levantarte: el frío refresca y ayuda a que la cara se vea menos hinchada.",
+    precio: 32900,
+    beneficios: [
+      "Frío que refresca",
+      "Ideal en las mañanas",
+      "Se guarda en el congelador",
+      "Fácil de limpiar",
+    ],
+    incluye: ["1 rodillo de hielo"],
+    garantia: "Garantía por defectos de fábrica según la Ley 1480 de 2011.",
+    categoria: "Belleza femenina",
+    imagenes: [
+      "https://d39ru7awumhhs2.cloudfront.net/colombia/products/1235157/c44a9ae6-bfdc-4ab0-af07-cd4870dc5ea9.png",
+      "https://d39ru7awumhhs2.cloudfront.net/colombia/products/1235157/ece2ddde-1812-4cbe-a9eb-f656d29fa72d.jpg",
+      "https://d39ru7awumhhs2.cloudfront.net/colombia/products/1235157/1766766716bola-cristal-hielo-frio-par-masajeador-tonifica-hd-354-facial.webp",
+      "https://d39ru7awumhhs2.cloudfront.net/colombia/products/1235157/1766766716images%20(13).jpg",
+    ],
+  },
+  {
+    // Dropi: $22.900
+    slug: "globos-de-hielo-faciales",
+    dropiId: 1034673,
+    nombre: "Globos de hielo faciales",
+    resumen: "Esferas frías para masajear y refrescar el rostro.",
+    descripcion:
+      "Dos globos que se enfrían en la nevera y se deslizan por el rostro para refrescar la piel y relajar después de un día largo.",
+    precio: 44900,
+    beneficios: [
+      "Refrescan la piel",
+      "Masaje relajante",
+      "Se enfrían en la nevera",
+      "Vienen en par",
+    ],
+    incluye: ["2 globos de hielo faciales"],
+    garantia: "Garantía por defectos de fábrica según la Ley 1480 de 2011.",
+    categoria: "Belleza femenina",
+    imagenes: [
+      "https://d39ru7awumhhs2.cloudfront.net/colombia/products/1034673/1722528740D_NQ_NP_2X_740059-MCO50809067269_072022-F.jpg",
+      "https://d39ru7awumhhs2.cloudfront.net/colombia/products/1034673/1722528740D_NQ_NP_2X_891023-MCO50809124107_072022-F.jpg",
+      "https://d39ru7awumhhs2.cloudfront.net/colombia/products/1034673/1722528740D_NQ_NP_2X_689294-MCO50809127100_072022-F.jpg",
+      "https://d39ru7awumhhs2.cloudfront.net/colombia/products/1034673/1722528740D_NQ_NP_2X_613008-MCO50809063307_072022-F.jpg",
+      "https://d39ru7awumhhs2.cloudfront.net/colombia/products/1034673/1722528740D_NQ_NP_2X_625906-MCO50809138035_072022-F.jpg",
+    ],
+  },
+  {
+    // Dropi: $26.900
+    slug: "rodillo-facial-metalico-doble-punta",
+    dropiId: 2240928,
+    nombre: "Rodillo facial metálico doble punta",
+    resumen: "Rodillo frío de metal con dos puntas para rostro y contorno de ojos.",
+    descripcion:
+      "La punta grande recorre mejillas, frente y cuello; la pequeña, el contorno de ojos. El metal se mantiene fresco y hace del masaje un momento de relajación.",
+    precio: 52900,
+    beneficios: [
+      "Dos tamaños en uno",
+      "Metal fresco al tacto",
+      "Para rostro y contorno de ojos",
+      "Fácil de limpiar",
+    ],
+    incluye: ["1 rodillo facial metálico"],
+    garantia: "Garantía por defectos de fábrica según la Ley 1480 de 2011.",
+    categoria: "Belleza femenina",
+    imagenes: [
+      "https://d39ru7awumhhs2.cloudfront.net/colombia/products/2240928/02a05fc6-4a73-4728-96ff-29db334687e7.png",
+      "https://d39ru7awumhhs2.cloudfront.net/colombia/products/2240928/a63f9789-9988-444f-8803-ddc9f8db9ca0.png",
+      "https://d39ru7awumhhs2.cloudfront.net/colombia/products/2240928/3b0b6cec-7295-4a44-88c8-5fbc6adee785.png",
+    ],
   },
 ];
+
+/** Secciones de la tienda, en el orden en que aparecen en el inicio. */
+export const SECCIONES = ["Cocina", "Belleza femenina"] as const;
 
 export function obtenerProducto(slug: string): Producto | undefined {
   return PRODUCTOS.find((p) => p.slug === slug);

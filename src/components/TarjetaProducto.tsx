@@ -8,7 +8,7 @@ export function TarjetaProducto({ p, prioridad }: { p: Producto; prioridad?: boo
   return (
     <Link href={`/producto/${p.slug}`} className="group block" aria-label={`${p.nombre}, ${formatoCOP(p.precio)}`}>
       <ImagenProducto
-        src={p.imagen}
+        src={p.imagenes[0]}
         alt={p.nombre}
         className="aspect-square"
         insignia="Pago contra entrega"
