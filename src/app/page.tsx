@@ -1,5 +1,9 @@
 import Link from "next/link";
-import { PRODUCTOS } from "@/lib/catalogo";
+import { PRODUCTOS, SECCIONES } from "@/lib/catalogo";
+
+// "Belleza femenina" → "belleza-femenina", para el ancla de cada sección.
+const idSeccion = (s: string) =>
+  s.toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "").replace(/\s+/g, "-");
 import { formatoCOP } from "@/lib/config";
 import { TarjetaProducto } from "@/components/TarjetaProducto";
 import { ImagenProducto } from "@/components/ImagenProducto";
@@ -44,7 +48,7 @@ export default function Inicio() {
             </div>
           </div>
           <Link href={`/producto/${destacado.slug}`} aria-label={destacado.nombre} className="block rounded-lg bg-white p-3">
-            <ImagenProducto src={destacado.imagen} alt={destacado.nombre} className="aspect-square" prioridad />
+            <ImagenProducto src={destacado.imagenes[0]} alt={destacado.nombre} className="aspect-square" prioridad />
           </Link>
         </div>
       </section>
@@ -64,14 +68,29 @@ export default function Inicio() {
         </section>
 
         {/* Productos */}
-        <section id="productos" className="scroll-mt-24 py-14">
-          <h2 className="text-[28px] font-bold leading-tight text-ink">Productos</h2>
-          <div className="mt-6 grid grid-cols-1 gap-x-5 gap-y-10 min-[480px]:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-            {PRODUCTOS.map((p) => (
-              <TarjetaProducto key={p.slug} p={p} />
+        <div id="productos" className="scroll-mt-24 py-14">
+          <nav aria-label="Secciones" className="flex flex-wrap gap-2">
+            {SECCIONES.map((s) => (
+              <a
+                key={s}
+                href={`#${idSeccion(s)}`}
+                className="rounded-full border border-hairline px-4 py-2 text-sm font-medium text-ink hover:bg-surface-soft"
+              >
+                {s}
+              </a>
             ))}
-          </div>
-        </section>
+          </nav>
+          {SECCIONES.map((s) => (
+            <section key={s} id={idSeccion(s)} className="scroll-mt-24 pt-10">
+              <h2 className="text-[28px] font-bold leading-tight text-ink">{s}</h2>
+              <div className="mt-6 grid grid-cols-1 gap-x-5 gap-y-10 min-[480px]:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+                {PRODUCTOS.filter((p) => p.categoria === s).map((p) => (
+                  <TarjetaProducto key={p.slug} p={p} />
+                ))}
+              </div>
+            </section>
+          ))}
+        </div>
 
         {/* Cómo comprar */}
         <section className="border-t border-hairline py-14">
