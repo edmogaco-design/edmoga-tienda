@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { PRODUCTOS, SECCIONES } from "@/lib/catalogo";
 
-// "Belleza femenina" → "belleza-femenina", para el ancla de cada sección.
+// "Skincare y belleza" → "skincare-y-belleza", para el ancla de cada sección.
 const idSeccion = (s: string) =>
   s.toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "").replace(/\s+/g, "-");
 import { formatoCOP } from "@/lib/config";

@@ -6,6 +6,25 @@
 - Solo aparece si existe `TRANSFERENCIA_LLAVE_BREB` en Vercel (opcional `TRANSFERENCIA_TITULAR`).
 - `supabase/esquema.sql` acepta el método `transferencia` (hay que volver a correrlo).
 
+## 2026-11-10 — Productos sin INVIMA fuera de la tienda [agente: Claude]
+- Nuevo campo `oculto` en el catálogo: el producto no aparece en el inicio ni en el sitemap, su ficha da 404 y no se puede pedir ni pagar.
+- Se ocultan 7 productos Trendy sin registro de su tipo en InvimÁgil: tónico de rosas, exfoliante corporal, bruma con niacinamida, polvos compactos, contorno en barra con rubor, espuma desmaquillante y bronzer. Aprobado por el dueño.
+- Registro INVIMA en la ficha de aceite desmaquillante (NSOC53030-26CO), crema facial efecto gel (NSOC53042-26CO) y lápiz de cejas (NSOC53307-26CO).
+- Test: un producto oculto no se puede pedir.
+
+## 2026-11-10 — Más fotos de productos Trendy [agente: Claude]
+- Galería de Dropi en 7 productos Trendy más: espuma desmaquillante, contorno con rubor, iluminador, bronzer, paleta Dreams Pro, delineador en gel y kit de pestañina. Se descartaron fotos que mostraban otro producto.
+- La bruma con niacinamida queda con 1 foto (la otra de Dropi era de otra bruma). Tónico, exfoliante, primer, paleta Kitty y lápiz de cejas solo tienen 1 foto en Dropi.
+
+## 2026-11-10 — Skincare y maquillaje Trendy [agente: Claude]
+- La sección "Belleza femenina" pasa a llamarse "Skincare y belleza" (ancla #skincare-y-belleza).
+- 16 productos nuevos de la marca colombiana Trendy: 7 de skincare (crema efecto gel, bruma con niacinamida, aceite y espuma desmaquillantes, tónico de rosas, exfoliante corporal, primer) y 9 de maquillaje (polvos, contorno con rubor, iluminador, bronzer, 2 paletas de sombras, delineador, lápiz de cejas, kit de pestañina).
+- Precios propuestos por Claude y aprobados por el dueño el 2026-11-10. El número INVIMA no aparece en Dropi: confirmarlo con el proveedor antes de publicar.
+- Fotos: galería completa en 3 productos; el resto con la foto principal porque las fichas de Dropi no cargaron.
+
+## 2026-11-10 — Sección Cafeteros [agente: Claude]
+- Nueva sección "Cafeteros" en el inicio con la cafetera método tipo Chemex 600 ml (Dropi 2286133), a $69.900 (costo Dropi $40.000), precio aprobado por el dueño.
+
 ## 2026-11-10 — Límite de intentos compartido en Redis [agente: Claude]
 - `/api/pedido` (5 cada 10 min por IP), `/api/pago/iniciar` (10) y `/api/pago/confirmar` (20) limitan intentos con Upstash Redis, compartido entre instancias de Vercel. Antes el límite de pedidos era en memoria y se saltaba cambiando de instancia.
 - Si Redis no responde, se deja pasar (no se bloquean ventas). Sin `KV_REST_API_*` usa memoria (solo local).
