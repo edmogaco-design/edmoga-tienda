@@ -32,6 +32,12 @@
 | 20 productos de belleza femenina, secciones y galería de fotos | Claude | hecho | 2026-11-09 |
 | Aprobar precios de venta de los productos de belleza | Dueño | hecho | 2026-11-10 |
 | Sección Cafeteros con la cafetera tipo Chemex 600 ml | Claude | hecho | 2026-11-10 |
+| 16 productos de skincare y maquillaje Trendy; sección renombrada a Skincare y belleza | Claude | hecho | 2026-11-10 |
+| Aprobar precios de los productos Trendy | Dueño | hecho | 2026-11-10 |
+| Consultar en InvimÁgil los registros de la marca Trendy | Dueño + Claude | hecho | 2026-11-10 |
+| Pedir al proveedor de Dropi el INVIMA de los 7 productos Trendy ocultos (tónico, exfoliante, bruma, polvos compactos, contorno con rubor, espuma, bronzer) | Dueño | pendiente | |
+| Confirmar el número exacto de INVIMA de primer, pestañina, delineador, paletas e iluminador Trendy (su tipo está registrado) | Dueño | pendiente | |
+| Fotos adicionales de productos Trendy (7 con galería; tónico, exfoliante, primer, paleta Kitty y lápiz de cejas solo tienen 1 foto en Dropi) | Claude | hecho | 2026-11-10 |
 | Aprobar precio de la cafetera Chemex ($69.900) | Dueño | hecho | 2026-11-10 |
 | Filtros Chemex x40 y productos de café movidos a Cafeteros | Claude | hecho | 2026-11-10 |
 | Aprobar precio de los filtros Chemex x40 ($54.900) | Dueño | hecho | 2026-11-10 |

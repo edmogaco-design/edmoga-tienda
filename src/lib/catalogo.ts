@@ -12,9 +12,11 @@ export type Producto = {
   categoria: (typeof SECCIONES)[number];
   /** Fotos del producto; la primera es la principal. */
   imagenes: string[];
+  /** Fuera de la tienda (no se muestra ni se puede pedir), p. ej. mientras se confirma su registro INVIMA. */
+  oculto?: boolean;
 };
 
-export const PRODUCTOS: Producto[] = [
+const CATALOGO: Producto[] = [
   {
     slug: "picadora-manual-de-presion",
     dropiId: 2181739,
@@ -288,7 +290,7 @@ export const PRODUCTOS: Producto[] = [
       "https://d39ru7awumhhs2.cloudfront.net/colombia/products/2314884/96d8372d-cd7d-4829-81f5-de7b3c983921.jpg",
     ],
   },
-  // Belleza femenina, agregados el 2026-11-09. Costo en Dropi en el comentario de cada uno.
+  // Belleza, agregados el 2026-11-09. Costo en Dropi en el comentario de cada uno.
   {
     // Dropi: $30.000
     slug: "cepillo-secador-5-en-1",
@@ -306,7 +308,7 @@ export const PRODUCTOS: Producto[] = [
     ],
     incluye: ["1 cepillo secador 5 en 1"],
     garantia: "Garantía por defectos de fábrica según la Ley 1480 de 2011.",
-    categoria: "Belleza femenina",
+    categoria: "Skincare y belleza",
     imagenes: [
       "https://d39ru7awumhhs2.cloudfront.net/colombia/products/2220207/ac166bba-1500-4786-92e3-b539a0e10357.png",
       "https://d39ru7awumhhs2.cloudfront.net/colombia/products/2220207/d4865b7a-7d55-4e88-bca2-e14793a0ddbb.png",
@@ -330,7 +332,7 @@ export const PRODUCTOS: Producto[] = [
     ],
     incluye: ["1 cepillo secador voluminizador"],
     garantia: "Garantía por defectos de fábrica según la Ley 1480 de 2011.",
-    categoria: "Belleza femenina",
+    categoria: "Skincare y belleza",
     imagenes: [
       "https://d39ru7awumhhs2.cloudfront.net/colombia/products/91887/170239458417023945841.jpg",
       "https://d39ru7awumhhs2.cloudfront.net/colombia/products/91887/170239458417023945843.jpg",
@@ -354,7 +356,7 @@ export const PRODUCTOS: Producto[] = [
     ],
     incluye: ["1 plancha de cabello"],
     garantia: "Garantía por defectos de fábrica según la Ley 1480 de 2011.",
-    categoria: "Belleza femenina",
+    categoria: "Skincare y belleza",
     imagenes: [
       "https://d39ru7awumhhs2.cloudfront.net/colombia/products/780762/1713287477nano%202.webp",
       "https://d39ru7awumhhs2.cloudfront.net/colombia/products/780762/1713287478nano%203.png",
@@ -377,7 +379,7 @@ export const PRODUCTOS: Producto[] = [
     ],
     incluye: ["1 depiladora mini recargable"],
     garantia: "Garantía por defectos de fábrica según la Ley 1480 de 2011.",
-    categoria: "Belleza femenina",
+    categoria: "Skincare y belleza",
     imagenes: [
       "https://d39ru7awumhhs2.cloudfront.net/colombia/products/2312703/img_6adc734e891f59.21859759_0.jpg",
       "https://d39ru7awumhhs2.cloudfront.net/colombia/products/2312703/img_6adc734f896e15.03993513_2.jpg",
@@ -401,7 +403,7 @@ export const PRODUCTOS: Producto[] = [
     ],
     incluye: ["1 depiladora de cejas recargable"],
     garantia: "Garantía por defectos de fábrica según la Ley 1480 de 2011.",
-    categoria: "Belleza femenina",
+    categoria: "Skincare y belleza",
     imagenes: [
       "https://d39ru7awumhhs2.cloudfront.net/colombia/products/2114856/1774374259D_Q_NP_2X_819940-MLA100569161074_122025-R.webp",
       "https://d39ru7awumhhs2.cloudfront.net/colombia/products/2114856/1774374259D_Q_NP_2X_931847-MLA100569131428_122025-R.webp",
@@ -425,7 +427,7 @@ export const PRODUCTOS: Producto[] = [
     ],
     incluye: ["1 depiladora de cristal"],
     garantia: "Garantía por defectos de fábrica según la Ley 1480 de 2011.",
-    categoria: "Belleza femenina",
+    categoria: "Skincare y belleza",
     imagenes: [
       "https://d39ru7awumhhs2.cloudfront.net/colombia/products/535204/1701361092Depilador%20Cristal%2013.jpg",
       "https://d39ru7awumhhs2.cloudfront.net/colombia/products/535204/1701361092Depilador%20Cristal%2011.jpg",
@@ -451,7 +453,7 @@ export const PRODUCTOS: Producto[] = [
     ],
     incluye: ["1 pulidor de uñas con puntas"],
     garantia: "Garantía por defectos de fábrica según la Ley 1480 de 2011.",
-    categoria: "Belleza femenina",
+    categoria: "Skincare y belleza",
     imagenes: [
       "https://d39ru7awumhhs2.cloudfront.net/colombia/products/1666411/1754519004Frente%20-%202025-08-06T172044.153.png",
       "https://d39ru7awumhhs2.cloudfront.net/colombia/products/1666411/9e6ddd93-d4bc-44d9-af1f-292ba282ecd0.png",
@@ -476,7 +478,7 @@ export const PRODUCTOS: Producto[] = [
     ],
     incluye: ["1 espejo LED con ventilador"],
     garantia: "Garantía por defectos de fábrica según la Ley 1480 de 2011.",
-    categoria: "Belleza femenina",
+    categoria: "Skincare y belleza",
     imagenes: [
       "https://d39ru7awumhhs2.cloudfront.net/colombia/products/242259/1701975512170197551210000963_10340647_1101610.png",
       "https://d39ru7awumhhs2.cloudfront.net/colombia/products/242259/1701975512170197551210000963_10340647_1101612.png",
@@ -500,7 +502,7 @@ export const PRODUCTOS: Producto[] = [
     ],
     incluye: ["1 cosmetiquera con espejo"],
     garantia: "Garantía por defectos de fábrica según la Ley 1480 de 2011.",
-    categoria: "Belleza femenina",
+    categoria: "Skincare y belleza",
     imagenes: [
       "https://d39ru7awumhhs2.cloudfront.net/colombia/products/2307136/img_6ad7c468dff986.29682301_0.jpg",
       "https://d39ru7awumhhs2.cloudfront.net/colombia/products/2307136/img_6ad7c469592314.80436471_2.jpg",
@@ -524,7 +526,7 @@ export const PRODUCTOS: Producto[] = [
     ],
     incluye: ["9 brochas", "1 cosmetiquera"],
     garantia: "Garantía por defectos de fábrica según la Ley 1480 de 2011.",
-    categoria: "Belleza femenina",
+    categoria: "Skincare y belleza",
     imagenes: [
       "https://d39ru7awumhhs2.cloudfront.net/colombia/products/2013820/1764717055BR-768x768.webp",
       "https://d39ru7awumhhs2.cloudfront.net/colombia/products/2013820/1764717055BRO2.webp",
@@ -548,7 +550,7 @@ export const PRODUCTOS: Producto[] = [
     ],
     incluye: ["1 limpiador de brochas eléctrico"],
     garantia: "Garantía por defectos de fábrica según la Ley 1480 de 2011.",
-    categoria: "Belleza femenina",
+    categoria: "Skincare y belleza",
     imagenes: [
       "https://d39ru7awumhhs2.cloudfront.net/colombia/products/1751212/17443103521000438595.jpg",
       "https://d39ru7awumhhs2.cloudfront.net/colombia/products/1751212/17443103521000438599.jpg",
@@ -572,7 +574,7 @@ export const PRODUCTOS: Producto[] = [
     ],
     incluye: ["1 organizador"],
     garantia: "Garantía por defectos de fábrica según la Ley 1480 de 2011.",
-    categoria: "Belleza femenina",
+    categoria: "Skincare y belleza",
     imagenes: [
       "https://d39ru7awumhhs2.cloudfront.net/colombia/products/505073/1700179169WhatsApp%20Image%202023-11-16%20at%206.53.56%20PM.jpeg",
       "https://d39ru7awumhhs2.cloudfront.net/colombia/products/505073/1700179169WhatsApp%20Image%202023-11-16%20at%206.53.57%20PM%20(1).jpeg",
@@ -598,7 +600,7 @@ export const PRODUCTOS: Producto[] = [
     ],
     incluye: ["1 lámpara de uñas 48 W"],
     garantia: "Garantía por defectos de fábrica según la Ley 1480 de 2011.",
-    categoria: "Belleza femenina",
+    categoria: "Skincare y belleza",
     imagenes: [
       "https://d39ru7awumhhs2.cloudfront.net/colombia/products/443054/1697501680Screenshot_2023-10-16-19-09-37-00_40deb401b9ffe8e1df2f1cc5ba480b12.jpg",
       "https://d39ru7awumhhs2.cloudfront.net/colombia/products/443054/1697501680Screenshot_2023-10-16-19-09-56-92_40deb401b9ffe8e1df2f1cc5ba480b12.jpg",
@@ -621,7 +623,7 @@ export const PRODUCTOS: Producto[] = [
     ],
     incluye: ["1 lámpara de uñas mini USB"],
     garantia: "Garantía por defectos de fábrica según la Ley 1480 de 2011.",
-    categoria: "Belleza femenina",
+    categoria: "Skincare y belleza",
     imagenes: [
       "https://d39ru7awumhhs2.cloudfront.net/colombia/products/2331382/b452626f-3a26-45a7-b723-6eebe0b32a26.jpeg",
       "https://d39ru7awumhhs2.cloudfront.net/colombia/products/2331382/3dcd5a74-da16-441b-9c1f-ddabb067cd35.jpeg",
@@ -645,7 +647,7 @@ export const PRODUCTOS: Producto[] = [
     ],
     incluye: ["1 masajeador facial"],
     garantia: "Garantía por defectos de fábrica según la Ley 1480 de 2011.",
-    categoria: "Belleza femenina",
+    categoria: "Skincare y belleza",
     imagenes: [
       "https://d39ru7awumhhs2.cloudfront.net/colombia/products/1739192/1743537582Captura%20de%20pantalla%202025-04-01%20144834.png",
       "https://d39ru7awumhhs2.cloudfront.net/colombia/products/1739192/1743537582Captura%20de%20pantalla%202025-04-01%20145027.png",
@@ -668,7 +670,7 @@ export const PRODUCTOS: Producto[] = [
     ],
     incluye: ["1 masajeador facial en V"],
     garantia: "Garantía por defectos de fábrica según la Ley 1480 de 2011.",
-    categoria: "Belleza femenina",
+    categoria: "Skincare y belleza",
     imagenes: [
       "https://d39ru7awumhhs2.cloudfront.net/colombia/products/1672654/1768579187masajeador%20papada%20ay-1688%2012.jpg",
       "https://d39ru7awumhhs2.cloudfront.net/colombia/products/1672654/1763134168masajeador%20papada%20ay-1688%207.jpg",
@@ -694,7 +696,7 @@ export const PRODUCTOS: Producto[] = [
     ],
     incluye: ["1 rodillo de jade"],
     garantia: "Garantía por defectos de fábrica según la Ley 1480 de 2011.",
-    categoria: "Belleza femenina",
+    categoria: "Skincare y belleza",
     imagenes: [
       "https://d39ru7awumhhs2.cloudfront.net/colombia/products/1903612/17557073661.jpg",
       "https://d39ru7awumhhs2.cloudfront.net/colombia/products/1903612/17557073664.jpg",
@@ -720,7 +722,7 @@ export const PRODUCTOS: Producto[] = [
     ],
     incluye: ["1 rodillo de hielo"],
     garantia: "Garantía por defectos de fábrica según la Ley 1480 de 2011.",
-    categoria: "Belleza femenina",
+    categoria: "Skincare y belleza",
     imagenes: [
       "https://d39ru7awumhhs2.cloudfront.net/colombia/products/1235157/c44a9ae6-bfdc-4ab0-af07-cd4870dc5ea9.png",
       "https://d39ru7awumhhs2.cloudfront.net/colombia/products/1235157/ece2ddde-1812-4cbe-a9eb-f656d29fa72d.jpg",
@@ -745,7 +747,7 @@ export const PRODUCTOS: Producto[] = [
     ],
     incluye: ["2 globos de hielo faciales"],
     garantia: "Garantía por defectos de fábrica según la Ley 1480 de 2011.",
-    categoria: "Belleza femenina",
+    categoria: "Skincare y belleza",
     imagenes: [
       "https://d39ru7awumhhs2.cloudfront.net/colombia/products/1034673/1722528740D_NQ_NP_2X_740059-MCO50809067269_072022-F.jpg",
       "https://d39ru7awumhhs2.cloudfront.net/colombia/products/1034673/1722528740D_NQ_NP_2X_891023-MCO50809124107_072022-F.jpg",
@@ -771,7 +773,7 @@ export const PRODUCTOS: Producto[] = [
     ],
     incluye: ["1 rodillo facial metálico"],
     garantia: "Garantía por defectos de fábrica según la Ley 1480 de 2011.",
-    categoria: "Belleza femenina",
+    categoria: "Skincare y belleza",
     imagenes: [
       "https://d39ru7awumhhs2.cloudfront.net/colombia/products/2240928/02a05fc6-4a73-4728-96ff-29db334687e7.png",
       "https://d39ru7awumhhs2.cloudfront.net/colombia/products/2240928/a63f9789-9988-444f-8803-ddc9f8db9ca0.png",
@@ -826,10 +828,395 @@ export const PRODUCTOS: Producto[] = [
       "https://d39ru7awumhhs2.cloudfront.net/colombia/products/218298/170230072617023007260492D578-2B9E-4090-A5C5-C153FA942C9C.jpeg",
     ],
   },
+  // Skincare y maquillaje Trendy, agregados el 2026-11-10. Marca colombiana; el INVIMA de cada uno no aparece en Dropi.
+  {
+    // Dropi: $35.000
+    slug: "crema-facial-efecto-gel-trendy",
+    dropiId: 2158797,
+    nombre: "Crema facial efecto gel Trendy",
+    resumen: "Hidratante ligera de textura gel que se absorbe rápido y no deja la piel grasosa.",
+    descripcion:
+      "Crema facial de la línea Trendy Skincare con textura gel: hidrata, refresca y se absorbe en segundos. Úsala de día bajo el maquillaje o de noche como último paso de tu rutina.",
+    precio: 64900,
+    beneficios: [
+      "Textura gel ligera",
+      "Se absorbe rápido",
+      "No deja sensación grasosa",
+      "Sirve de base para el maquillaje",
+    ],
+    incluye: ["1 crema facial efecto gel"],
+    garantia: "Garantía por defectos de fábrica según la Ley 1480 de 2011.",
+    categoria: "Skincare y belleza",
+    invima: "NSOC53042-26CO",
+    imagenes: [
+      "https://d39ru7awumhhs2.cloudfront.net/colombia/products/2158797/1779719603trendy-p%20(2).webp",
+      "https://d39ru7awumhhs2.cloudfront.net/colombia/products/2158797/1779719603trendy-crema-facial-gel-2-600x600%20(1).webp",
+    ],
+  },
+  {
+    // Dropi: $35.000
+    slug: "bruma-facial-niacinamida-trendy",
+    dropiId: 2158766,
+    nombre: "Bruma facial con niacinamida Trendy",
+    resumen: "Bruma refrescante con niacinamida para hidratar y revivir la piel en cualquier momento.",
+    descripcion:
+      "Rocíala sobre el rostro limpio o encima del maquillaje para refrescar e hidratar al instante. Su fórmula con niacinamida ayuda a que la piel se vea más uniforme y luminosa.",
+    precio: 64900,
+    beneficios: [
+      "Hidrata al instante",
+      "Con niacinamida",
+      "Se usa sobre el maquillaje",
+      "Tamaño práctico para el bolso",
+    ],
+    incluye: ["1 bruma facial"],
+    garantia: "Garantía por defectos de fábrica según la Ley 1480 de 2011.",
+    categoria: "Skincare y belleza",
+    // Sin registro INVIMA de este tipo en InvimÁgil (consulta del 2026-11-10).
+    oculto: true,
+    imagenes: [
+      "https://d39ru7awumhhs2.cloudfront.net/colombia/products/2158766/1779718231Bruma-Facial-Niacinamida-Trendy-1_jpg%20(1).webp",
+    ],
+  },
+  {
+    // Dropi: $25.000
+    slug: "aceite-desmaquillante-trendy",
+    dropiId: 1982810,
+    nombre: "Aceite desmaquillante Trendy",
+    resumen: "Retira el maquillaje, incluso el a prueba de agua, sin frotar ni resecar la piel.",
+    descripcion:
+      "Masajea el aceite sobre la piel seca, agrega un poco de agua y enjuaga: el maquillaje y el protector solar se disuelven sin frotar. Es el primer paso de una buena doble limpieza.",
+    precio: 46900,
+    beneficios: [
+      "Retira maquillaje a prueba de agua",
+      "No reseca la piel",
+      "Primer paso de la doble limpieza",
+      "Rinde muchas aplicaciones",
+    ],
+    incluye: ["1 aceite desmaquillante"],
+    garantia: "Garantía por defectos de fábrica según la Ley 1480 de 2011.",
+    categoria: "Skincare y belleza",
+    invima: "NSOC53030-26CO",
+    imagenes: [
+      "https://d39ru7awumhhs2.cloudfront.net/colombia/products/1982810/1762029055157726-1200-auto.webp",
+      "https://d39ru7awumhhs2.cloudfront.net/colombia/products/1982810/1762029055158806-1200-auto.webp",
+    ],
+  },
+  {
+    // Dropi: $36.000
+    slug: "espuma-desmaquillante-trendy",
+    dropiId: 2013649,
+    nombre: "Espuma desmaquillante Trendy",
+    resumen: "Espuma suave para limpiar el rostro y retirar restos de maquillaje.",
+    descripcion:
+      "Aplica la espuma sobre el rostro húmedo, masajea y enjuaga. Limpia en profundidad sin dejar la piel tirante, ideal como segundo paso después del aceite desmaquillante.",
+    precio: 66900,
+    beneficios: [
+      "Limpieza suave y profunda",
+      "No deja la piel tirante",
+      "Textura en espuma",
+      "Para uso diario",
+    ],
+    incluye: ["1 espuma desmaquillante"],
+    garantia: "Garantía por defectos de fábrica según la Ley 1480 de 2011.",
+    categoria: "Skincare y belleza",
+    // Sin registro INVIMA de este tipo en InvimÁgil (consulta del 2026-11-10).
+    oculto: true,
+    imagenes: [
+      "https://d39ru7awumhhs2.cloudfront.net/colombia/products/2013649/1764710473Espuma-Desmaquillante-Trendy-1.webp",
+      "https://d39ru7awumhhs2.cloudfront.net/colombia/products/2013649/1764710473Espuma-Desmaquillante-Trendy_jpg.webp",
+    ],
+  },
+  {
+    // Dropi: $14.000
+    slug: "tonico-de-rosas-trendy",
+    dropiId: 1981373,
+    nombre: "Tónico de rosas Trendy 360 ml",
+    resumen: "Tónico de agua de rosas que refresca y prepara la piel después de la limpieza.",
+    descripcion:
+      "Aplícalo con un algodón o con las manos después de lavar tu rostro: refresca, equilibra la piel y la deja lista para tu crema o sérum. Presentación grande en doypack.",
+    precio: 29900,
+    beneficios: [
+      "Refresca y equilibra la piel",
+      "Con agua de rosas",
+      "Prepara para la crema",
+      "Presentación grande de 360 ml",
+    ],
+    incluye: ["1 tónico de rosas de 360 ml"],
+    garantia: "Garantía por defectos de fábrica según la Ley 1480 de 2011.",
+    categoria: "Skincare y belleza",
+    // Sin registro INVIMA de este tipo en InvimÁgil (consulta del 2026-11-10).
+    oculto: true,
+    imagenes: [
+      "https://d39ru7awumhhs2.cloudfront.net/colombia/products/1981373/1761931935Capturadepantalla_20221209_123336_440x_fba1b131-7ea3-4850-86f0-57817a829142.webp",
+    ],
+  },
+  {
+    // Dropi: $19.000
+    slug: "exfoliante-corporal-summer-trendy",
+    dropiId: 1982420,
+    nombre: "Exfoliante corporal Summer Trendy",
+    resumen: "Exfoliante para el cuerpo que retira células muertas y deja la piel suave.",
+    descripcion:
+      "Masajea sobre la piel húmeda en la ducha con movimientos circulares y enjuaga. La piel queda suave, lisa y lista para hidratar.",
+    precio: 39900,
+    beneficios: [
+      "Piel más suave y lisa",
+      "Retira células muertas",
+      "Aroma de verano",
+      "Se usa en la ducha",
+    ],
+    incluye: ["1 exfoliante corporal"],
+    garantia: "Garantía por defectos de fábrica según la Ley 1480 de 2011.",
+    categoria: "Skincare y belleza",
+    // Sin registro INVIMA de este tipo en InvimÁgil (consulta del 2026-11-10).
+    oculto: true,
+    imagenes: [
+      "https://d39ru7awumhhs2.cloudfront.net/colombia/products/1982420/1762019226COLECCION-SEPTIEMBRE-8-1-416x416.webp",
+    ],
+  },
+  {
+    // Dropi: $20.000
+    slug: "primer-aqua-serum-trendy",
+    dropiId: 2144850,
+    nombre: "Primer Aqua Serum Trendy",
+    resumen: "Prebase hidratante que prepara la piel para que el maquillaje dure más.",
+    descripcion:
+      "Aplica una pequeña cantidad antes de la base: hidrata, suaviza la textura de la piel y ayuda a que el maquillaje se vea uniforme por más tiempo.",
+    precio: 39900,
+    beneficios: [
+      "Maquillaje que dura más",
+      "Hidrata la piel",
+      "Acabado uniforme",
+      "Textura ligera",
+    ],
+    incluye: ["1 primer Aqua Serum"],
+    garantia: "Garantía por defectos de fábrica según la Ley 1480 de 2011.",
+    categoria: "Skincare y belleza",
+    imagenes: [
+      "https://d39ru7awumhhs2.cloudfront.net/colombia/products/2144850/1778004501AQUASERUMGRANDE01_1024x1024_2x_c512d2da-1e02-48d1-9adc-281ec9a2ccbf%20(3).webp",
+    ],
+  },
+  {
+    // Dropi: $21.000
+    slug: "polvos-compactos-trendy",
+    dropiId: 1982499,
+    nombre: "Polvos compactos Trendy",
+    resumen: "Polvo compacto para sellar el maquillaje y controlar el brillo durante el día.",
+    descripcion:
+      "Úsalo para fijar la base o solo para matificar la zona T. Trae espejo, así que puedes retocarte donde estés.",
+    precio: 42900,
+    beneficios: [
+      "Controla el brillo",
+      "Sella la base",
+      "Con espejo para retoques",
+      "Cabe en el bolso",
+    ],
+    incluye: ["1 polvo compacto"],
+    garantia: "Garantía por defectos de fábrica según la Ley 1480 de 2011.",
+    categoria: "Skincare y belleza",
+    // Sin registro INVIMA de este tipo en InvimÁgil (consulta del 2026-11-10).
+    oculto: true,
+    imagenes: [
+      "https://d39ru7awumhhs2.cloudfront.net/colombia/products/1982499/1762022640PolvosCompactosTrendyRefPCO5781_1024x1024_2x_0eeae817-d020-49d8-ba7f-4525b7090ce5.webp",
+      "https://d39ru7awumhhs2.cloudfront.net/colombia/products/1982499/1762022640PolvosCompactosTrendyRefPCO5782_1024x1024_2x_ce1ec09b-da1f-49af-b298-aec0efdcf1a5.webp",
+    ],
+  },
+  {
+    // Dropi: $15.500
+    slug: "contorno-en-barra-con-rubor-trendy",
+    dropiId: 1982126,
+    nombre: "Contorno en barra doble con rubor Trendy",
+    resumen: "Barra doble: un lado para contornear y otro de rubor para dar color.",
+    descripcion:
+      "Define pómulos, nariz y mandíbula con el lado de contorno y da un toque de color con el rubor. Textura cremosa que se difumina fácil con los dedos o con brocha.",
+    precio: 32900,
+    beneficios: [
+      "Dos productos en uno",
+      "Se difumina fácil",
+      "Textura cremosa",
+      "Práctico para llevar",
+    ],
+    incluye: ["1 barra doble de contorno y rubor"],
+    garantia: "Garantía por defectos de fábrica según la Ley 1480 de 2011.",
+    categoria: "Skincare y belleza",
+    // Sin registro INVIMA de este tipo en InvimÁgil (consulta del 2026-11-10).
+    oculto: true,
+    imagenes: [
+      "https://d39ru7awumhhs2.cloudfront.net/colombia/products/1982126/1762011120ContornoEnBarraDobleConRuborTrendyCS041_1024x1024_2x_c5116f7a-9dd9-4a8d-a336-69e97f18a1b6.webp",
+      "https://d39ru7awumhhs2.cloudfront.net/colombia/products/1982126/1762011120ContornoEnBarraDobleConRuborTrendyCS042_1024x1024_2x_496e59e6-bf98-408e-b7fd-9ba48c61c8ad.webp",
+    ],
+  },
+  {
+    // Dropi: $35.000
+    slug: "iluminador-lovely-glowy-trendy",
+    dropiId: 2158094,
+    nombre: "Iluminador Lovely Glowy Trendy",
+    resumen: "Iluminador en polvo para dar brillo a pómulos, nariz y arco de cupido.",
+    descripcion:
+      "Aplícalo en los puntos altos del rostro para un acabado luminoso. Se puede usar suave para el día o intenso para la noche.",
+    precio: 64900,
+    beneficios: [
+      "Acabado luminoso",
+      "Fácil de difuminar",
+      "Para día o noche",
+      "Empaque bonito para regalar",
+    ],
+    incluye: ["1 iluminador"],
+    garantia: "Garantía por defectos de fábrica según la Ley 1480 de 2011.",
+    categoria: "Skincare y belleza",
+    imagenes: [
+      "https://d39ru7awumhhs2.cloudfront.net/colombia/products/2158094/1779558297Iluminador-Lovely-Glowy-Trendy%20(2).webp",
+      "https://d39ru7awumhhs2.cloudfront.net/colombia/products/2158094/1779558297Iluminador-trendy-lovely-glow-tn%20(2).webp",
+      "https://d39ru7awumhhs2.cloudfront.net/colombia/products/2158094/1779558297Iluminador-trendy-lovely-glow-tn-1-1%20(2).webp",
+    ],
+  },
+  {
+    // Dropi: $30.000
+    slug: "bronzer-en-polvo-dash-trendy",
+    dropiId: 2157998,
+    nombre: "Bronzer en polvo Dash Trendy",
+    resumen: "Bronceador en polvo para dar calidez y un tono de sol al rostro.",
+    descripcion:
+      "Aplícalo con brocha grande en frente, pómulos y mandíbula para un efecto bronceado natural. También sirve para contornear suave.",
+    precio: 56900,
+    beneficios: [
+      "Efecto bronceado natural",
+      "Sirve para contornear",
+      "Fácil de difuminar",
+      "Acabado de larga duración",
+    ],
+    incluye: ["1 bronzer en polvo"],
+    garantia: "Garantía por defectos de fábrica según la Ley 1480 de 2011.",
+    categoria: "Skincare y belleza",
+    // Sin registro INVIMA de este tipo en InvimÁgil (consulta del 2026-11-10).
+    oculto: true,
+    imagenes: [
+      "https://d39ru7awumhhs2.cloudfront.net/colombia/products/2157998/1779554116Bronzer-En-Polvo-Dash-Trendy%20(2).webp",
+      "https://d39ru7awumhhs2.cloudfront.net/colombia/products/2157998/1779554116Bronzer-En-Polvo-Dash-Trendy-1_jpg%20(2).webp",
+    ],
+  },
+  {
+    // Dropi: $47.000
+    slug: "paleta-de-sombras-dreams-pro-trendy",
+    dropiId: 2013800,
+    nombre: "Paleta de sombras Dreams Pro Trendy",
+    resumen: "Paleta con muchos tonos mate y brillantes para looks de día y de noche.",
+    descripcion:
+      "Combina tonos neutros para el día y colores intensos para la noche en una sola paleta. Pigmentos que se difuminan fácil y duran.",
+    precio: 89900,
+    beneficios: [
+      "Muchos tonos en una paleta",
+      "Mate y brillantes",
+      "Buena pigmentación",
+      "Looks de día y noche",
+    ],
+    incluye: ["1 paleta de sombras"],
+    garantia: "Garantía por defectos de fábrica según la Ley 1480 de 2011.",
+    categoria: "Skincare y belleza",
+    imagenes: [
+      "https://d39ru7awumhhs2.cloudfront.net/colombia/products/2013800/1764715973Paleta-de-Sombras-Dreams-Pro-Trendy.webp",
+      "https://d39ru7awumhhs2.cloudfront.net/colombia/products/2013800/1764715972Paleta-de-Sombras-Dreams-Pro-Trendy-1.webp",
+    ],
+  },
+  {
+    // Dropi: $16.500
+    slug: "paleta-de-sombras-kitty-trendy",
+    dropiId: 1982313,
+    nombre: "Paleta de sombras Kitty Trendy",
+    resumen: "Paleta compacta de sombras con tonos fáciles de combinar.",
+    descripcion:
+      "Tonos pensados para el día a día en una paleta pequeña que cabe en cualquier cosmetiquera. Ideal para empezar o para llevar de viaje.",
+    precio: 34900,
+    beneficios: [
+      "Tonos fáciles de combinar",
+      "Compacta",
+      "Ideal para empezar",
+      "Buen regalo",
+    ],
+    incluye: ["1 paleta de sombras Kitty"],
+    garantia: "Garantía por defectos de fábrica según la Ley 1480 de 2011.",
+    categoria: "Skincare y belleza",
+    imagenes: [
+      "https://d39ru7awumhhs2.cloudfront.net/colombia/products/1982313/1762016393w_1500_h_1500_fit_pad.webp",
+    ],
+  },
+  {
+    // Dropi: $9.900
+    slug: "delineador-en-gel-trendy",
+    dropiId: 1980364,
+    nombre: "Delineador en gel Trendy",
+    resumen: "Delineador en gel a prueba de agua para un trazo intenso que dura todo el día.",
+    descripcion:
+      "Traza líneas finas o gruesas con precisión. Su fórmula en gel a prueba de agua no se corre con el calor ni la humedad.",
+    precio: 24900,
+    beneficios: [
+      "A prueba de agua",
+      "Color intenso",
+      "Trazo preciso",
+      "Larga duración",
+    ],
+    incluye: ["1 delineador en gel"],
+    garantia: "Garantía por defectos de fábrica según la Ley 1480 de 2011.",
+    categoria: "Skincare y belleza",
+    imagenes: [
+      "https://d39ru7awumhhs2.cloudfront.net/colombia/products/1980364/1761859814Delineador-Trendy-en-gel-a-prueba-de-agua.webp",
+      "https://d39ru7awumhhs2.cloudfront.net/colombia/products/1980364/1761859814Delineador-Trendy-en-gel-a-prueba-de-agua-Cbr.webp",
+    ],
+  },
+  {
+    // Dropi: $15.000
+    slug: "lapiz-para-cejas-microblading-trendy",
+    dropiId: 1986934,
+    nombre: "Lápiz para cejas tipo microblading Trendy",
+    resumen: "Lápiz de punta fina que dibuja trazos como pelitos para unas cejas naturales.",
+    descripcion:
+      "Su punta en forma de horquilla dibuja varios trazos a la vez que imitan el vello de la ceja. Rellena espacios y define la forma con un acabado natural.",
+    precio: 32900,
+    beneficios: [
+      "Efecto pelo a pelo",
+      "Acabado natural",
+      "Fácil de aplicar",
+      "Larga duración",
+    ],
+    incluye: ["1 lápiz para cejas"],
+    garantia: "Garantía por defectos de fábrica según la Ley 1480 de 2011.",
+    categoria: "Skincare y belleza",
+    invima: "NSOC53307-26CO",
+    imagenes: [
+      "https://d39ru7awumhhs2.cloudfront.net/colombia/products/1986934/1762461322173327660978.jpeg",
+    ],
+  },
+  {
+    // Dropi: $11.000
+    slug: "kit-pestanina-y-fortalecedor-trendy",
+    dropiId: 1980805,
+    nombre: "Kit pestañina y fortalecedor Trendy",
+    resumen: "Dúo de pestañina para dar volumen y gel fortalecedor para cuidar tus pestañas.",
+    descripcion:
+      "Usa el fortalecedor como base o de noche para cuidar tus pestañas, y la pestañina para darles volumen y longitud durante el día.",
+    precio: 26900,
+    beneficios: [
+      "Dos productos en un kit",
+      "Volumen y longitud",
+      "Cuida tus pestañas",
+      "Buen precio",
+    ],
+    incluye: ["1 pestañina y 1 fortalecedor de pestañas"],
+    garantia: "Garantía por defectos de fábrica según la Ley 1480 de 2011.",
+    categoria: "Skincare y belleza",
+    imagenes: [
+      "https://d39ru7awumhhs2.cloudfront.net/colombia/products/1980805/1761917010gold-eyes-1.webp",
+      "https://d39ru7awumhhs2.cloudfront.net/colombia/products/1980805/1761917010165971-1200-auto.webp",
+      "https://d39ru7awumhhs2.cloudfront.net/colombia/products/1980805/1761917010165972-1200-auto.webp",
+    ],
+  },
 ];
 
+/** Productos a la venta: todo el catálogo menos los ocultos. */
+export const PRODUCTOS: Producto[] = CATALOGO.filter((p) => !p.oculto);
+
 /** Secciones de la tienda, en el orden en que aparecen en el inicio. */
-export const SECCIONES = ["Cocina", "Belleza femenina", "Cafeteros"] as const;
+export const SECCIONES = ["Cocina", "Skincare y belleza", "Cafeteros"] as const;
 
 export function obtenerProducto(slug: string): Producto | undefined {
   return PRODUCTOS.find((p) => p.slug === slug);
