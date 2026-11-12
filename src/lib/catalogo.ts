@@ -1186,7 +1186,7 @@ const CATALOGO: Producto[] = [
       "https://d39ru7awumhhs2.cloudfront.net/colombia/products/1980805/1761917010165972-1200-auto.webp",
     ],
   },
-  // Gimnasio y Tecnología, agregados el 2026-11-12. Precios propuestos por Claude; pendiente confirmación del dueño.
+  // Gimnasio y Tecnología, agregados el 2026-11-12. Precios propuestos por Claude y aprobados por el dueño el 2026-11-12.
   // Productos genéricos (sin marcas imitadas), sin variantes de color. Foto del proveedor en Dropi.
   {
     // Dropi: $18.000

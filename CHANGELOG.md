@@ -6,7 +6,7 @@
 - Inicio nuevo: titular de la tienda, 4 garantías, tarjetas de categoría y 4 productos por sección con enlace a ver todos. Menú con las categorías (fila deslizable en celular).
 - Tarjetas de producto: zoom suave de la foto y botón "Ver producto" al pasar el mouse.
 - SEO: datos estructurados `Product`/`Offer` y `BreadcrumbList` (JSON-LD) en cada ficha, URL canónica, categorías en el sitemap y metadatos por categoría.
-- Secciones nuevas Gimnasio (bandas de resistencia, guantes, shaker, bolso magnético, barra para puerta) y Tecnología (2 cargadores magnéticos, smartwatch C60). Productos reales de Dropi, sin variantes; precios propuestos por Claude.
+- Secciones nuevas Gimnasio (bandas de resistencia, guantes, shaker, bolso magnético, barra para puerta) y Tecnología (2 cargadores magnéticos, smartwatch C60). Productos reales de Dropi, sin variantes; precios propuestos por Claude y aprobados por el dueño el 2026-11-12.
 - No se hizo (decisión): productos, calificaciones o avisos de "últimas unidades" inventados; perfumes y audífonos de Dropi (imitaciones de marca); descuento por pagar con Bold (el dueño eligió no darlo); carrito de varios productos (hoy se pide un producto por pedido).
 
 ## 2026-11-10 — Productos sin INVIMA fuera de la tienda [agente: Claude]
