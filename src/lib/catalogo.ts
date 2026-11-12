@@ -1361,7 +1361,7 @@ const CATALOGO: Producto[] = [
     imagenes: ["https://d39ru7awumhhs2.cloudfront.net/colombia/products/2001624/1763748452Reloj%20c60.jpg"],
   },
   // Audífonos, agregados el 2026-11-12. Genéricos o de marca propia del fabricante (sin imitaciones de
-  // otras marcas), sin variantes. Precios propuestos por Claude; pendiente confirmación del dueño.
+  // otras marcas), sin variantes. Precios propuestos por Claude y aprobados por el dueño el 2026-11-12.
   {
     // Dropi: $58.000
     slug: "audifonos-inalambricos-xo-ev53",

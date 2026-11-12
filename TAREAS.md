@@ -51,6 +51,6 @@
 | Sección Audífonos con 4 productos de Dropi | Claude | hecho | 2026-11-12 |
 | Crear `ADMIN_CLAVE` en Vercel (10 caracteres o más) y volver a desplegar | Dueño | pendiente | |
 | Correr `supabase/esquema.sql` en Supabase (crea la tabla `precios`) | Dueño | pendiente | |
-| Aprobar precios de los 4 audífonos | Dueño | pendiente | |
+| Aprobar precios de los 4 audífonos | Dueño | hecho | 2026-11-12 |
 | Probar en preview un pedido de 2 productos contra entrega y uno con Bold | Dueño + Claude | pendiente | |
 | Variantes de producto (color, talla) en ficha, carrito y pedido | Claude | pendiente | |
