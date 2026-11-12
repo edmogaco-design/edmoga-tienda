@@ -1186,13 +1186,226 @@ const CATALOGO: Producto[] = [
       "https://d39ru7awumhhs2.cloudfront.net/colombia/products/1980805/1761917010165972-1200-auto.webp",
     ],
   },
+  // Gimnasio y Tecnología, agregados el 2026-11-12. Precios propuestos por Claude; pendiente confirmación del dueño.
+  // Productos genéricos (sin marcas imitadas), sin variantes de color. Foto del proveedor en Dropi.
+  {
+    // Dropi: $18.000
+    slug: "bandas-de-resistencia-para-entrenamiento",
+    dropiId: 722193,
+    nombre: "Bandas de resistencia para entrenamiento",
+    resumen: "Entrena piernas, glúteos y brazos en casa o en el gimnasio, sin máquinas.",
+    descripcion:
+      "Ligeras y fáciles de llevar a donde vayas: suma resistencia a tus sentadillas, puentes y estiramientos para que cada repetición cuente. Un gimnasio completo que cabe en tu maleta.",
+    precio: 39900,
+    beneficios: [
+      "Entrena en casa, en el parque o de viaje",
+      "Más intensidad en cada ejercicio",
+      "Sirven para calentar y estirar",
+      "Ocupan casi nada de espacio",
+    ],
+    incluye: ["Bandas de resistencia para entrenamiento"],
+    garantia: "Garantía por defectos de fábrica según la Ley 1480 de 2011.",
+    categoria: "Gimnasio",
+    imagenes: [
+      "https://d39ru7awumhhs2.cloudfront.net/colombia/products/722193/17108662881708111845-NqNzNvxP5tZoGQ6GXp2.jpg",
+    ],
+  },
+  {
+    // Dropi: $22.000
+    slug: "guantes-de-gimnasio-y-ciclismo",
+    dropiId: 2147100,
+    nombre: "Guantes de gimnasio y ciclismo",
+    resumen: "Agarre firme en pesas, barras y manubrio, sin callos ni ampollas.",
+    descripcion:
+      "Protege tus manos mientras levantas o pedaleas: mejoran el agarre cuando sudas y reducen la fricción contra la barra. Entrena más tiempo y con más confianza.",
+    precio: 44900,
+    beneficios: [
+      "Mejor agarre con las manos sudadas",
+      "Menos callos y ampollas",
+      "Sirven para pesas y bicicleta",
+      "Livianos y fáciles de llevar",
+    ],
+    incluye: ["1 par de guantes"],
+    garantia: "Garantía por defectos de fábrica según la Ley 1480 de 2011.",
+    categoria: "Gimnasio",
+    imagenes: ["https://d39ru7awumhhs2.cloudfront.net/colombia/products/2147100/17782487831000332393.jpg"],
+  },
+  {
+    // Dropi: $19.900
+    slug: "botella-shaker-con-compartimentos",
+    dropiId: 1331457,
+    nombre: "Botella shaker con compartimentos",
+    resumen: "Lleva tu proteína en polvo aparte y mézclala justo cuando la vas a tomar.",
+    descripcion:
+      "Guarda el polvo en los compartimentos y el agua en la botella: al terminar de entrenar, sirves, agitas y listo. Nada de bolsas ni recipientes extra en el morral.",
+    precio: 39900,
+    beneficios: [
+      "Compartimentos para el polvo",
+      "Mezcla rápida al agitar",
+      "Todo en un solo envase",
+      "Ideal para el gimnasio y la oficina",
+    ],
+    incluye: ["1 botella shaker con compartimentos"],
+    garantia: "Garantía por defectos de fábrica según la Ley 1480 de 2011.",
+    categoria: "Gimnasio",
+    imagenes: [
+      "https://d39ru7awumhhs2.cloudfront.net/colombia/products/1331457/1728492380WhatsApp%20Image%202024-10-09%20at%205.53.19%20AM.jpeg",
+    ],
+  },
+  {
+    // Dropi: $40.000
+    slug: "bolso-magnetico-para-gimnasio",
+    dropiId: 2106331,
+    nombre: "Bolso magnético para gimnasio",
+    resumen: "Se pega a las máquinas del gimnasio y mantiene a mano tu celular, llaves y audífonos.",
+    descripcion:
+      "Pégalo en la máquina que estás usando y entrena con tus cosas a la vista, sin dejarlas en el piso ni en la banca. Práctico, discreto y siempre a tu alcance.",
+    precio: 69900,
+    beneficios: [
+      "Se adhiere con imán a superficies metálicas",
+      "Tus cosas siempre a la vista",
+      "Nada en el piso del gimnasio",
+      "Compacto y fácil de llevar",
+    ],
+    incluye: ["1 bolso magnético"],
+    garantia: "Garantía por defectos de fábrica según la Ley 1480 de 2011.",
+    categoria: "Gimnasio",
+    imagenes: [
+      "https://d39ru7awumhhs2.cloudfront.net/colombia/products/2106331/1773357195D_NQ_NP_2X_649449-CBT83583808540_042025-F.webp",
+    ],
+  },
+  {
+    // Dropi: $35.000
+    slug: "barra-de-ejercicios-para-puerta",
+    dropiId: 885497,
+    nombre: "Barra de ejercicios para puerta",
+    resumen: "Haz dominadas en casa: se instala en el marco de la puerta.",
+    descripcion:
+      "Convierte cualquier puerta en tu estación de dominadas. Fortalece espalda, brazos y abdomen todos los días sin pagar mensualidad ni salir de casa.",
+    precio: 69900,
+    beneficios: [
+      "Dominadas y colgadas en casa",
+      "Trabaja espalda, brazos y abdomen",
+      "Se instala en el marco de la puerta",
+      "Ocupa muy poco espacio",
+    ],
+    incluye: ["1 barra de ejercicios para puerta"],
+    garantia: "Garantía por defectos de fábrica según la Ley 1480 de 2011.",
+    categoria: "Gimnasio",
+    imagenes: [
+      "https://d39ru7awumhhs2.cloudfront.net/colombia/products/885497/1716567368D_NQ_NP_879907-MCO75631165627_042024-O%20(1).webp",
+    ],
+  },
+  {
+    // Dropi: $25.000
+    slug: "cargador-magnetico-inalambrico",
+    dropiId: 2280195,
+    nombre: "Cargador magnético inalámbrico",
+    resumen: "Acerca el celular y queda pegado cargando, sin buscar el cable.",
+    descripcion:
+      "Olvídate de conectar y desconectar: el imán alinea tu celular en el punto exacto y empieza a cargar. Revisa que tu celular sea compatible con carga inalámbrica magnética.",
+    precio: 49900,
+    beneficios: [
+      "Se pega con imán en la posición correcta",
+      "Sin enredos de cables",
+      "Puedes seguir usando el celular mientras carga",
+      "Compacto para llevar en el bolso",
+    ],
+    incluye: ["1 cargador magnético inalámbrico"],
+    garantia: "Garantía por defectos de fábrica según la Ley 1480 de 2011.",
+    categoria: "Tecnología",
+    imagenes: [
+      "https://d39ru7awumhhs2.cloudfront.net/colombia/products/2280195/593449c5-b1fa-45de-9346-b668ec3179d1.webp",
+    ],
+  },
+  {
+    // Dropi: $42.000
+    slug: "cargador-magnetico-3-en-1",
+    dropiId: 1719580,
+    nombre: "Cargador magnético 3 en 1",
+    resumen: "Carga hasta tres dispositivos en un solo lugar y despeja tu mesa de noche.",
+    descripcion:
+      "Un solo cargador para tus dispositivos de todos los días: menos cables, menos enchufes y todo listo cuando te levantas. Revisa que tus equipos sean compatibles con carga inalámbrica.",
+    precio: 79900,
+    beneficios: [
+      "Tres dispositivos, un solo cargador",
+      "Mesa de noche ordenada",
+      "Libera enchufes",
+      "Buen regalo",
+    ],
+    incluye: ["1 cargador magnético 3 en 1"],
+    garantia: "Garantía por defectos de fábrica según la Ley 1480 de 2011.",
+    categoria: "Tecnología",
+    imagenes: [
+      "https://d39ru7awumhhs2.cloudfront.net/colombia/products/1719580/1741986792Post%20de%20Instagram%20Vertical%20Frase%20Acuarela%20Azul%203.png.png",
+    ],
+  },
+  {
+    // Dropi: $39.900
+    slug: "smartwatch-c60-ultra-3",
+    dropiId: 2001624,
+    nombre: "Smartwatch C60 Ultra 3",
+    resumen: "Reloj inteligente con pantalla grande para ver la hora y tus notificaciones en la muñeca.",
+    descripcion:
+      "Mira la hora y tus mensajes con solo girar la muñeca. Un reloj deportivo de diseño moderno que se conecta a tu celular por Bluetooth.",
+    precio: 79900,
+    beneficios: [
+      "Notificaciones del celular en la muñeca",
+      "Se conecta por Bluetooth",
+      "Pantalla grande y fácil de leer",
+      "Diseño deportivo",
+    ],
+    incluye: ["1 smartwatch C60 Ultra 3"],
+    garantia: "Garantía por defectos de fábrica según la Ley 1480 de 2011.",
+    categoria: "Tecnología",
+    imagenes: ["https://d39ru7awumhhs2.cloudfront.net/colombia/products/2001624/1763748452Reloj%20c60.jpg"],
+  },
 ];
 
 /** Productos a la venta: todo el catálogo menos los ocultos. */
 export const PRODUCTOS: Producto[] = CATALOGO.filter((p) => !p.oculto);
 
 /** Secciones de la tienda, en el orden en que aparecen en el inicio. */
-export const SECCIONES = ["Cocina", "Skincare y belleza", "Cafeteros"] as const;
+export const SECCIONES = ["Cocina", "Skincare y belleza", "Cafeteros", "Gimnasio", "Tecnología"] as const;
+export type Seccion = (typeof SECCIONES)[number];
+
+/** Página propia de cada sección (/categoria/[slug]): textos del banner y de los buscadores. */
+export const CATEGORIAS: Record<Seccion, { slug: string; titulo: string; lema: string; descripcion: string }> = {
+  Cocina: {
+    slug: "cocina",
+    titulo: "Cocina práctica",
+    lema: "Cocina más rápido, limpia menos y disfruta más cada comida.",
+    descripcion: "Utensilios y accesorios de cocina con pago contra entrega en toda Colombia.",
+  },
+  "Skincare y belleza": {
+    slug: "belleza",
+    titulo: "Skincare y belleza",
+    lema: "Tu rutina de cuidado, simple y directo a tu puerta.",
+    descripcion: "Skincare, maquillaje y cuidado personal con pago contra entrega en toda Colombia.",
+  },
+  Cafeteros: {
+    slug: "cafeteros",
+    titulo: "Para cafeteros",
+    lema: "Prepara en casa un café para disfrutar sin afán.",
+    descripcion: "Cafeteras y accesorios para preparar café en casa, con envío a toda Colombia.",
+  },
+  Gimnasio: {
+    slug: "gimnasio",
+    titulo: "Gimnasio y fitness",
+    lema: "Equipa tu rutina. Supera tus límites.",
+    descripcion: "Accesorios para entrenar en casa o en el gimnasio, con pago contra entrega en toda Colombia.",
+  },
+  Tecnología: {
+    slug: "tecnologia",
+    titulo: "Tecnología y lifestyle",
+    lema: "Pequeños aparatos que te hacen el día más fácil.",
+    descripcion: "Cargadores, smartwatches y accesorios de tecnología con pago contra entrega en toda Colombia.",
+  },
+};
+
+export function seccionPorSlug(slug: string): Seccion | undefined {
+  return SECCIONES.find((s) => CATEGORIAS[s].slug === slug);
+}
 
 export function obtenerProducto(slug: string): Producto | undefined {
   return PRODUCTOS.find((p) => p.slug === slug);

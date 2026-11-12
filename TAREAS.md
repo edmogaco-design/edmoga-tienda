@@ -41,3 +41,8 @@
 | Aprobar precio de la cafetera Chemex ($69.900) | Dueño | hecho | 2026-11-10 |
 | Fotos propias de los productos | Grok / Dueño | pendiente | |
 | Revisión legal de textos | Dueño | pendiente | |
+| Rediseño (paleta 60-30-10), páginas por categoría con filtros y SEO con datos estructurados | Claude | hecho | 2026-11-12 |
+| 8 productos nuevos de Dropi: secciones Gimnasio y Tecnología | Claude | hecho | 2026-11-12 |
+| Confirmar precios de los 8 productos de Gimnasio y Tecnología antes de pasar a producción | Dueño | pendiente | |
+| Carrito de varios productos (cambia pedido, Bold y registro) | Claude | pendiente | |
+| Perfumes: conseguir proveedor con originales o marca propia (los de Dropi son imitaciones) | Dueño | pendiente | |

@@ -1,5 +1,5 @@
 import type { MetadataRoute } from "next";
-import { PRODUCTOS } from "@/lib/catalogo";
+import { CATEGORIAS, PRODUCTOS, SECCIONES } from "@/lib/catalogo";
 import { SITE } from "@/lib/config";
 
 export default function sitemap(): MetadataRoute.Sitemap {
@@ -8,6 +8,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   }));
   return [
     { url: SITE.url },
+    ...SECCIONES.map((s) => ({ url: `${SITE.url}/categoria/${CATEGORIAS[s].slug}` })),
     ...PRODUCTOS.map((p) => ({ url: `${SITE.url}/producto/${p.slug}` })),
     ...legales,
   ];

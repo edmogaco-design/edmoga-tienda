@@ -1,5 +1,14 @@
 # CHANGELOG
 
+## 2026-11-12 — Rediseño, páginas por categoría, SEO y 8 productos nuevos [agente: Claude]
+- Paleta 60-30-10: fondo blanco humo (#F8F9FA), azul marino en franjas, títulos y pie, y dorado en los botones de compra (`.btn-primary`).
+- Página propia por categoría en `/categoria/[slug]` (cocina, belleza, cafeteros, gimnasio, tecnologia) con banner, filtro por precio y orden (recomendados, novedades, precio). Textos en `CATEGORIAS` de `src/lib/catalogo.ts`.
+- Inicio nuevo: titular de la tienda, 4 garantías, tarjetas de categoría y 4 productos por sección con enlace a ver todos. Menú con las categorías (fila deslizable en celular).
+- Tarjetas de producto: zoom suave de la foto y botón "Ver producto" al pasar el mouse.
+- SEO: datos estructurados `Product`/`Offer` y `BreadcrumbList` (JSON-LD) en cada ficha, URL canónica, categorías en el sitemap y metadatos por categoría.
+- Secciones nuevas Gimnasio (bandas de resistencia, guantes, shaker, bolso magnético, barra para puerta) y Tecnología (2 cargadores magnéticos, smartwatch C60). Productos reales de Dropi, sin variantes; precios propuestos por Claude.
+- No se hizo (decisión): productos, calificaciones o avisos de "últimas unidades" inventados; perfumes y audífonos de Dropi (imitaciones de marca); descuento por pagar con Bold (el dueño eligió no darlo); carrito de varios productos (hoy se pide un producto por pedido).
+
 ## 2026-11-10 — Productos sin INVIMA fuera de la tienda [agente: Claude]
 - Nuevo campo `oculto` en el catálogo: el producto no aparece en el inicio ni en el sitemap, su ficha da 404 y no se puede pedir ni pagar.
 - Se ocultan 7 productos Trendy sin registro de su tipo en InvimÁgil: tónico de rosas, exfoliante corporal, bruma con niacinamida, polvos compactos, contorno en barra con rubor, espuma desmaquillante y bronzer. Aprobado por el dueño.

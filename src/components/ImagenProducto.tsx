@@ -9,7 +9,7 @@ export function ImagenProducto({ src, alt = "Producto EDMOGA", className = "", i
         <img
           src={src}
           alt={alt}
-          className="h-full w-full object-cover"
+          className="h-full w-full object-cover transition-transform duration-300 ease-out group-hover:scale-105"
           loading={prioridad ? "eager" : "lazy"}
           fetchPriority={prioridad ? "high" : "auto"}
         />
