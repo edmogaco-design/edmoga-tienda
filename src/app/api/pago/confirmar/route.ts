@@ -1,11 +1,12 @@
 import { NextResponse, after } from "next/server";
 import { z } from "zod";
-import { pedidoSchema, codigoDesde, mensajePedidoPagado } from "@/lib/pedido";
-import { obtenerProducto } from "@/lib/catalogo";
+import { pedidoSchema, codigoDesde, lineasDe, mensajePedidoPagado, resumenLineas, subtotalDe } from "@/lib/pedido";
+import { catalogoVigente } from "@/lib/precios";
+import { claveCotizacion, lineasCotizadas, type Cotizacion } from "@/lib/cotizacion";
 import { enlaceWhatsApp } from "@/lib/config";
 import { consultarPago } from "@/lib/bold";
-import { crearPedidoDropi, dropiConfigurado } from "@/lib/dropi";
-import { guardarResultado, ipCliente, limitado, reservar } from "@/lib/unaVez";
+import { crearPedidosDropi, dropiConfigurado, resumenDropi } from "@/lib/dropi";
+import { guardarResultado, ipCliente, leerGuardado, limitado, reservar } from "@/lib/unaVez";
 import { filaPedido, registrarPedido } from "@/lib/registro";
 
 const entrada = z.object({
@@ -22,7 +23,7 @@ export async function POST(req: Request) {
   try {
     datos = await req.json();
   } catch {
-    return NextResponse.json({ error: "Solicitud inválida" }, { status: 400 });
+    return NextResponse.json({ error: "Datos inválidos" }, { status: 400 });
   }
   const r = entrada.safeParse(datos);
   if (!r.success) return NextResponse.json({ error: "Datos inválidos" }, { status: 400 });
@@ -34,9 +35,22 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "La orden no corresponde al pedido" }, { status: 400 });
   }
 
-  const producto = obtenerProducto(pedido.producto);
-  if (!producto) return NextResponse.json({ error: "Producto no encontrado" }, { status: 404 });
-  const esperado = producto.precio * pedido.cantidad;
+  const catalogo = await catalogoVigente();
+  let lineas = lineasDe(pedido.items, catalogo);
+  if (!lineas) return NextResponse.json({ error: "Producto no encontrado" }, { status: 404 });
+
+  // Si se guardó la cotización al iniciar el pago, manda ella (precios de ese momento) y los
+  // productos que llegan deben ser exactamente los cotizados. Sin cotización (almacén caído o
+  // vencida) se valida contra los precios vigentes, como siempre.
+  const cotizacion = await leerGuardado<Cotizacion>(claveCotizacion(orden)).catch(() => null);
+  if (cotizacion) {
+    lineas = lineasCotizadas(pedido.items, cotizacion, catalogo);
+    if (!lineas) {
+      console.error("pago_items_no_cuadran", { orden });
+      return NextResponse.json({ estado: "REVISION_MANUAL", codigo });
+    }
+  }
+  const esperado = subtotalDe(lineas);
 
   // Regla de oro: se verifica con Bold, no con lo que diga la URL de retorno.
   const pago = await consultarPago(orden);
@@ -52,7 +66,7 @@ export async function POST(req: Request) {
     return NextResponse.json({ estado: "REVISION_MANUAL", codigo });
   }
 
-  // Un pago = un pedido en Dropi, aunque la confirmación se repita en otra instancia.
+  // Un pago = un despacho, aunque la confirmación se repita en otra instancia.
   // Si el registro compartido no responde, no se arriesga un despacho doble: el cliente reintenta.
   const clave = `edmoga:pago:${orden}`;
   let reserva;
@@ -67,30 +81,33 @@ export async function POST(req: Request) {
     return NextResponse.json(reserva.cuerpo ?? { estado: "PROCESSING", codigo });
   }
 
-  const dropi = dropiConfigurado()
-    ? await crearPedidoDropi(pedido, producto, codigo, { pagoBold: { transaccion: pago.transaccion } })
-    : null;
+  const dropi = resumenDropi(
+    dropiConfigurado()
+      ? await crearPedidosDropi(pedido, lineas, codigo, { pagoBold: { transaccion: pago.transaccion } })
+      : null,
+  );
 
   console.info("pago_confirmado", {
     codigo,
     orden,
     total: pago.total,
     transaccion: pago.transaccion,
-    dropi: dropi === null ? "no_configurado" : dropi.ok ? "creado" : `fallo:${dropi.motivo}`,
+    dropi: dropi.estado,
   });
 
   const fila = filaPedido(pedido, {
     codigo,
     metodo: "bold",
     estado: "pagado",
-    producto: producto.nombre,
+    producto: resumenLineas(lineas).slice(0, 500),
+    cantidad: lineas.reduce((n, l) => n + l.cantidad, 0),
     subtotal: esperado,
     envio: 0,
     total: esperado,
     orden_bold: orden,
     transaccion_bold: pago.transaccion,
-    dropi: dropi === null ? "no_configurado" : dropi.ok ? "creado" : `fallo:${dropi.motivo}`.slice(0, 200),
-    dropi_pedido: dropi?.ok ? dropi.dropiId : null,
+    dropi: dropi.estado,
+    dropi_pedido: dropi.pedido,
   });
   after(registrarPedido(fila)); // se guarda después de responder, sin demorar al cliente
 
@@ -99,10 +116,8 @@ export async function POST(req: Request) {
     codigo,
     transaccion: pago.transaccion,
     total: pago.total,
-    registradoEnDropi: dropi?.ok === true,
-    whatsapp: enlaceWhatsApp(
-      mensajePedidoPagado(pedido, esperado, producto.nombre, codigo, pago.transaccion),
-    ),
+    registradoEnDropi: dropi.todos,
+    whatsapp: enlaceWhatsApp(mensajePedidoPagado(pedido, lineas, codigo, pago.transaccion)),
   };
   await guardarResultado(clave, cuerpo).catch((e) =>
     console.error("registro_no_guardado", { orden, error: String(e) }),

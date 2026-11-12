@@ -8,13 +8,13 @@ import { costoEnvio, ZONAS } from "./envios";
 import { firmaWebhookValida } from "./bold";
 import { PRODUCTOS } from "./catalogo";
 import { guardarResultado, reservar } from "./unaVez";
-import type { Pedido } from "./pedido";
+import type { Linea, Pedido } from "./pedido";
 
 const producto = PRODUCTOS[0];
+const linea: Linea = { producto, cantidad: 2, subtotal: producto.precio * 2 };
 const pedido: Pedido = {
   idSolicitud: "123e4567-e89b-12d3-a456-426614174000",
-  producto: producto.slug,
-  cantidad: 2,
+  items: [{ producto: producto.slug, cantidad: 2 }],
   nombre: "Ana María Pérez",
   telefono: "3001234567",
   ciudad: "Medellín",
@@ -24,13 +24,13 @@ const pedido: Pedido = {
 };
 
 test("contra entrega: Dropi cobra productos + envío", () => {
-  const c = cuerpoPedidoDropi(pedido, producto, "EDM-1", { envio: 18000 });
+  const c = cuerpoPedidoDropi(pedido, linea, "EDM-1", { envio: 18000 });
   assert.equal(c.rate_type, "CON RECAUDO");
   assert.equal(c.total_order, producto.precio * 2 + 18000);
 });
 
 test("pagado con Bold: Dropi no cobra nada y no suma envío", () => {
-  const c = cuerpoPedidoDropi(pedido, producto, "EDM-1", { pagoBold: { transaccion: "T1" }, envio: 18000 });
+  const c = cuerpoPedidoDropi(pedido, linea, "EDM-1", { pagoBold: { transaccion: "T1" }, envio: 18000 });
   assert.equal(c.rate_type, "SIN RECAUDO");
   assert.equal(c.total_order, producto.precio * 2);
   assert.match(c.notes, /NO COBRAR/);
@@ -82,6 +82,7 @@ test("registro: la fila lleva los datos del pedido y sin destinos configurados n
     metodo: "contra_entrega",
     estado: "pendiente_confirmacion_whatsapp",
     producto: producto.nombre,
+    cantidad: 2,
     subtotal: 100,
     envio: 18000,
     total: 18100,
@@ -99,6 +100,6 @@ test("un producto oculto no está a la venta ni se puede pedir", async () => {
   const { pedidoSchema } = await import("./pedido");
   const { obtenerProducto } = await import("./catalogo");
   assert.equal(obtenerProducto("tonico-de-rosas-trendy"), undefined);
-  assert.equal(pedidoSchema.safeParse({ ...pedido, producto: "tonico-de-rosas-trendy" }).success, false);
+  assert.equal(pedidoSchema.safeParse({ ...pedido, items: [{ producto: "tonico-de-rosas-trendy", cantidad: 1 }] }).success, false);
   assert.equal(pedidoSchema.safeParse(pedido).success, true);
 });

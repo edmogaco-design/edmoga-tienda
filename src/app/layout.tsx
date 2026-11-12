@@ -5,6 +5,10 @@ import { SITE } from "@/lib/config";
 import { Encabezado } from "@/components/Encabezado";
 import { PiePagina } from "@/components/PiePagina";
 import { BotonWhatsApp } from "@/components/BotonWhatsApp";
+import { TiendaProvider } from "@/components/TiendaProvider";
+import { PanelCarrito } from "@/components/Carrito";
+import { aTarjeta } from "@/components/TarjetaProducto";
+import { catalogoVigente } from "@/lib/precios";
 
 // Texto: Atkinson Hyperlegible, pensada para leerse fácil en celular y por cualquier persona.
 // Títulos y precios: Bricolage Grotesque, con carácter para la voz de la marca.
@@ -33,14 +37,18 @@ export const metadata: Metadata = {
 
 export const viewport: Viewport = { themeColor: "#162944" };
 
-export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
+export default async function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
+  const productos = (await catalogoVigente()).map(aTarjeta);
   return (
     <html lang="es-CO">
       <body className={`${texto.variable} ${titulos.variable} flex min-h-screen flex-col bg-fondo text-ink`}>
-        <Encabezado />
-        <main className="flex-1">{children}</main>
-        <PiePagina />
-        <BotonWhatsApp />
+        <TiendaProvider productos={productos}>
+          <Encabezado />
+          <main className="flex-1">{children}</main>
+          <PiePagina />
+          <BotonWhatsApp />
+          <PanelCarrito />
+        </TiendaProvider>
       </body>
     </html>
   );

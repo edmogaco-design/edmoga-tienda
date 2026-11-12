@@ -5,12 +5,15 @@ import { useRef, useState } from "react";
 import { pedidoSchema } from "@/lib/pedido";
 import { formatoCOP } from "@/lib/config";
 import { DEPARTAMENTOS, type Departamento } from "@/lib/departamentos";
-import { costoEnvio } from "@/lib/envios";
+import { costoEnvioPedido } from "@/lib/envios";
 import { BotonBold, type ParametrosBold } from "@/components/BotonBold";
 import { ImagenProducto } from "@/components/ImagenProducto";
+import { SelectorCantidad } from "@/components/Carrito";
+import { useTienda } from "@/components/TiendaProvider";
 
 type Props = {
-  producto: { slug: string; nombre: string; precio: number; imagen?: string };
+  /** Compra directa de un producto ("Comprar ahora"). Sin esto, se pide lo que hay en el carrito. */
+  directo?: string;
   pagoEnLinea: boolean;
 };
 type Metodo = "contraentrega" | "bold";
@@ -28,8 +31,9 @@ function Error({ texto }: { texto?: string }) {
   return <p className="mt-1.5 text-sm text-error">{texto}</p>;
 }
 
-export function FormularioPedido({ producto, pagoEnLinea }: Props) {
-  const [cantidad, setCantidad] = useState(1);
+export function FormularioPedido({ directo, pagoEnLinea }: Props) {
+  const tienda = useTienda();
+  const [cantidadDirecta, setCantidadDirecta] = useState(1);
   const [metodo, setMetodo] = useState<Metodo>("contraentrega");
   const [departamento, setDepartamento] = useState<Departamento | "">("");
   const [ciudad, setCiudad] = useState("");
@@ -37,8 +41,23 @@ export function FormularioPedido({ producto, pagoEnLinea }: Props) {
   const [errores, setErrores] = useState<Errores>({});
   const [mensaje, setMensaje] = useState("");
   const [enviando, setEnviando] = useState(false);
+  const [hecho, setHecho] = useState(false);
   // Mismo id mientras los datos no cambien: un doble clic o reintento no duplica el pedido.
   const idSolicitud = useRef<string | null>(null);
+
+  const items = directo ? [{ slug: directo, cantidad: cantidadDirecta }] : tienda.carrito;
+  const lineas = items.flatMap((i) => (tienda.catalogo[i.slug] ? [{ ...tienda.catalogo[i.slug], cantidad: i.cantidad }] : []));
+
+  // Cambió el pedido: nueva solicitud y el botón de Bold anterior ya no sirve.
+  function reiniciar() {
+    idSolicitud.current = null;
+    setBold(null);
+  }
+  function cambiarCantidad(slug: string, n: number) {
+    if (directo) setCantidadDirecta(Math.max(1, Math.min(10, n)));
+    else tienda.cambiarCantidad(slug, n);
+    reiniciar();
+  }
 
   async function enviar(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -48,8 +67,7 @@ export function FormularioPedido({ producto, pagoEnLinea }: Props) {
     const fd = new FormData(e.currentTarget);
     const datos = {
       idSolicitud: idSolicitud.current,
-      producto: producto.slug,
-      cantidad,
+      items: lineas.map((l) => ({ producto: l.slug, cantidad: l.cantidad })),
       nombre: fd.get("nombre"),
       telefono: String(fd.get("telefono") ?? "").replace(/\D/g, ""),
       departamento: fd.get("departamento"),
@@ -61,7 +79,9 @@ export function FormularioPedido({ producto, pagoEnLinea }: Props) {
 
     const local = pedidoSchema.safeParse(datos);
     if (!local.success) {
-      setErrores(local.error.flatten().fieldErrors);
+      const e: Errores = local.error.flatten().fieldErrors;
+      setErrores(e);
+      if (e.items) setMensaje(e.items[0]);
       return;
     }
     setErrores({});
@@ -83,6 +103,8 @@ export function FormularioPedido({ producto, pagoEnLinea }: Props) {
         // Los datos de entrega se guardan solo en este navegador para confirmar al volver de Bold.
         try {
           sessionStorage.setItem(`edmoga-pago-${json.orden}`, JSON.stringify(local.data));
+          // Si el pago sale bien y venía del carrito, el carrito se vacía al volver.
+          if (!directo) sessionStorage.setItem(`edmoga-pago-${json.orden}-carrito`, "1");
         } catch {
           /* sin almacenamiento: el asesor completa por WhatsApp */
         }
@@ -109,6 +131,8 @@ export function FormularioPedido({ producto, pagoEnLinea }: Props) {
         return;
       }
       setMensaje(`¡Listo! Tu pedido ${json.codigo} quedó registrado. Te abrimos WhatsApp para confirmarlo.`);
+      setHecho(true);
+      if (!directo) tienda.vaciar();
       window.location.href = json.whatsapp;
     } catch {
       setMensaje("Error de conexión. Intenta de nuevo.");
@@ -117,10 +141,32 @@ export function FormularioPedido({ producto, pagoEnLinea }: Props) {
     }
   }
 
-  const subtotal = producto.precio * cantidad;
-  // Contra entrega: envío según departamento y ciudad. En línea (Bold): envío gratis.
+  if (!directo && !tienda.listo) return <p className="mt-8 text-base text-muted">Cargando tu carrito…</p>;
+
+  if (hecho) {
+    return (
+      <p role="status" className="mt-8 rounded-sm bg-surface-soft p-4 text-base text-ink">
+        {mensaje}
+      </p>
+    );
+  }
+
+  if (lineas.length === 0) {
+    return (
+      <div className="mt-8">
+        <p className="text-base text-body">Tu carrito está vacío.</p>
+        <Link href="/#productos" className="btn-primary mt-6">
+          Ver productos
+        </Link>
+      </div>
+    );
+  }
+
+  const subtotal = lineas.reduce((suma, l) => suma + l.precio * l.cantidad, 0);
+  const paquetes = lineas.length;
+  // Contra entrega: un envío por producto distinto, según departamento y ciudad. En línea: gratis.
   const envio =
-    metodo === "bold" ? 0 : departamento && ciudad.trim() ? costoEnvio(departamento, ciudad) : null;
+    metodo === "bold" ? 0 : departamento && ciudad.trim() ? costoEnvioPedido(departamento, ciudad, paquetes) : null;
   const textoEnvio =
     metodo === "bold" ? "Gratis" : envio === null ? "Elige departamento y ciudad" : formatoCOP(envio);
 
@@ -130,11 +176,10 @@ export function FormularioPedido({ producto, pagoEnLinea }: Props) {
       onChange={(e) => {
         const campo = e.target;
         if (campo instanceof HTMLInputElement && campo.name === "ciudad") setCiudad(campo.value);
-        idSolicitud.current = null;
-        setBold(null);
+        reiniciar();
       }}
       noValidate
-      className="mt-8 grid gap-10 md:grid-cols-[minmax(0,1fr)_360px] lg:gap-16"
+      className="mt-8 grid gap-10 md:grid-cols-[minmax(0,1fr)_380px] lg:gap-16"
     >
       {/* Columna del formulario */}
       <div className="space-y-10">
@@ -272,57 +317,42 @@ export function FormularioPedido({ producto, pagoEnLinea }: Props) {
       {/* Resumen del pedido */}
       <aside className="order-first md:order-none">
         <div className="rounded-md border border-hairline bg-canvas p-6 shadow-card md:sticky md:top-28">
-          <div className="flex gap-4">
-            <ImagenProducto src={producto.imagen} alt={producto.nombre} className="h-24 w-24 shrink-0" />
-            <div>
-              <p className="text-base font-semibold leading-tight text-ink">{producto.nombre}</p>
-              <p className="mt-1 text-sm text-muted">{formatoCOP(producto.precio)} por unidad</p>
-            </div>
-          </div>
+          <h2 className="text-lg font-bold text-ink">Tu pedido</h2>
+          <ul className="mt-2 divide-y divide-hairline">
+            {lineas.map((l) => (
+              <li key={l.slug} className="flex gap-3 py-4">
+                <ImagenProducto src={l.imagen} alt={l.nombre} className="h-16 w-16 shrink-0" />
+                <div className="min-w-0 flex-1">
+                  <p className="text-base font-semibold leading-tight text-ink">{l.nombre}</p>
+                  <p className="mt-0.5 text-sm text-muted">{formatoCOP(l.precio)} por unidad</p>
+                  <div className="mt-2 flex items-center justify-between gap-2">
+                    <SelectorCantidad cantidad={l.cantidad} alCambiar={(n) => cambiarCantidad(l.slug, n)} nombre={l.nombre} />
+                    {!directo && (
+                      <button
+                        type="button"
+                        onClick={() => {
+                          tienda.quitar(l.slug);
+                          reiniciar();
+                        }}
+                        className="text-sm font-medium text-muted underline hover:text-error"
+                      >
+                        Quitar
+                      </button>
+                    )}
+                  </div>
+                </div>
+              </li>
+            ))}
+          </ul>
 
-          <div className="mt-5 border-t border-hairline pt-5">
-            <div className="flex items-center justify-between">
-              <span className="text-base text-ink">Cantidad</span>
-              <div className="flex items-center gap-3">
-                <button
-                  type="button"
-                  onClick={() => {
-                    setCantidad((n) => Math.max(1, n - 1));
-                    setBold(null);
-                  }}
-                  disabled={cantidad <= 1}
-                  aria-label="Quitar uno"
-                  className="flex h-8 w-8 items-center justify-center rounded-full border border-border-strong text-lg text-ink disabled:opacity-30"
-                >
-                  −
-                </button>
-                <span className="w-5 text-center text-base text-ink" aria-live="polite">
-                  {cantidad}
-                </span>
-                <button
-                  type="button"
-                  onClick={() => {
-                    setCantidad((n) => Math.min(5, n + 1));
-                    setBold(null);
-                  }}
-                  disabled={cantidad >= 5}
-                  aria-label="Agregar uno"
-                  className="flex h-8 w-8 items-center justify-center rounded-full border border-border-strong text-lg text-ink disabled:opacity-30"
-                >
-                  +
-                </button>
-              </div>
-            </div>
-          </div>
-
-          <dl className="mt-5 space-y-3 border-t border-hairline pt-5 text-base">
+          <dl className="space-y-3 border-t border-hairline pt-5 text-base">
             <div className="flex justify-between text-body">
               <dt>Productos</dt>
               <dd>{formatoCOP(subtotal)}</dd>
             </div>
-            <div className="flex justify-between text-body">
-              <dt>Envío</dt>
-              <dd>{textoEnvio}</dd>
+            <div className="flex justify-between gap-4 text-body">
+              <dt>Envío{metodo !== "bold" && paquetes > 1 ? ` (${paquetes} paquetes)` : ""}</dt>
+              <dd className="text-right">{textoEnvio}</dd>
             </div>
             <div className="flex justify-between border-t border-hairline pt-3 font-semibold text-ink">
               <dt>Total</dt>
@@ -332,6 +362,12 @@ export function FormularioPedido({ producto, pagoEnLinea }: Props) {
               </dd>
             </div>
           </dl>
+          {paquetes > 1 && (
+            <p className="mt-4 text-sm text-muted">
+              Cada producto distinto llega en un paquete aparte
+              {metodo === "bold" ? "." : ", con su propio envío, y lo pagas al recibirlo."}
+            </p>
+          )}
         </div>
       </aside>
     </form>

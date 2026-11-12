@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { CATEGORIAS, SECCIONES } from "@/lib/catalogo";
 import { Logo } from "./Logo";
+import { AccionesEncabezado } from "./Carrito";
 
 const categorias = SECCIONES.map((s) => ({ href: `/categoria/${CATEGORIAS[s].slug}`, texto: s }));
 
@@ -21,15 +22,13 @@ export function Encabezado() {
             <Link
               key={e.href}
               href={e.href}
-              className="rounded-full px-3.5 py-2.5 text-[15px] font-medium text-ink transition-colors hover:bg-surface-soft"
+              className="rounded-full px-3 py-2.5 text-[15px] font-medium text-ink transition-colors hover:bg-surface-soft"
             >
               {e.texto}
             </Link>
           ))}
         </nav>
-        <Link href="/legal/envios" className="rounded-full px-3 py-2 text-sm font-medium text-ink hover:bg-surface-soft">
-          Envíos
-        </Link>
+        <AccionesEncabezado />
       </div>
       {/* En celular y tableta las categorías van en una fila que se desliza */}
       <nav className="bg-primary lg:hidden" aria-label="Categorías">

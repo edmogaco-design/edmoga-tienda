@@ -5,6 +5,8 @@ import { CATEGORIAS, PRODUCTOS, obtenerProducto } from "@/lib/catalogo";
 import { SITE, formatoCOP } from "@/lib/config";
 import { boldConfigurado } from "@/lib/bold";
 import { GaleriaProducto } from "@/components/GaleriaProducto";
+import { BotonAgregar, BotonFavorito } from "@/components/Carrito";
+import { productoVigente } from "@/lib/precios";
 
 type Props = { params: Promise<{ slug: string }> };
 
@@ -39,7 +41,7 @@ function Check() {
 
 export default async function FichaProducto({ params }: Props) {
   const { slug } = await params;
-  const p = obtenerProducto(slug);
+  const p = await productoVigente(slug);
   if (!p) notFound();
   const enLinea = boldConfigurado();
   const urlPedido = `/checkout?producto=${p.slug}`;
@@ -102,6 +104,9 @@ export default async function FichaProducto({ params }: Props) {
       </p>
       <h1 className="mt-1 text-[30px] font-extrabold leading-[1.1] text-ink sm:text-[38px]">{p.nombre}</h1>
       <p className="mt-2 max-w-xl text-base text-body">{p.resumen}</p>
+      <div className="mt-4 md:hidden">
+        <BotonFavorito slug={p.slug} nombre={p.nombre} />
+      </div>
 
       <div className="mt-6 grid gap-10 md:grid-cols-[minmax(0,1fr)_340px] lg:gap-16">
         {/* Columna principal */}
@@ -172,9 +177,13 @@ export default async function FichaProducto({ params }: Props) {
               )}
             </ul>
 
-            <Link href={urlPedido} className="btn-primary mt-5 w-full">
-              Pedir ahora
+            <BotonAgregar slug={p.slug} className="btn-primary mt-5 w-full" />
+            <Link href={urlPedido} className="btn-secondary mt-3 w-full">
+              Comprar ahora
             </Link>
+            <div className="mt-3 flex justify-center">
+              <BotonFavorito slug={p.slug} nombre={p.nombre} />
+            </div>
             <p className="mt-3 text-center text-sm text-muted">Aún no se te cobrará nada</p>
           </div>
         </aside>
@@ -183,13 +192,13 @@ export default async function FichaProducto({ params }: Props) {
       {/* Barra inferior fija (móvil) */}
       <div className="barra-compra fixed inset-x-0 bottom-0 z-30 border-t border-hairline bg-canvas md:hidden">
         <div className="mx-auto flex max-w-[1080px] items-center justify-between gap-4 px-4 py-3">
-          <div>
+          <div className="shrink-0">
             <p className="text-base font-semibold text-ink">{formatoCOP(p.precio)}</p>
-            <p className="text-xs text-muted">Contra entrega{enLinea ? " o en línea" : ""}</p>
+            <Link href={urlPedido} className="text-xs font-bold text-primary underline">
+              Comprar ahora
+            </Link>
           </div>
-          <Link href={urlPedido} className="btn-primary">
-            Pedir ahora
-          </Link>
+          <BotonAgregar slug={p.slug} className="btn-primary px-4" />
         </div>
       </div>
     </div>

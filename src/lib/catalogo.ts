@@ -1360,13 +1360,101 @@ const CATALOGO: Producto[] = [
     categoria: "Tecnología",
     imagenes: ["https://d39ru7awumhhs2.cloudfront.net/colombia/products/2001624/1763748452Reloj%20c60.jpg"],
   },
+  // Audífonos, agregados el 2026-11-12. Genéricos o de marca propia del fabricante (sin imitaciones de
+  // otras marcas), sin variantes. Precios propuestos por Claude; pendiente confirmación del dueño.
+  {
+    // Dropi: $58.000
+    slug: "audifonos-inalambricos-xo-ev53",
+    dropiId: 2133590,
+    nombre: "Audífonos inalámbricos XO EV53",
+    resumen: "Audífonos Bluetooth con estuche de carga para tu música y tus llamadas, sin cables.",
+    descripcion:
+      "Sácalos del estuche y úsalos: se conectan a tu celular por Bluetooth y el estuche los recarga mientras los guardas. Livianos para el día a día, el trabajo y el gimnasio.",
+    precio: 99900,
+    beneficios: [
+      "Conexión Bluetooth, sin cables",
+      "Estuche que los guarda y los recarga",
+      "Sirven para música y llamadas",
+      "Livianos y fáciles de llevar",
+    ],
+    incluye: ["1 par de audífonos XO EV53", "1 estuche de carga"],
+    garantia: "Garantía por defectos de fábrica según la Ley 1480 de 2011.",
+    categoria: "Audífonos",
+    imagenes: [
+      "https://d39ru7awumhhs2.cloudfront.net/colombia/products/2133590/1776720671D_NQ_NP_922381-MLA96849305027_102025-O.webp",
+    ],
+  },
+  {
+    // Dropi: $22.000
+    slug: "audifonos-bluetooth-f9",
+    dropiId: 547979,
+    nombre: "Audífonos Bluetooth F9",
+    resumen: "Audífonos inalámbricos con estuche de carga y almohadillas de varios tamaños.",
+    descripcion:
+      "Una opción económica para escuchar música y contestar llamadas sin cables. Vienen con su estuche de carga, cable y almohadillas de repuesto para que te queden cómodos.",
+    precio: 44900,
+    beneficios: [
+      "Inalámbricos por Bluetooth",
+      "Estuche de carga incluido",
+      "Almohadillas de varios tamaños",
+      "Buen precio para el día a día",
+    ],
+    incluye: ["1 par de audífonos F9", "1 estuche de carga", "1 cable de carga", "Almohadillas de repuesto"],
+    garantia: "Garantía por defectos de fábrica según la Ley 1480 de 2011.",
+    categoria: "Audífonos",
+    imagenes: [
+      "https://d39ru7awumhhs2.cloudfront.net/colombia/products/547979/1701911430D_NQ_NP_2X_627944-MCO70960782879_082023-F.JPG",
+    ],
+  },
+  {
+    // Dropi: $19.900
+    slug: "audifonos-inalambricos-v02",
+    dropiId: 2220832,
+    nombre: "Audífonos inalámbricos V02",
+    resumen: "Audífonos Bluetooth compactos con control táctil y estuche de carga.",
+    descripcion:
+      "Pequeños y discretos: los controlas con un toque y se guardan en un estuche que cabe en cualquier bolsillo. Para acompañarte en el bus, en la oficina o mientras entrenas.",
+    precio: 39900,
+    beneficios: [
+      "Conexión Bluetooth",
+      "Control táctil",
+      "Estuche de carga compacto",
+      "Cómodos para usar varias horas",
+    ],
+    incluye: ["1 par de audífonos V02", "1 estuche de carga"],
+    garantia: "Garantía por defectos de fábrica según la Ley 1480 de 2011.",
+    categoria: "Audífonos",
+    imagenes: [
+      "https://d39ru7awumhhs2.cloudfront.net/colombia/products/2220832/4d458d50-71ca-438e-8515-a4703628cd2d.jpeg",
+    ],
+  },
+  {
+    // Dropi: $24.500
+    slug: "audifonos-de-cable-manos-libres-bt860",
+    dropiId: 2164905,
+    nombre: "Audífonos de cable manos libres BT860",
+    resumen: "Audífonos de cable con micrófono y control de volumen: conectas y listo, sin cargar nada.",
+    descripcion:
+      "Para quienes prefieren lo simple: se conectan a la entrada de audífonos de 3,5 mm y nunca se quedan sin batería. Con micrófono para llamadas y control de volumen en el cable.",
+    precio: 44900,
+    beneficios: [
+      "No necesitan carga",
+      "Micrófono para llamadas",
+      "Control de volumen en el cable",
+      "Almohadillas de repuesto",
+    ],
+    incluye: ["1 audífonos de cable BT860", "Almohadillas de repuesto"],
+    garantia: "Garantía por defectos de fábrica según la Ley 1480 de 2011.",
+    categoria: "Audífonos",
+    imagenes: ["https://d39ru7awumhhs2.cloudfront.net/colombia/products/2164905/17803487005138888920849386599.jpg"],
+  },
 ];
 
 /** Productos a la venta: todo el catálogo menos los ocultos. */
 export const PRODUCTOS: Producto[] = CATALOGO.filter((p) => !p.oculto);
 
 /** Secciones de la tienda, en el orden en que aparecen en el inicio. */
-export const SECCIONES = ["Cocina", "Skincare y belleza", "Cafeteros", "Gimnasio", "Tecnología"] as const;
+export const SECCIONES = ["Cocina", "Skincare y belleza", "Cafeteros", "Gimnasio", "Tecnología", "Audífonos"] as const;
 export type Seccion = (typeof SECCIONES)[number];
 
 /** Página propia de cada sección (/categoria/[slug]): textos del banner y de los buscadores. */
@@ -1400,6 +1488,12 @@ export const CATEGORIAS: Record<Seccion, { slug: string; titulo: string; lema: s
     titulo: "Tecnología y lifestyle",
     lema: "Pequeños aparatos que te hacen el día más fácil.",
     descripcion: "Cargadores, smartwatches y accesorios de tecnología con pago contra entrega en toda Colombia.",
+  },
+  Audífonos: {
+    slug: "audifonos",
+    titulo: "Audífonos",
+    lema: "Tu música y tus llamadas, como te quede más cómodo.",
+    descripcion: "Audífonos inalámbricos y de cable con pago contra entrega en toda Colombia.",
   },
 };
 

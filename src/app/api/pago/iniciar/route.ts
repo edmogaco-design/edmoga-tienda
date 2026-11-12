@@ -1,9 +1,10 @@
 import { NextResponse } from "next/server";
-import { pedidoSchema, codigoDesde } from "@/lib/pedido";
-import { obtenerProducto } from "@/lib/catalogo";
+import { pedidoSchema, codigoDesde, lineasDe, resumenLineas, subtotalDe } from "@/lib/pedido";
+import { catalogoVigente } from "@/lib/precios";
+import { claveCotizacion, cotizar } from "@/lib/cotizacion";
 import { SITE } from "@/lib/config";
 import { boldConfigurado, firmaIntegridad, llaveIdentidad } from "@/lib/bold";
-import { ipCliente, limitado } from "@/lib/unaVez";
+import { guardarResultado, ipCliente, limitado } from "@/lib/unaVez";
 
 // Prepara el botón de Bold. El monto SIEMPRE se calcula aquí, nunca se toma del navegador.
 export async function POST(req: Request) {
@@ -28,14 +29,21 @@ export async function POST(req: Request) {
     );
   }
 
-  const producto = obtenerProducto(r.data.producto);
-  if (!producto) return NextResponse.json({ error: "Producto no encontrado" }, { status: 404 });
+  const lineas = lineasDe(r.data.items, await catalogoVigente());
+  if (!lineas) return NextResponse.json({ error: "Producto no encontrado" }, { status: 404 });
 
   const codigo = codigoDesde(r.data.idSolicitud);
   // Cada intento de pago tiene su propio identificador (Bold no permite reutilizarlo).
   const orden = `${codigo}-${Date.now().toString(36).toUpperCase()}`;
-  const monto = producto.precio * r.data.cantidad; // envío gratis pagando en línea
+  const monto = subtotalDe(lineas); // envío gratis pagando en línea
   const moneda = "COP";
+
+  // Se guarda con qué productos y precios se cotizó esta orden. Si el dueño cambia un precio
+  // mientras el cliente paga, /api/pago/confirmar valida contra esta cotización y no contra el
+  // precio nuevo. Si el almacén falla, se sigue: confirmar recalcula con los precios vigentes.
+  await guardarResultado(claveCotizacion(orden), cotizar(lineas)).catch((e) =>
+    console.error("cotizacion_no_guardada", { orden, error: String(e) }),
+  );
 
   console.info("pago_iniciado", { codigo, orden, monto });
 
@@ -49,10 +57,10 @@ export async function POST(req: Request) {
     orden,
     monto,
     moneda,
-    descripcion: `${producto.nombre} x${r.data.cantidad} - EDMOGA`.slice(0, 100),
+    descripcion: `${resumenLineas(lineas)} - EDMOGA`.slice(0, 100),
     llave: llaveIdentidad(),
     firma: firmaIntegridad(orden, monto, moneda),
     urlRetorno: `${origen}/pago/resultado`,
-    urlOrigen: `${origen}/checkout?producto=${producto.slug}`,
+    urlOrigen: lineas.length === 1 ? `${origen}/checkout?producto=${lineas[0].producto.slug}` : `${origen}/checkout`,
   });
 }

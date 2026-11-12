@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { CATEGORIAS, PRODUCTOS, SECCIONES, seccionPorSlug } from "@/lib/catalogo";
+import { catalogoVigente } from "@/lib/precios";
 import { ListaProductos } from "@/components/ListaProductos";
 import { aTarjeta } from "@/components/TarjetaProducto";
 
@@ -37,7 +38,7 @@ export default async function PaginaCategoria({ params }: Props) {
   const seccion = seccionPorSlug(slug);
   if (!seccion) notFound();
   const c = CATEGORIAS[seccion];
-  const productos = PRODUCTOS.filter((p) => p.categoria === seccion).map(aTarjeta);
+  const productos = (await catalogoVigente()).filter((p) => p.categoria === seccion).map(aTarjeta);
 
   return (
     <>

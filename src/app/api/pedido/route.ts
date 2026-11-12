@@ -1,8 +1,8 @@
 import { NextResponse, after } from "next/server";
-import { pedidoSchema, mensajePedido, codigoDesde } from "@/lib/pedido";
-import { obtenerProducto } from "@/lib/catalogo";
+import { pedidoSchema, mensajePedido, codigoDesde, lineasDe, resumenLineas, subtotalDe } from "@/lib/pedido";
+import { catalogoVigente } from "@/lib/precios";
 import { enlaceWhatsApp } from "@/lib/config";
-import { crearPedidoDropi, dropiConfigurado } from "@/lib/dropi";
+import { crearPedidosDropi, dropiConfigurado, resumenDropi } from "@/lib/dropi";
 import { costoEnvio } from "@/lib/envios";
 import { guardarResultado, ipCliente, limitado, reservar } from "@/lib/unaVez";
 import { filaPedido, registrarPedido } from "@/lib/registro";
@@ -31,13 +31,16 @@ export async function POST(req: Request) {
     );
   }
 
-  const producto = obtenerProducto(r.data.producto);
-  if (!producto) {
+  // Los precios SIEMPRE salen del servidor (catálogo + cambios del dueño en /admin).
+  const lineas = lineasDe(r.data.items, await catalogoVigente());
+  if (!lineas) {
     return NextResponse.json({ error: "Producto no encontrado" }, { status: 404 });
   }
 
-  const subtotal = producto.precio * r.data.cantidad;
-  const envio = costoEnvio(r.data.departamento, r.data.ciudad);
+  const subtotal = subtotalDe(lineas);
+  // Un envío por producto distinto: cada uno viaja en su propio paquete.
+  const envioPaquete = costoEnvio(r.data.departamento, r.data.ciudad);
+  const envio = envioPaquete * lineas.length;
   const codigo = codigoDesde(r.data.idSolicitud);
 
   // La misma solicitud (idSolicitud) no crea un segundo pedido en Dropi, aunque llegue a otra
@@ -56,37 +59,38 @@ export async function POST(req: Request) {
     console.error("registro_no_disponible", { codigo, error: String(e) });
   }
 
-  // Contra entrega: el pedido se registra en Dropi como pendiente de confirmación.
+  // Contra entrega: cada renglón se registra en Dropi como pendiente de confirmación.
   // La venta NO se da por cerrada aquí: un asesor la confirma por WhatsApp.
   // Si Dropi falla, el cliente igual llega a WhatsApp y el pedido se carga a mano.
-  const dropi = crearEnDropi ? await crearPedidoDropi(r.data, producto, codigo, { envio }) : null;
+  const dropi = resumenDropi(
+    crearEnDropi ? await crearPedidosDropi(r.data, lineas, codigo, { envio: envioPaquete }) : null,
+  );
 
   // Logs sin datos personales.
   console.info("pedido_iniciado", {
     codigo,
-    dropiId: producto.dropiId,
-    cantidad: r.data.cantidad,
+    productos: lineas.map((l) => ({ dropiId: l.producto.dropiId, cantidad: l.cantidad })),
     departamento: r.data.departamento,
-    dropi: dropi === null ? "no_configurado" : dropi.ok ? "creado" : `fallo:${dropi.motivo}`,
-    dropiPedido: dropi?.ok ? dropi.dropiId : null,
+    dropi: dropi.estado,
+    dropiPedido: dropi.pedido,
   });
 
-  if (dropi && !dropi.ok) console.error("dropi_fallo", { codigo, motivo: dropi.motivo });
+  if (crearEnDropi && !dropi.todos) console.error("dropi_fallo", { codigo, motivo: dropi.estado });
 
-  const estadoDropi = dropi === null ? "no_configurado" : dropi.ok ? "creado" : `fallo:${dropi.motivo}`.slice(0, 200);
   if (esNueva) {
     const fila = filaPedido(r.data, {
       codigo,
       metodo: "contra_entrega",
       estado: "pendiente_confirmacion_whatsapp",
-      producto: producto.nombre,
+      producto: resumenLineas(lineas).slice(0, 500),
+      cantidad: lineas.reduce((n, l) => n + l.cantidad, 0),
       subtotal,
       envio,
       total: subtotal + envio,
       orden_bold: null,
       transaccion_bold: null,
-      dropi: estadoDropi,
-      dropi_pedido: dropi?.ok ? dropi.dropiId : null,
+      dropi: dropi.estado,
+      dropi_pedido: dropi.pedido,
     });
     after(registrarPedido(fila)); // se guarda después de responder, sin demorar al cliente
   }
@@ -94,11 +98,11 @@ export async function POST(req: Request) {
   const cuerpo = {
     estado: "pendiente_confirmacion_whatsapp",
     codigo,
-    registradoEnDropi: dropi?.ok === true,
-    whatsapp: enlaceWhatsApp(mensajePedido(r.data, subtotal, envio, producto.nombre, codigo)),
+    registradoEnDropi: dropi.todos,
+    whatsapp: enlaceWhatsApp(mensajePedido(r.data, lineas, envio, codigo)),
     // Solo en entornos de prueba: motivo del fallo de Dropi para diagnosticar. Nunca en producción.
-    ...(process.env.VERCEL_ENV !== "production" && dropi && !dropi.ok
-      ? { diagnosticoDropi: dropi.motivo }
+    ...(process.env.VERCEL_ENV !== "production" && crearEnDropi && !dropi.todos
+      ? { diagnosticoDropi: dropi.estado }
       : {}),
   };
   await guardarResultado(clave, cuerpo).catch((e) =>

@@ -86,6 +86,12 @@ export function ipCliente(req: Request): string {
   return req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() || "local";
 }
 
+/** Lee algo guardado con `guardarResultado`. null si no existe. Lanza si el almacén no responde. */
+export async function leerGuardado<T>(clave: string): Promise<T | null> {
+  const v = await leer(clave);
+  return v && v !== PROCESANDO ? (JSON.parse(v) as T) : null;
+}
+
 /** Guarda la respuesta final por 30 días: las repeticiones reciben lo mismo. */
 export async function guardarResultado(clave: string, cuerpo: unknown): Promise<void> {
   const valor = JSON.stringify(cuerpo);

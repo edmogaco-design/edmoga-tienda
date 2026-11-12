@@ -2,9 +2,11 @@ import Link from "next/link";
 import type { Producto } from "@/lib/catalogo";
 import { formatoCOP } from "@/lib/config";
 import { ImagenProducto } from "./ImagenProducto";
+import { BotonFavorito } from "./Carrito";
+import type { ProductoResumen } from "./TiendaProvider";
 
 /** Lo mínimo que necesita la tarjeta (así las listas con filtros no cargan todo el producto). */
-export type ProductoTarjeta = Pick<Producto, "slug" | "nombre" | "precio" | "categoria"> & { imagen?: string };
+export type ProductoTarjeta = ProductoResumen;
 
 export function aTarjeta(p: Producto): ProductoTarjeta {
   return { slug: p.slug, nombre: p.nombre, precio: p.precio, categoria: p.categoria, imagen: p.imagenes[0] };
@@ -13,7 +15,10 @@ export function aTarjeta(p: Producto): ProductoTarjeta {
 // Tarjeta foto primero. Al pasar el mouse: la foto se acerca un poco y aparece "Ver producto".
 export function TarjetaProducto({ p, prioridad }: { p: ProductoTarjeta; prioridad?: boolean }) {
   return (
-    <article>
+    <article className="relative">
+      <div className="absolute right-3 top-3 z-10">
+        <BotonFavorito slug={p.slug} nombre={p.nombre} flotante />
+      </div>
       <Link href={`/producto/${p.slug}`} className="group block" aria-label={`${p.nombre}, ${formatoCOP(p.precio)}`}>
         <div className="relative">
           <ImagenProducto

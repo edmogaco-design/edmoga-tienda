@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { CATEGORIAS, PRODUCTOS, SECCIONES } from "@/lib/catalogo";
+import { CATEGORIAS, SECCIONES } from "@/lib/catalogo";
+import { catalogoVigente } from "@/lib/precios";
 import { TarjetaProducto, aTarjeta } from "@/components/TarjetaProducto";
 import { ImagenProducto } from "@/components/ImagenProducto";
 
@@ -23,34 +24,31 @@ const pasos = [
 
 const POR_SECCION = 4;
 
-export default function Inicio() {
-  const destacado = PRODUCTOS[0];
+export default async function Inicio() {
+  const PRODUCTOS = await catalogoVigente();
 
   return (
     <>
       {/* Franja azul: la promesa de la tienda */}
       <section className="bg-primary text-white">
-        <div className="mx-auto grid max-w-[1280px] items-center gap-8 px-4 py-10 sm:px-6 md:grid-cols-[minmax(0,1.1fr)_minmax(0,1fr)] md:py-16 lg:gap-16 lg:px-10">
-          <div className="max-w-xl">
-            <p className="text-sm font-bold uppercase tracking-[0.14em] text-oro">Cocina · Belleza · Gimnasio · Tecnología</p>
+        <div className="mx-auto max-w-[1280px] px-4 py-12 sm:px-6 md:py-20 lg:px-10">
+          <div className="max-w-3xl">
+            <p className="text-sm font-bold uppercase tracking-[0.14em] text-oro">Cocina · Belleza · Gimnasio · Tecnología · Audífonos</p>
             <h1 className="mt-3 text-[40px] font-extrabold leading-[1.02] tracking-[-0.03em] sm:text-[56px] lg:text-[68px]">
               Lo que te hace la vida más fácil. Pagas cuando te llegue.
             </h1>
-            <p className="mt-5 max-w-md text-lg leading-relaxed text-white/85">
+            <p className="mt-5 max-w-xl text-lg leading-relaxed text-white/85">
               Productos elegidos para tu casa, tu rutina y tu día a día, con envío a cualquier lugar de Colombia.
             </p>
             <div className="mt-8 flex flex-wrap items-center gap-4">
               <Link href="/#productos" className="btn-oro">
                 Ver productos
               </Link>
-              <Link href={`/producto/${destacado.slug}`} className="font-bold text-white underline underline-offset-4">
-                Conoce la {destacado.nombre.toLowerCase()}
+              <Link href="/legal/envios" className="font-bold text-white underline underline-offset-4">
+                Cómo funcionan los envíos
               </Link>
             </div>
           </div>
-          <Link href={`/producto/${destacado.slug}`} aria-label={destacado.nombre} className="group block rounded-lg bg-white p-3">
-            <ImagenProducto src={destacado.imagenes[0]} alt={destacado.nombre} className="aspect-square" prioridad />
-          </Link>
         </div>
       </section>
 
@@ -70,7 +68,7 @@ export default function Inicio() {
           <h2 id="titulo-categorias" className="text-[28px] font-bold leading-tight text-ink">
             Compra por categoría
           </h2>
-          <ul className="mt-6 grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-5">
+          <ul className="mt-6 grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-6">
             {SECCIONES.map((s) => {
               const c = CATEGORIAS[s];
               const foto = PRODUCTOS.find((p) => p.categoria === s)?.imagenes[0];

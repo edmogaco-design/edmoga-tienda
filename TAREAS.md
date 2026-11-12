@@ -44,5 +44,13 @@
 | Rediseño (paleta 60-30-10), páginas por categoría con filtros y SEO con datos estructurados | Claude | hecho | 2026-11-12 |
 | 8 productos nuevos de Dropi: secciones Gimnasio y Tecnología | Claude | hecho | 2026-11-12 |
 | Aprobar precios de los 8 productos de Gimnasio y Tecnología | Dueño | hecho | 2026-11-12 |
-| Carrito de varios productos (cambia pedido, Bold y registro) | Claude | pendiente | |
+| Carrito de varios productos (pedido, Bold y registro) y lista de deseos | Claude | hecho | 2026-11-12 |
 | Perfumes: conseguir proveedor con originales o marca propia (los de Dropi son imitaciones) | Dueño | pendiente | |
+| Portada sin la foto de la picadora | Claude | hecho | 2026-11-12 |
+| Modo administrador en /admin para cambiar precios (código) | Claude | hecho | 2026-11-12 |
+| Sección Audífonos con 4 productos de Dropi | Claude | hecho | 2026-11-12 |
+| Crear `ADMIN_CLAVE` en Vercel (10 caracteres o más) y volver a desplegar | Dueño | pendiente | |
+| Correr `supabase/esquema.sql` en Supabase (crea la tabla `precios`) | Dueño | pendiente | |
+| Aprobar precios de los 4 audífonos | Dueño | pendiente | |
+| Probar en preview un pedido de 2 productos contra entrega y uno con Bold | Dueño + Claude | pendiente | |
+| Variantes de producto (color, talla) en ficha, carrito y pedido | Claude | pendiente | |
