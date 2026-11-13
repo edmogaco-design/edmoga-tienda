@@ -41,5 +41,6 @@
 | Aprobar precio de la cafetera Chemex ($69.900) | Dueño | hecho | 2026-11-10 |
 | Pago por transferencia con llave Bre-B (código) | Claude | hecho | 2026-11-10 |
 | Poner `TRANSFERENCIA_LLAVE_BREB` y `TRANSFERENCIA_TITULAR` en Vercel y volver a correr `supabase/esquema.sql` | Dueño | pendiente | |
+| Buscador de productos (`/buscar` y encabezado) | Claude | hecho | 2026-11-13 |
 | Fotos propias de los productos | Grok / Dueño | pendiente | |
 | Revisión legal de textos | Dueño | pendiente | |

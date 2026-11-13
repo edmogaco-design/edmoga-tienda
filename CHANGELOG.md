@@ -1,5 +1,10 @@
 # CHANGELOG
 
+## 2026-11-13 — Buscador de productos [agente: Claude]
+- Nueva página `/buscar` y buscador en el encabezado (caja en computador, lupa en celular). Funciona sin JavaScript.
+- Busca en nombre, sección, resumen y beneficios; ignora tildes, mayúsculas y plurales simples. Deben coincidir todas las palabras; primero salen las coincidencias en el nombre.
+- Solo muestra productos a la venta (los ocultos no aparecen). La página no se indexa en Google.
+
 ## 2026-11-10 — Pago por transferencia con llave Bre-B [agente: Claude]
 - Nueva forma de pago en el checkout: transferencia con llave Bre-B, con envío gratis igual que Bold. Al hacer el pedido el cliente ve la llave, el titular y su código, y manda el comprobante por WhatsApp.
 - El pedido queda como `pendiente_comprobante_transferencia` en Supabase y en Sheets. No se crea en Dropi hasta que el dueño verifica que el dinero entró.
