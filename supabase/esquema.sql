@@ -39,5 +39,13 @@ create table if not exists public.pagos_bold (
 
 create index if not exists pagos_bold_orden on public.pagos_bold (orden);
 
+-- Precios cambiados desde /admin. Si un producto no está aquí, rige el precio de catalogo.ts.
+create table if not exists public.precios (
+  slug text primary key,
+  precio int not null check (precio > 0),
+  actualizado timestamptz not null default now()
+);
+
+alter table public.precios enable row level security;
 alter table public.pedidos enable row level security;
 alter table public.pagos_bold enable row level security;

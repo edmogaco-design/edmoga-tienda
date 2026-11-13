@@ -33,11 +33,10 @@ export type FilaPedido = {
 
 export function filaPedido(
   p: Pedido,
-  datos: Omit<FilaPedido, "cantidad" | "nombre" | "telefono" | "departamento" | "ciudad" | "direccion" | "notas">,
+  datos: Omit<FilaPedido, "nombre" | "telefono" | "departamento" | "ciudad" | "direccion" | "notas">,
 ): FilaPedido {
   return {
     ...datos,
-    cantidad: p.cantidad,
     nombre: p.nombre,
     telefono: p.telefono,
     departamento: p.departamento,

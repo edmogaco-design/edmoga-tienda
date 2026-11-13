@@ -1,17 +1,17 @@
+import type { Metadata } from "next";
 import Link from "next/link";
-import { PRODUCTOS, SECCIONES } from "@/lib/catalogo";
-
-// "Skincare y belleza" → "skincare-y-belleza", para el ancla de cada sección.
-const idSeccion = (s: string) =>
-  s.toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "").replace(/\s+/g, "-");
-import { formatoCOP } from "@/lib/config";
-import { TarjetaProducto } from "@/components/TarjetaProducto";
+import { CATEGORIAS, SECCIONES } from "@/lib/catalogo";
+import { catalogoVigente } from "@/lib/precios";
+import { TarjetaProducto, aTarjeta } from "@/components/TarjetaProducto";
 import { ImagenProducto } from "@/components/ImagenProducto";
+
+export const metadata: Metadata = { alternates: { canonical: "/" } };
 
 // Lo que más le preocupa a quien compra por internet en Colombia, dicho en una frase cada uno.
 const garantias = [
   { titulo: "Pagas cuando te llega", texto: "En efectivo, al recibir en tu casa. Revisa el paquete antes de pagar." },
-  { titulo: "Ves el envío antes de pedir", texto: "El valor depende de tu departamento y aparece al finalizar el pedido." },
+  { titulo: "Envíos a todo el país", texto: "El valor depende de tu departamento y lo ves antes de confirmar." },
+  { titulo: "Pagos protegidos", texto: "Si prefieres pagar en línea, lo haces con Bold: tarjeta, PSE y más." },
   { titulo: "Te responde una persona", texto: "Confirmamos cada pedido por WhatsApp antes de despacharlo." },
 ];
 
@@ -22,74 +22,94 @@ const pasos = [
   { titulo: "Confirma y recibe", texto: "Te escribimos por WhatsApp y despachamos." },
 ];
 
-export default function Inicio() {
-  const destacado = PRODUCTOS[0];
+const POR_SECCION = 4;
+
+export default async function Inicio() {
+  const PRODUCTOS = await catalogoVigente();
 
   return (
     <>
-      {/* Franja azul: el producto estrella y la promesa de pago contra entrega */}
+      {/* Franja azul: la promesa de la tienda */}
       <section className="bg-primary text-white">
-        <div className="mx-auto grid max-w-[1280px] items-center gap-8 px-4 py-10 sm:px-6 md:grid-cols-[minmax(0,1.1fr)_minmax(0,1fr)] md:py-16 lg:gap-16 lg:px-10">
-          <div className="max-w-xl">
-            <h1 className="text-[40px] font-extrabold leading-[1.02] tracking-[-0.03em] sm:text-[56px] lg:text-[68px]">
-              Pica en segundos. Paga cuando te llegue.
+        <div className="mx-auto max-w-[1280px] px-4 py-12 sm:px-6 md:py-20 lg:px-10">
+          <div className="max-w-3xl">
+            <p className="text-sm font-bold uppercase tracking-[0.14em] text-oro">Cocina · Belleza · Gimnasio · Tecnología · Audífonos</p>
+            <h1 className="mt-3 text-[40px] font-extrabold leading-[1.02] tracking-[-0.03em] sm:text-[56px] lg:text-[68px]">
+              Lo que te hace la vida más fácil. Pagas cuando te llegue.
             </h1>
-            <p className="mt-5 max-w-md text-lg leading-relaxed text-white/85">
-              {destacado.resumen} Te la llevamos a cualquier lugar de Colombia.
+            <p className="mt-5 max-w-xl text-lg leading-relaxed text-white/85">
+              Productos elegidos para tu casa, tu rutina y tu día a día, con envío a cualquier lugar de Colombia.
             </p>
-            <div className="mt-8 flex flex-wrap items-center gap-x-6 gap-y-4">
-              <Link href={`/producto/${destacado.slug}`} className="btn-oro">
-                Ver la picadora
+            <div className="mt-8 flex flex-wrap items-center gap-4">
+              <Link href="/#productos" className="btn-oro">
+                Ver productos
               </Link>
-              <p className="font-titulos text-2xl font-bold">
-                {formatoCOP(destacado.precio)}
-                <span className="ml-2 font-sans text-sm font-normal text-white/70">precio final</span>
-              </p>
+              <Link href="/legal/envios" className="font-bold text-white underline underline-offset-4">
+                Cómo funcionan los envíos
+              </Link>
             </div>
           </div>
-          <Link href={`/producto/${destacado.slug}`} aria-label={destacado.nombre} className="block rounded-lg bg-white p-3">
-            <ImagenProducto src={destacado.imagenes[0]} alt={destacado.nombre} className="aspect-square" prioridad />
-          </Link>
         </div>
       </section>
 
       <div className="mx-auto max-w-[1280px] px-4 sm:px-6 lg:px-10">
         {/* Garantías de compra */}
-        <section aria-label="Cómo te protegemos al comprar" className="grid border-b border-hairline sm:grid-cols-3">
-          {garantias.map((g, i) => (
-            <div
-              key={g.titulo}
-              className={`py-6 sm:px-6 sm:py-8 ${i > 0 ? "border-t border-hairline sm:border-l sm:border-t-0" : "sm:pl-0"}`}
-            >
+        <section aria-label="Cómo te protegemos al comprar" className="grid gap-x-8 border-b border-hairline py-4 sm:grid-cols-2 lg:grid-cols-4">
+          {garantias.map((g) => (
+            <div key={g.titulo} className="border-l-2 border-oro py-1 pl-4 my-4">
               <h2 className="text-lg font-bold text-primary">{g.titulo}</h2>
               <p className="mt-1 text-base text-body">{g.texto}</p>
             </div>
           ))}
         </section>
 
-        {/* Productos */}
-        <div id="productos" className="scroll-mt-24 py-14">
-          <nav aria-label="Secciones" className="flex flex-wrap gap-2">
-            {SECCIONES.map((s) => (
-              <a
-                key={s}
-                href={`#${idSeccion(s)}`}
-                className="rounded-full border border-hairline px-4 py-2 text-sm font-medium text-ink hover:bg-surface-soft"
-              >
-                {s}
-              </a>
-            ))}
-          </nav>
-          {SECCIONES.map((s) => (
-            <section key={s} id={idSeccion(s)} className="scroll-mt-24 pt-10">
-              <h2 className="text-[28px] font-bold leading-tight text-ink">{s}</h2>
-              <div className="mt-6 grid grid-cols-1 gap-x-5 gap-y-10 min-[480px]:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-                {PRODUCTOS.filter((p) => p.categoria === s).map((p) => (
-                  <TarjetaProducto key={p.slug} p={p} />
-                ))}
-              </div>
-            </section>
-          ))}
+        {/* Categorías */}
+        <section aria-labelledby="titulo-categorias" className="pt-14">
+          <h2 id="titulo-categorias" className="text-[28px] font-bold leading-tight text-ink">
+            Compra por categoría
+          </h2>
+          <ul className="mt-6 grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-6">
+            {SECCIONES.map((s) => {
+              const c = CATEGORIAS[s];
+              const foto = PRODUCTOS.find((p) => p.categoria === s)?.imagenes[0];
+              return (
+                <li key={s}>
+                  <Link href={`/categoria/${c.slug}`} className="group block">
+                    <ImagenProducto src={foto} alt={`Categoría ${s}`} className="aspect-[4/3]" />
+                    <p className="mt-2 text-base font-bold text-ink group-hover:underline">{s}</p>
+                  </Link>
+                </li>
+              );
+            })}
+          </ul>
+        </section>
+
+        {/* Productos: una muestra de cada sección */}
+        <div id="productos" className="scroll-mt-24 pb-14">
+          {SECCIONES.map((s) => {
+            const todos = PRODUCTOS.filter((p) => p.categoria === s);
+            const c = CATEGORIAS[s];
+            return (
+              <section key={s} className="pt-14">
+                <div className="flex items-end justify-between gap-4">
+                  <div>
+                    <h2 className="text-[28px] font-bold leading-tight text-ink">{s}</h2>
+                    <p className="mt-1 text-base text-muted">{c.lema}</p>
+                  </div>
+                  {todos.length > POR_SECCION && (
+                    <Link href={`/categoria/${c.slug}`} className="shrink-0 font-bold text-primary underline underline-offset-4">
+                      Ver los {todos.length}
+                    </Link>
+                  )}
+                </div>
+                <div className="mt-6 grid grid-cols-1 gap-x-5 gap-y-10 min-[480px]:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+                  {todos.slice(0, POR_SECCION).map((p) => (
+                    <TarjetaProducto key={p.slug} p={aTarjeta(p)} />
+                  ))}
+                </div>
+              </section>
+            );
+          })}
         </div>
 
         {/* Cómo comprar */}

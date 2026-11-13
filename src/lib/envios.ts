@@ -42,7 +42,16 @@ export function zonaDe(departamento: Departamento, ciudad: string): Zona {
   return "nacional";
 }
 
-/** Valor del envío contra entrega según departamento y ciudad (un solo cobro por pedido). */
+/** Valor del envío contra entrega de UN paquete según departamento y ciudad. */
 export function costoEnvio(departamento: Departamento, ciudad: string): number {
   return ZONAS[zonaDe(departamento, ciudad)].valor;
+}
+
+/**
+ * Envío de todo el pedido: cada producto distinto sale de un proveedor diferente y viaja en su
+ * propio paquete, así que se cobra un envío por producto distinto (no por unidad). Decisión del
+ * dueño del 2026-11-12.
+ */
+export function costoEnvioPedido(departamento: Departamento, ciudad: string, paquetes: number): number {
+  return costoEnvio(departamento, ciudad) * paquetes;
 }

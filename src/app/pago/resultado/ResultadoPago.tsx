@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
 import { enlaceWhatsApp } from "@/lib/config";
+import { useTienda } from "@/components/TiendaProvider";
 
 type Respuesta = {
   estado?: string;
@@ -20,6 +21,8 @@ export function ResultadoPago() {
   const orden = params.get("bold-order-id") ?? "";
   const [r, setR] = useState<Respuesta | null>(null);
   const [intento, setIntento] = useState(0);
+  const [volver, setVolver] = useState("/checkout");
+  const { listo, vaciar } = useTienda();
 
   const verificar = useCallback(async () => {
     let pedido: unknown = null;
@@ -31,6 +34,11 @@ export function ResultadoPago() {
     if (!orden || !pedido) {
       setR({ estado: "SIN_DATOS" });
       return;
+    }
+    // Compra directa de un producto: "Volver a intentar" regresa a ese producto, no al carrito.
+    const items = (pedido as { items?: { producto?: string }[] }).items;
+    if (!sessionStorage.getItem(`edmoga-pago-${orden}-carrito`) && items?.length === 1 && items[0].producto) {
+      setVolver(`/checkout?producto=${encodeURIComponent(items[0].producto)}`);
     }
     try {
       const res = await fetch("/api/pago/confirmar", {
@@ -47,6 +55,19 @@ export function ResultadoPago() {
   useEffect(() => {
     void verificar();
   }, [verificar, intento]);
+
+  // Pago aprobado de un pedido hecho desde el carrito: el carrito ya se compró, se vacía una vez.
+  useEffect(() => {
+    if (r?.estado !== "APPROVED" || !listo) return;
+    try {
+      if (sessionStorage.getItem(`edmoga-pago-${orden}-carrito`)) {
+        sessionStorage.removeItem(`edmoga-pago-${orden}-carrito`);
+        vaciar();
+      }
+    } catch {
+      /* sin almacenamiento */
+    }
+  }, [r, listo, orden, vaciar]);
 
   // Bold puede tardar unos segundos en registrar la transacción: se reintenta solo.
   useEffect(() => {
@@ -115,7 +136,7 @@ export function ResultadoPago() {
       {r.codigo && <p className="mt-2 text-sm text-muted">Pedido {r.codigo}</p>}
       <div className="mt-6 flex flex-col items-center justify-center gap-3 sm:flex-row">
         {(agotado || icono !== "⏳") && (
-          <Link href="/checkout" className="btn-primary">
+          <Link href={volver} className="btn-primary">
             Volver a intentar
           </Link>
         )}

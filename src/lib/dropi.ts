@@ -1,8 +1,7 @@
 // Cliente de la API de integraciones de Dropi. Solo se usa en el servidor.
 // La URL y el nombre del encabezado se pueden cambiar por variable de entorno
 // sin tocar código, por si Dropi los actualiza.
-import type { Pedido } from "./pedido";
-import type { Producto } from "./catalogo";
+import type { Linea, Pedido } from "./pedido";
 import { departamentoDropi, normalizarDropi } from "./departamentos";
 
 const BASE = process.env.DROPI_API_URL || "https://api.dropi.co/integrations";
@@ -42,20 +41,21 @@ function separarNombre(completo: string): { nombre: string; apellido: string } {
 
 /**
  * Si viene `pagoBold`, el cliente ya pagó en línea: Dropi NO debe cobrar al entregar.
- * `envio`: valor del envío que paga el cliente contra entrega; se suma a lo que Dropi recauda.
+ * `envio`: valor del envío de ESTE paquete que paga el cliente contra entrega; se suma a lo que
+ * Dropi recauda. Cada renglón del pedido es un pedido aparte en Dropi (un paquete por producto).
  */
 export type OpcionesDropi = { pagoBold?: { transaccion: string | null }; envio?: number };
 
 export function cuerpoPedidoDropi(
   p: Pedido,
-  producto: Producto,
+  linea: Linea,
   codigoPedido: string,
   opciones: OpcionesDropi = {},
 ) {
   const { nombre, apellido } = separarNombre(p.nombre);
   const prepagado = Boolean(opciones.pagoBold);
   // total_order = lo que la transportadora cobra al entregar (productos + envío del cliente).
-  const total = producto.precio * p.cantidad + (prepagado ? 0 : (opciones.envio ?? 0));
+  const total = linea.subtotal + (prepagado ? 0 : (opciones.envio ?? 0));
   return {
     type: "FINAL_ORDER",
     rate_type: prepagado ? "SIN RECAUDO" : "CON RECAUDO",
@@ -76,13 +76,39 @@ export function cuerpoPedidoDropi(
       .join(" · "),
     shop_order_id: codigoPedido,
     shop_order_number: codigoPedido,
-    products: [{ id: producto.dropiId, price: producto.precio, quantity: p.cantidad }],
+    products: [{ id: linea.producto.dropiId, price: linea.producto.precio, quantity: linea.cantidad }],
   };
+}
+
+/**
+ * Crea un pedido en Dropi por cada renglón, uno tras otro. Con un solo renglón usa el código tal
+ * cual; con varios, EDM-XXXX-1, EDM-XXXX-2… para que Dropi no los tome por duplicados.
+ */
+export async function crearPedidosDropi(
+  p: Pedido,
+  lineas: Linea[],
+  codigoPedido: string,
+  opciones: OpcionesDropi = {},
+): Promise<ResultadoDropi[]> {
+  const resultados: ResultadoDropi[] = [];
+  for (const [i, linea] of lineas.entries()) {
+    const codigo = lineas.length === 1 ? codigoPedido : `${codigoPedido}-${i + 1}`;
+    resultados.push(await crearPedidoDropi(p, linea, codigo, opciones));
+  }
+  return resultados;
+}
+
+/** Resume los resultados para el registro de ventas y los logs. null = Dropi no configurado. */
+export function resumenDropi(resultados: ResultadoDropi[] | null): { estado: string; pedido: string | null; todos: boolean } {
+  if (resultados === null) return { estado: "no_configurado", pedido: null, todos: false };
+  const estado = resultados.map((r) => (r.ok ? "creado" : `fallo:${r.motivo}`)).join(" | ").slice(0, 200);
+  const ids = resultados.flatMap((r) => (r.ok && r.dropiId ? [r.dropiId] : []));
+  return { estado, pedido: ids.length ? ids.join(", ") : null, todos: resultados.every((r) => r.ok) };
 }
 
 export async function crearPedidoDropi(
   p: Pedido,
-  producto: Producto,
+  linea: Linea,
   codigoPedido: string,
   opciones: OpcionesDropi = {},
 ): Promise<ResultadoDropi> {
@@ -91,7 +117,7 @@ export async function crearPedidoDropi(
 
   const control = new AbortController();
   const temporizador = setTimeout(() => control.abort(), TIEMPO_MAX_MS);
-  const cuerpo = JSON.stringify(cuerpoPedidoDropi(p, producto, codigoPedido, opciones));
+  const cuerpo = JSON.stringify(cuerpoPedidoDropi(p, linea, codigoPedido, opciones));
   try {
     const formas = formaQueFunciona ? [formaQueFunciona] : FORMAS;
     let res: Response | null = null;

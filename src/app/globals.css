@@ -2,8 +2,8 @@
 
 /*
  * Sistema de diseño EDMOGA
- * Lienzo blanco y azul marino de la marca. Lo llamativo va en un solo lugar: la franja
- * azul del inicio. El resto es tranquilo: foto primero, poco adorno, letra fácil de leer.
+ * Regla 60-30-10: fondo blanco humo (60), azul marino de la marca en franjas, títulos y pie (30)
+ * y dorado solo en los botones de compra y detalles (10). Foto primero, letra fácil de leer.
  * Letras: Atkinson Hyperlegible (texto) y Bricolage Grotesque (títulos y precios).
  */
 @theme inline {
@@ -30,7 +30,8 @@
   --color-border-strong: #b9c2cf;
 
   /* Superficies */
-  --color-canvas: #ffffff;
+  --color-canvas: #ffffff; /* tarjetas y barras */
+  --color-fondo: #f8f9fa; /* fondo de la página */
   --color-surface-soft: #f3f6f9;
   --color-surface-strong: #e9eef4;
 
@@ -62,7 +63,7 @@ html {
 }
 
 body {
-  background: #ffffff;
+  background: #f8f9fa;
   color: #172235;
   font-family: var(--font-sans);
 }
@@ -90,7 +91,7 @@ h3 {
 }
 
 @layer components {
-  /* Botón principal: acento, 48 px, esquina 8 px */
+  /* Botón principal (comprar, pedir, pagar): dorado con letra azul, 48 px, esquina 8 px */
   .btn-primary {
     display: inline-flex;
     min-height: 48px;
@@ -98,20 +99,29 @@ h3 {
     justify-content: center;
     gap: 8px;
     border-radius: var(--radius-sm);
-    background: var(--color-primary);
+    background: var(--color-oro);
     padding: 14px 24px;
     font-size: 16px;
-    font-weight: 500;
+    font-weight: 700;
     line-height: 1.25;
-    color: #ffffff;
-    transition: background-color 120ms ease;
+    color: var(--color-primary);
+    transition: background-color 120ms ease, transform 120ms ease;
+  }
+  .btn-primary:hover {
+    background: #cdb277;
   }
   .btn-primary:active {
-    background: var(--color-primary-active);
+    background: #b3955a;
+    transform: translateY(1px);
+  }
+  .btn-primary:focus-visible {
+    outline-color: var(--color-primary);
   }
   .btn-primary:disabled,
   .btn-primary[aria-disabled="true"] {
     background: var(--color-primary-disabled);
+    color: #ffffff;
+    transform: none;
     cursor: not-allowed;
   }
 

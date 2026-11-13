@@ -1,5 +1,24 @@
 # CHANGELOG
 
+## 2026-11-12 — Carrito, favoritos, modo administrador y audífonos [agente: Claude]
+- Portada sin la foto de la picadora (el producto y sus fotos siguen en Cocina y en su ficha).
+- Carrito de varios productos guardado en el navegador (`localStorage`): panel lateral, cantidades, subtotal y checkout. "Comprar ahora" sigue pidiendo un solo producto sin pasar por el carrito.
+- El pedido pasa de `{ producto, cantidad }` a `items[]` (se sigue aceptando la forma anterior). Cada producto distinto es un pedido aparte en Dropi (EDM-XXXX-1, -2…) y, contra entrega, paga su propio envío (decisión del dueño). Pago en línea sigue con envío gratis.
+- Lista de deseos: corazón en cada tarjeta y en la ficha, página `/favoritos` con "Pasar al carrito".
+- Modo administrador en `/admin`: entra con la clave de la variable `ADMIN_CLAVE` (la define el dueño en Vercel; sin ella queda apagado), sesión de 8 horas en cookie firmada y 5 intentos cada 15 minutos. Permite cambiar el precio de cualquier producto; el cambio se guarda en la tabla `precios` de Supabase y se ve de inmediato en la tienda.
+- Los precios de páginas, pedido y pago salen de `src/lib/precios.ts` (catálogo + cambios del administrador). Al iniciar un pago con Bold se guarda la cotización para que un cambio de precio a mitad del pago no lo deje en revisión manual.
+- Sección Audífonos con 4 productos reales de Dropi (XO EV53, F9, V02 y BT860 de cable), genéricos y sin variantes. Precios propuestos por Claude y aprobados por el dueño el 2026-11-12.
+- No se hizo (decisión): categoría Perfumes ni réplicas o imitaciones de marcas (los perfumes de Dropi son imitaciones y requieren INVIMA); variantes de color (el checkout todavía no las maneja).
+
+## 2026-11-12 — Rediseño, páginas por categoría, SEO y 8 productos nuevos [agente: Claude]
+- Paleta 60-30-10: fondo blanco humo (#F8F9FA), azul marino en franjas, títulos y pie, y dorado en los botones de compra (`.btn-primary`).
+- Página propia por categoría en `/categoria/[slug]` (cocina, belleza, cafeteros, gimnasio, tecnologia) con banner, filtro por precio y orden (recomendados, novedades, precio). Textos en `CATEGORIAS` de `src/lib/catalogo.ts`.
+- Inicio nuevo: titular de la tienda, 4 garantías, tarjetas de categoría y 4 productos por sección con enlace a ver todos. Menú con las categorías (fila deslizable en celular).
+- Tarjetas de producto: zoom suave de la foto y botón "Ver producto" al pasar el mouse.
+- SEO: datos estructurados `Product`/`Offer` y `BreadcrumbList` (JSON-LD) en cada ficha, URL canónica, categorías en el sitemap y metadatos por categoría.
+- Secciones nuevas Gimnasio (bandas de resistencia, guantes, shaker, bolso magnético, barra para puerta) y Tecnología (2 cargadores magnéticos, smartwatch C60). Productos reales de Dropi, sin variantes; precios propuestos por Claude y aprobados por el dueño el 2026-11-12.
+- No se hizo (decisión): productos, calificaciones o avisos de "últimas unidades" inventados; perfumes y audífonos de Dropi (imitaciones de marca); descuento por pagar con Bold (el dueño eligió no darlo); carrito de varios productos (hoy se pide un producto por pedido).
+
 ## 2026-11-10 — Productos sin INVIMA fuera de la tienda [agente: Claude]
 - Nuevo campo `oculto` en el catálogo: el producto no aparece en el inicio ni en el sitemap, su ficha da 404 y no se puede pedir ni pagar.
 - Se ocultan 7 productos Trendy sin registro de su tipo en InvimÁgil: tónico de rosas, exfoliante corporal, bruma con niacinamida, polvos compactos, contorno en barra con rubor, espuma desmaquillante y bronzer. Aprobado por el dueño.
