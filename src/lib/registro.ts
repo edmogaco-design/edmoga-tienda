@@ -12,7 +12,7 @@ const TIEMPO_MAX_SHEETS_MS = 15_000;
 
 export type FilaPedido = {
   codigo: string;
-  metodo: "contra_entrega" | "bold";
+  metodo: "contra_entrega" | "bold" | "transferencia";
   estado: string;
   producto: string;
   cantidad: number;

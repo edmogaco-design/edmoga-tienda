@@ -5,6 +5,12 @@
 - Busca en nombre, sección, resumen y beneficios; ignora tildes, mayúsculas y plurales simples. Deben coincidir todas las palabras; primero salen las coincidencias en el nombre.
 - Solo muestra productos a la venta (los ocultos no aparecen). La página no se indexa en Google.
 
+## 2026-11-10 — Pago por transferencia con llave Bre-B [agente: Claude]
+- Nueva forma de pago en el checkout: transferencia con llave Bre-B, con envío gratis igual que Bold. Al hacer el pedido el cliente ve la llave, el titular y su código, y manda el comprobante por WhatsApp.
+- El pedido queda como `pendiente_comprobante_transferencia` en Supabase y en Sheets. No se crea en Dropi hasta que el dueño verifica que el dinero entró.
+- Solo aparece si existe `TRANSFERENCIA_LLAVE_BREB` en Vercel (opcional `TRANSFERENCIA_TITULAR`).
+- `supabase/esquema.sql` acepta el método `transferencia` (hay que volver a correrlo).
+
 ## 2026-11-10 — Productos sin INVIMA fuera de la tienda [agente: Claude]
 - Nuevo campo `oculto` en el catálogo: el producto no aparece en el inicio ni en el sitemap, su ficha da 404 y no se puede pedir ni pagar.
 - Se ocultan 7 productos Trendy sin registro de su tipo en InvimÁgil: tónico de rosas, exfoliante corporal, bruma con niacinamida, polvos compactos, contorno en barra con rubor, espuma desmaquillante y bronzer. Aprobado por el dueño.

@@ -11,6 +11,16 @@ export const SITE = {
   correo: "edmoga.co@gmail.com",
 };
 
+/**
+ * Datos para pago por transferencia (llave Bre-B). Solo servidor: se leen de Vercel.
+ * Sin TRANSFERENCIA_LLAVE_BREB la tienda no ofrece transferencia.
+ */
+export function datosTransferencia(): { llave: string; titular: string | null } | null {
+  const llave = process.env.TRANSFERENCIA_LLAVE_BREB?.trim();
+  if (!llave) return null;
+  return { llave, titular: process.env.TRANSFERENCIA_TITULAR?.trim() || null };
+}
+
 export function formatoCOP(valor: number): string {
   return new Intl.NumberFormat("es-CO", {
     style: "currency",
