@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## 2026-11-10 — Cafeteros: filtros Chemex y productos de café [agente: Claude]
+- Nuevo producto en Cafeteros: Filtros para Chemex x40 (Dropi 218298), a $54.900 (costo Dropi $37.000), precio aprobado por el dueño. El proveedor tiene poco stock.
+- El molino de café manual, la cafetera moka de 12 tazas y el calentador de taza pasan de Cocina a Cafeteros.
+
 ## 2026-11-10 — Pago por transferencia con llave Bre-B [agente: Claude]
 - Nueva forma de pago en el checkout: transferencia con llave Bre-B, con envío gratis igual que Bold. Al hacer el pedido el cliente ve la llave, el titular y su código, y manda el comprobante por WhatsApp.
 - El pedido queda como `pendiente_comprobante_transferencia` en Supabase y en Sheets. No se crea en Dropi hasta que el dueño verifica que el dinero entró.

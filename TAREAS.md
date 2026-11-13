@@ -41,5 +41,7 @@
 | Aprobar precio de la cafetera Chemex ($69.900) | Dueño | hecho | 2026-11-10 |
 | Pago por transferencia con llave Bre-B (código) | Claude | hecho | 2026-11-10 |
 | Poner `TRANSFERENCIA_LLAVE_BREB` y `TRANSFERENCIA_TITULAR` en Vercel y volver a correr `supabase/esquema.sql` | Dueño | pendiente | |
+| Filtros Chemex x40 y productos de café movidos a Cafeteros | Claude | hecho | 2026-11-10 |
+| Aprobar precio de los filtros Chemex x40 ($54.900) | Dueño | hecho | 2026-11-10 |
 | Fotos propias de los productos | Grok / Dueño | pendiente | |
 | Revisión legal de textos | Dueño | pendiente | |
