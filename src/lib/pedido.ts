@@ -19,6 +19,8 @@ export const pedidoSchema = z.object({
   departamento: z.enum(DEPARTAMENTOS, { errorMap: () => ({ message: "Elige tu departamento" }) }),
   direccion: z.string().trim().min(6, "Escribe tu dirección completa").max(150),
   notas: z.string().trim().max(200).optional(),
+  // Pedidos sin pago en línea. Bold usa su propia ruta (/api/pago/iniciar).
+  metodo: z.enum(["contraentrega", "transferencia"]).default("contraentrega"),
   autorizaDatos: z.literal(true, {
     errorMap: () => ({ message: "Debes autorizar el tratamiento de datos" }),
   }),
@@ -49,6 +51,27 @@ export function mensajePedidoPagado(
     `• Dirección: ${p.direccion}`,
     p.notas ? `• Notas: ${p.notas}` : "",
     "¿Me confirman el despacho?",
+  ]
+    .filter(Boolean)
+    .join("\n");
+}
+
+export function mensajePedidoTransferencia(
+  p: Pedido,
+  total: number,
+  nombreProducto: string,
+  codigoPedido: string,
+): string {
+  return [
+    `Hola EDMOGA, hice mi pedido ${codigoPedido} por transferencia (llave Bre-B). Te envío el comprobante:`,
+    `• Producto: ${nombreProducto} x${p.cantidad}`,
+    `• Total transferido: ${formatoCOP(total)} (envío gratis)`,
+    `• Nombre: ${p.nombre}`,
+    `• Celular: ${p.telefono}`,
+    `• Ciudad: ${p.ciudad}, ${p.departamento}`,
+    `• Dirección: ${p.direccion}`,
+    p.notas ? `• Notas: ${p.notas}` : "",
+    "¿Me confirman el pago y el despacho?",
   ]
     .filter(Boolean)
     .join("\n");

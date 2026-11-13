@@ -1,7 +1,7 @@
 import { NextResponse, after } from "next/server";
-import { pedidoSchema, mensajePedido, codigoDesde } from "@/lib/pedido";
+import { pedidoSchema, mensajePedido, mensajePedidoTransferencia, codigoDesde } from "@/lib/pedido";
 import { obtenerProducto } from "@/lib/catalogo";
-import { enlaceWhatsApp } from "@/lib/config";
+import { datosTransferencia, enlaceWhatsApp } from "@/lib/config";
 import { crearPedidoDropi, dropiConfigurado } from "@/lib/dropi";
 import { costoEnvio } from "@/lib/envios";
 import { guardarResultado, ipCliente, limitado, reservar } from "@/lib/unaVez";
@@ -36,14 +36,23 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "Producto no encontrado" }, { status: 404 });
   }
 
+  // Transferencia: el cliente paga antes con llave Bre-B (envío gratis, como Bold) y manda el
+  // comprobante por WhatsApp. No va a Dropi hasta que el dueño verifique que el dinero entró.
+  const esTransferencia = r.data.metodo === "transferencia";
+  const transferencia = esTransferencia ? datosTransferencia() : null;
+  if (esTransferencia && !transferencia) {
+    return NextResponse.json({ error: "El pago por transferencia no está disponible." }, { status: 400 });
+  }
+
   const subtotal = producto.precio * r.data.cantidad;
-  const envio = costoEnvio(r.data.departamento, r.data.ciudad);
+  const envio = esTransferencia ? 0 : costoEnvio(r.data.departamento, r.data.ciudad);
   const codigo = codigoDesde(r.data.idSolicitud);
+  const estado = esTransferencia ? "pendiente_comprobante_transferencia" : "pendiente_confirmacion_whatsapp";
 
   // La misma solicitud (idSolicitud) no crea un segundo pedido en Dropi, aunque llegue a otra
   // instancia. Si el registro compartido falla, se sigue: el cliente igual llega a WhatsApp.
   const clave = `edmoga:pedido:${r.data.idSolicitud}`;
-  let crearEnDropi = dropiConfigurado();
+  let crearEnDropi = dropiConfigurado() && !esTransferencia;
   let esNueva = true;
   try {
     const reserva = await reservar<Record<string, unknown>>(clave);
@@ -64,6 +73,7 @@ export async function POST(req: Request) {
   // Logs sin datos personales.
   console.info("pedido_iniciado", {
     codigo,
+    metodo: r.data.metodo,
     dropiId: producto.dropiId,
     cantidad: r.data.cantidad,
     departamento: r.data.departamento,
@@ -73,12 +83,16 @@ export async function POST(req: Request) {
 
   if (dropi && !dropi.ok) console.error("dropi_fallo", { codigo, motivo: dropi.motivo });
 
-  const estadoDropi = dropi === null ? "no_configurado" : dropi.ok ? "creado" : `fallo:${dropi.motivo}`.slice(0, 200);
+  const estadoDropi = esTransferencia
+    ? "espera_pago"
+    : dropi === null
+      ? "no_configurado"
+      : dropi.ok ? "creado" : `fallo:${dropi.motivo}`.slice(0, 200);
   if (esNueva) {
     const fila = filaPedido(r.data, {
       codigo,
-      metodo: "contra_entrega",
-      estado: "pendiente_confirmacion_whatsapp",
+      metodo: esTransferencia ? "transferencia" : "contra_entrega",
+      estado,
       producto: producto.nombre,
       subtotal,
       envio,
@@ -92,10 +106,15 @@ export async function POST(req: Request) {
   }
 
   const cuerpo = {
-    estado: "pendiente_confirmacion_whatsapp",
+    estado,
     codigo,
     registradoEnDropi: dropi?.ok === true,
-    whatsapp: enlaceWhatsApp(mensajePedido(r.data, subtotal, envio, producto.nombre, codigo)),
+    whatsapp: enlaceWhatsApp(
+      esTransferencia
+        ? mensajePedidoTransferencia(r.data, subtotal, producto.nombre, codigo)
+        : mensajePedido(r.data, subtotal, envio, producto.nombre, codigo),
+    ),
+    ...(transferencia ? { transferencia: { ...transferencia, total: subtotal } } : {}),
     // Solo en entornos de prueba: motivo del fallo de Dropi para diagnosticar. Nunca en producción.
     ...(process.env.VERCEL_ENV !== "production" && dropi && !dropi.ok
       ? { diagnosticoDropi: dropi.motivo }
