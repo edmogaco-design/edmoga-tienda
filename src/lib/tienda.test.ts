@@ -102,3 +102,14 @@ test("un producto oculto no está a la venta ni se puede pedir", async () => {
   assert.equal(pedidoSchema.safeParse({ ...pedido, producto: "tonico-de-rosas-trendy" }).success, false);
   assert.equal(pedidoSchema.safeParse(pedido).success, true);
 });
+
+test("buscador: sin tildes, plurales, todas las palabras y nada oculto", async () => {
+  const { buscarProductos } = await import("./buscar");
+  const slugs = (q: string) => buscarProductos(q).map((p) => p.slug);
+  assert.ok(slugs("CAFÉ").includes("molino-de-cafe-manual"));
+  assert.equal(slugs("cafeteras moka")[0], "cafetera-moka-12-tazas");
+  assert.deepEqual(slugs("cafetera zzzz"), []);
+  assert.deepEqual(slugs("   "), []);
+  // El tónico de rosas está oculto (sin INVIMA): no debe salir.
+  assert.deepEqual(slugs("tónico de rosas"), []);
+});

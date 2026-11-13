@@ -1,5 +1,10 @@
 # CHANGELOG
 
+## 2026-11-13 — Buscador de productos [agente: Claude]
+- Nueva página `/buscar` y buscador en el encabezado (caja en computador, lupa en celular). Funciona sin JavaScript.
+- Busca en nombre, sección, resumen y beneficios; ignora tildes, mayúsculas y plurales simples. Deben coincidir todas las palabras; primero salen las coincidencias en el nombre.
+- Solo muestra productos a la venta (los ocultos no aparecen). La página no se indexa en Google.
+
 ## 2026-11-10 — Productos sin INVIMA fuera de la tienda [agente: Claude]
 - Nuevo campo `oculto` en el catálogo: el producto no aparece en el inicio ni en el sitemap, su ficha da 404 y no se puede pedir ni pagar.
 - Se ocultan 7 productos Trendy sin registro de su tipo en InvimÁgil: tónico de rosas, exfoliante corporal, bruma con niacinamida, polvos compactos, contorno en barra con rubor, espuma desmaquillante y bronzer. Aprobado por el dueño.

@@ -39,5 +39,6 @@
 | Confirmar el número exacto de INVIMA de primer, pestañina, delineador, paletas e iluminador Trendy (su tipo está registrado) | Dueño | pendiente | |
 | Fotos adicionales de productos Trendy (7 con galería; tónico, exfoliante, primer, paleta Kitty y lápiz de cejas solo tienen 1 foto en Dropi) | Claude | hecho | 2026-11-10 |
 | Aprobar precio de la cafetera Chemex ($69.900) | Dueño | hecho | 2026-11-10 |
+| Buscador de productos (`/buscar` y encabezado) | Claude | hecho | 2026-11-13 |
 | Fotos propias de los productos | Grok / Dueño | pendiente | |
 | Revisión legal de textos | Dueño | pendiente | |

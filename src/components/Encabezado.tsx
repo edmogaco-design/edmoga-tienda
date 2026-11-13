@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { Logo } from "./Logo";
+import { Buscador, Lupa } from "./Buscador";
 
 const enlaces = [
   { href: "/#productos", texto: "Productos" },
@@ -10,7 +11,7 @@ const enlaces = [
 export function Encabezado() {
   return (
     <header className="sticky top-0 z-30 border-b border-hairline bg-canvas">
-      <div className="mx-auto flex h-16 max-w-[1280px] items-center justify-between px-4 sm:h-20 sm:px-6 lg:px-10">
+      <div className="mx-auto flex h-16 max-w-[1280px] items-center justify-between gap-3 px-4 sm:h-20 sm:px-6 lg:px-10">
         <Link href="/" aria-label="EDMOGA, inicio" className="shrink-0">
           <span className="sm:hidden">
             <Logo alto={34} />
@@ -19,6 +20,7 @@ export function Encabezado() {
             <Logo alto={44} />
           </span>
         </Link>
+        <Buscador className="hidden max-w-sm flex-1 md:flex" />
         <nav className="hidden items-center gap-1 sm:flex" aria-label="Principal">
           {enlaces.map((e) => (
             <Link
@@ -30,6 +32,13 @@ export function Encabezado() {
             </Link>
           ))}
         </nav>
+        <Link
+          href="/buscar"
+          aria-label="Buscar productos"
+          className="ml-auto flex h-10 w-10 items-center justify-center rounded-full border border-hairline text-ink md:hidden"
+        >
+          <Lupa />
+        </Link>
         <Link
           href="/#productos"
           className="rounded-full border border-hairline px-4 py-2 text-sm font-medium text-ink shadow-card sm:hidden"
